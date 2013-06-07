@@ -1,0 +1,24 @@
+; $Id$
+name = "Cforge currencies"
+description = Standard LETS / Timebank accounting with intertrade and mirror of national currency
+core = 7.x
+package = Community Forge
+
+dependencies[] = mcapi_forms (>3.0-rc5)
+dependencies[] = mcapi_signatures
+dependencies[] = mcapi_limits
+dependencies[] = mcapi_index_views
+dependencies[] = accountant_ui
+dependencies[] = intertrading
+dependencies[] = mcapi_balance_history
+
+files[] = cforge_currencies.mcapicurrencies_default.inc
+files[] = cforge_currencies.mcapiforms_default.inc
+files[] = cforge_currencies.views_default.inc
+
+; Information added by drupal.org packaging script on 2013-05-30
+version = "7.x-1.0-rc5"
+core = "7.x"
+project = "cforge"
+datestamp = "1369879264"
+

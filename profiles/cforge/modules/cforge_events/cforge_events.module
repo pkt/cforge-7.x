@@ -1,0 +1,45 @@
+<?php
+
+
+/**
+ * Implementation of hook_node_info)().
+ */
+function cforge_events_node_info(){
+  $types['event'] = array(
+    'name' => 'Event',
+    'module' => 'cforge_events',
+    'base' => 'cforge_events',
+    'description' => t('Content type with date field'),
+    'has_title' => TRUE,
+    'title_label' => t('Title'),
+    'has_body' => TRUE,
+  );
+  return $types;
+}
+
+
+/**
+ * Implementation of hook_form)().
+ */
+function cforge_events_form(&$node, $form_state){
+  return node_content_form($node, $form_state);
+}
+
+
+function cforge_events_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'cforge_events'),
+  );
+}
+
+
+/*
+ * implements hook_block_list_alter
+ * addsome more info to the block issued by this module's view
+ */
+function cforge_events_block_info_alter($blocks) {
+  $blocks['views']['events-block_upcoming']['title'] = t('Upcoming events');
+  $blocks['views']['events-block_upcoming']['visibility'] = BLOCK_VISIBILITY_LISTED;
+  $blocks['views']['events-block_upcoming']['pages'] = "node*\nnews";
+}

@@ -1,0 +1,27 @@
+name = Offers & Wants
+description = A simple marketplace with 2 dimenstions of categories. For moree options, install date, date popup, image, and hierarchical select taxonomy
+package = Community Forge
+core = 7.x
+configure = admin/config/ow
+
+files[] = offers_wants.install
+files[] = views/offers_wants.views.inc
+files[] = views/offers_wants.views_default.inc
+files[] = views/views_handler_field_want.inc
+
+dependencies[] = taxonomy
+dependencies[] = text
+dependencies[] = views
+dependencies[] = image
+dependencies[] = date
+dependencies[] = date_popup
+dependencies[] = jquerymenu
+dependencies[] = hierarchical_select
+dependencies[] = hs_taxonomy
+
+; Information added by drupal.org packaging script on 2013-04-10
+version = "7.x-1.1"
+core = "7.x"
+project = "offers_wants"
+datestamp = "1365636912"
+

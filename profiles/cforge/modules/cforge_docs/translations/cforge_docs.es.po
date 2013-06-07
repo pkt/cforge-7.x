@@ -1,0 +1,151 @@
+# $Id$
+#
+# Spanish translation of Drupal (general)
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from files:
+#  cforge_docs.views.inc: n/a
+#  cforge_docs.module: n/a
+#  views_handler_field_cfdocs_access.inc: n/a
+#  cforge_docs.info: n/a
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2012-11-12 20:32+0100\n"
+"PO-Revision-Date: 2012-11-12 20:32+0100\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Spanish <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+
+#: cforge_docs.views.inc:27
+msgid "CF document access"
+msgstr ""
+
+#: cforge_docs.views.inc:28
+msgid "Whether the document is protected and the user can access it"
+msgstr ""
+
+#: cforge_docs.views.inc:44
+msgid "Documents grouped by category, showing the user's access"
+msgstr ""
+
+#: cforge_docs.views.inc:87
+msgid "Title"
+msgstr "Título"
+
+#: cforge_docs.views.inc:117
+msgid "Created"
+msgstr "Creado"
+
+#: cforge_docs.views.inc:148
+msgid "Access"
+msgstr "Acceso"
+
+#: cforge_docs.views.inc:228 cforge_docs.module:9
+msgid "Documents"
+msgstr ""
+
+#: cforge_docs.views.inc:232
+msgid "No documents have been uploaded yet"
+msgstr ""
+
+#: cforge_docs.views.inc:270
+msgid "Community documentation"
+msgstr ""
+
+#: cforge_docs.views.inc:282
+msgid "Newsletters"
+msgstr "Boletines"
+
+#: cforge_docs.views.inc:456
+msgid "Add new document"
+msgstr ""
+
+#: views_handler_field_cfdocs_access.inc:39
+msgid "view"
+msgstr "vista"
+
+#: cforge_docs.module:22
+msgid "Document"
+msgstr ""
+
+#: cforge_docs.module:24
+msgid "A simple way to create and display information on the Documents page of the secondary menu. Please choose the category which the document belongs to. You may modify the categories in the settings by a member with the 'Committee' role. You may tick the 'Private' box at the bottom of the page in order to display it only to members."
+msgstr ""
+
+#: cforge_docs.module:26
+msgid "Document title"
+msgstr ""
+
+#: cforge_docs.module:28
+msgid "Document summary"
+msgstr ""
+
+#: cforge_docs.module:44
+msgid "Document category vocabulary"
+msgstr ""
+
+#: cforge_docs.module:45
+msgid "The vocabulary that produces the document listing page."
+msgstr ""
+
+#: cforge_docs.module:54
+msgid "Force documents into menu"
+msgstr ""
+
+#: cforge_docs.module:55
+msgid "Choose one branch in the menu tree."
+msgstr ""
+
+#: cforge_docs.module:57
+msgid "<none>"
+msgstr ""
+
+#: cforge_docs.module:62
+msgid "Default privacy setting"
+msgstr ""
+
+#: cforge_docs.module:63
+msgid "Is private by default?"
+msgstr ""
+
+#: cforge_docs.module:144
+msgid "Private"
+msgstr ""
+
+#: cforge_docs.module:145
+msgid "Tick to show the document only to members"
+msgstr ""
+
+#: cforge_docs.module:155
+msgid "optional"
+msgstr ""
+
+#: cforge_docs.module:122
+msgid "edit documents"
+msgstr ""
+
+#: cforge_docs.module:122
+msgid "view private documents"
+msgstr ""
+
+#: cforge_docs.module:122
+msgid "view non-private documents"
+msgstr ""
+
+#: cforge_docs.info:0
+msgid "Cforge Docs"
+msgstr ""
+
+#: cforge_docs.info:0
+msgid "A content type which can private and which displays on a page of its own, by category"
+msgstr ""
+
+#: cforge_docs.info:0
+msgid "Local communities"
+msgstr ""
+

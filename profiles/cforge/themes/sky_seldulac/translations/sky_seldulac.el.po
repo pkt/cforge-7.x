@@ -1,0 +1,112 @@
+# $Id$
+#
+# Greek translation of Drupal (general)
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from files:
+#  node-exchange.tpl.php,v 1.1.2.3 2010/12/06 13:19:46 hutch
+#  page.tpl.php: n/a
+#  template.php: n/a
+#  user-profile.tpl.php,v 1.2.2.1 2008/10/15 13:52:04 dries
+#  sky_seldulac.info: n/a
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2013-04-28 21:28+0300\n"
+"PO-Revision-Date: 2013-04-28 21:28+0300\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Greek <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+
+#: certificate.tpl.php:35
+msgid "On @recorded<br />!payer <strong>paid</strong> !payee</br />the sum of !worth"
+msgstr ""
+"Στις @recorded το μέλος !payer πλήρωσε το "
+"μέλος !payee συνολικά !worth"
+
+#: certificate.tpl.php:48
+msgid "For:"
+msgstr "Για :"
+
+#: certificate.tpl.php:59
+msgid "Dependent transactions"
+msgstr "Εξαρτόμενες συναλλαγές"
+
+#: page.tpl.php:75
+msgid "Site designed and hosted for free by !cforge, a non-profit association registered in Geneva, Switzerland."
+msgstr ""
+"Η ιστοσελίδα σχεδιάστηκε και "
+"φιλοξενείται δωρεάν από το !cforge, μια μη "
+"κερδοσκοπική οργάνωση  που έχει "
+"συσταθεί στη Γενεύη της Ελβετίας."
+
+#: template.php:56
+msgid "Subscribe to !feed-title"
+msgstr "Εγγραφή στο !feed-title"
+
+#: user-profile.tpl.php:40
+msgid "Balance history"
+msgstr "Ιστορικό υπόλοιπο"
+
+#: user-profile.tpl.php:41
+msgid "Stats"
+msgstr "Στατιστικά"
+
+#: user-profile.tpl.php:42
+msgid "Pending transactions"
+msgstr "Εκκρεμείς συναλλαγές"
+
+#: sky_seldulac.info:0
+msgid "Cforge (Sky)"
+msgstr "Cforge (Sky)"
+
+#: sky_seldulac.info:0
+msgid "The default theme for Community Forge, based on contrib theme, Sky"
+msgstr ""
+"Το προεπιλεγμένο θέμα για την  Community "
+"Forge, με βάση το contrib θέμα, Sky"
+
+#: sky_seldulac.info:0
+msgid "Community Forge"
+msgstr "Community Forge"
+
+#: sky_seldulac.info:0
+msgid "Help"
+msgstr "Βοήθεια"
+
+#: sky_seldulac.info:0
+msgid "Left sidebar"
+msgstr "Αριστερή πλευρική ζώνη"
+
+#: sky_seldulac.info:0
+msgid "Right sidebar"
+msgstr "Δεξιά πλευρική ζώνη"
+
+#: sky_seldulac.info:0
+msgid "Header right"
+msgstr "Δεξία επικεφαλίδα"
+
+#: sky_seldulac.info:0
+msgid "Menus"
+msgstr "Μενού"
+
+#: sky_seldulac.info:0
+msgid "Content"
+msgstr "Περιεχόμενο"
+
+#: sky_seldulac.info:0
+msgid "Content bottom"
+msgstr "Kάτω μέρος περιεχομένου"
+
+#: sky_seldulac.info:0
+msgid "Content footer"
+msgstr "Υποσέλιδο περιεχομένου"
+
+#: sky_seldulac.info:0
+msgid "Footer"
+msgstr "Υποσέλιδο"
+

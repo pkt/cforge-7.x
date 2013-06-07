@@ -1,0 +1,352 @@
+<?php
+// $Id:
+
+/**
+ * Implementation of hook_install().
+ */
+function cforge_docs_install() {
+  db_query(
+    "UPDATE {system} set weight = :weight WHERE name = 'cforge_docs'", array(
+      ':weight' => db_query("SELECT weight from {system} WHERE name = 'upload'")->fetchField()+1
+    )
+  );
+
+  $vocab = (object)array(
+    'name' => st('Document shelves'),
+    'machine_name' => 'cforge_docs_categories',
+    'module' => 'cforge_docs',
+    'help' => st('Choose a category to make this page appear on the documents page'),
+    'description' => st("This vocabulary is for categorising activities people do in their community. It can be used like the 'yellow pages' to help locate goods and services, but can also be used later on, for monitoring purposes."),
+  );
+  taxonomy_vocabulary_save($vocab);
+
+  cforge_docs_checkfields();
+
+  variable_set('node_options_document', array('status'));
+  variable_set('node_permissions_document', 0);
+
+  $terms = array(
+    t('Our LETS') => t('Documents associated with this group'),
+    t('Media coverage') => t('Press, media and internet exposure.'),
+    t('Publicity materials') => t('Leaflets, posters etc.'),
+    t('Minutes') => t('Create your meeting agenda, and after the meeting edit the agenda so it can be viewed as minutes'),
+    t('Misc') =>  t('Anything else')
+  );
+  $w = 0;
+  foreach ($terms as $name => $description) {
+    $term = array(
+      'vid' => taxonomy_vocabulary_machine_name_load('cforge_docs_categories')->vid,
+      'name' => $name,
+      'description' => $description,
+      'weight' => $w++,
+      'format' => 'plain_text'
+    );
+    taxonomy_term_save((object) $term);
+  }
+//$link = l('admin/structure/taxonomy/cforge_docs_categories', 'admin/structure/taxonomy/cforge_docs_categories/add');
+//drupal_set_message(t('Now go and make some doc categories at !link', array('!link' => $link)), 'warning');
+}
+
+/*
+ * implement cforge hook_cf_role_permissions
+ */
+function cforge_docs_cf_role_permissions() {
+  return array(
+    DRUPAL_AUTHENTICATED_RID =>  array(
+      'view cf documents' => 'cforge_docs'
+    ),
+    RID_COMMITTEE =>  array(
+      'edit cf documents' => 'cforge_docs'
+    ),
+  );
+}
+
+function cforge_docs_checkfields() {
+  $field_name = 'cforge_docs_categories';
+  $field = current(_update_7000_field_read_fields(array('field_name' => $field_name)));
+  if (empty($field)) {
+    $field = array(
+      'field_name' => $field_name,
+      'type' => 'taxonomy_term_reference',
+      'entity_types' => array('node'),
+      'module' => 'taxonomy',
+      'cardinality' => 1,
+      'columns' => array(
+        'tid' => array(
+          'type' => 'int',
+          'unsigned' => TRUE,
+          'not null' => FALSE,
+        )
+      ),
+      'indexes' => array(
+        'tid' => array('tid')
+      ),
+      'foreign keys' => array(
+        'tid' => array(
+          'table' => 'taxonomy_term_data',
+          'columns' => array('tid')
+        )
+      ),
+      'settings' => array(
+        'allowed_values' => array(
+          array(
+            'vocabulary' => 'cforge_docs_categories',
+            'parent' => '0',
+          )
+        )
+      ),
+      'bundles' => array(
+        'node' => array(
+          'document',
+        )
+      )
+    );
+    _update_7000_field_create_field($field);
+  }
+  if (!field_read_instance('node', $field_name, 'document', array('include_inactive' => TRUE))) {
+    $instance = array(
+      'label' => t('Document category'),
+      'description' => '',
+      'field_name' => $field_name,
+      'entity_type' => 'node',
+      'bundle' => 'document',
+      'settings' => array(
+        'text_processing' => 0,
+        'allowed_values' => array(
+          array(
+            'vocabulary' => 'cforge_docs_categories'
+          )
+        )
+      ),
+      'required' => TRUE,
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'type' => 'taxonomy_term_reference_link',
+          'weight' => -3,
+          'module' => 'taxonomy'
+        )
+      ),
+      'widget' => array(
+        'type' => 'options_select',
+      )
+    );
+    _update_7000_field_create_instance($field, $instance);
+  }
+
+  $field_name = 'upload_private';
+  //create the upload field
+  $upload = array(
+    'translatable' => '0',
+    'settings' => array(
+      'display_field' => 1,
+      'display_default' => 1,
+      'uri_scheme' => 'private',
+      'default_file' => 0,
+    ),
+    'entity_types' => array(),
+    'indexes' => array(
+      'fid' => array('fid'),
+    ),
+    'field_name' => $field_name,
+    'type' => 'file',
+    'module' => 'file',
+    'cardinality' => '-1',
+    'columns' => array(
+      'fid' => array(
+        'description' => 'The {file_managed}.fid being referenced in this field.',
+        'type' => 'int',
+        'not null' => FALSE,
+        'unsigned' => TRUE,
+      ),
+      'display' => array(
+        'description' => 'Flag to control whether this file should be displayed when viewing content.',
+        'type' => 'int',
+        'size' => 'tiny',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 1,
+      ),
+    ),
+    'bundles' => array(
+      'node' => array(),
+    )
+  );
+  if (!field_read_field($field_name)) field_create_field($upload);
+
+  if (!field_info_instance('node', $field_name, 'document', array('include_inactive' => TRUE))) {
+    $instance = array(
+      'label' => 'File attachments',
+      'widget' => array(
+        'weight' => 1,
+        'type' => 'file_generic',
+        'module' => 'file',
+        'active' => 1,
+      ),
+      'settings' => array(
+        'file_directory' => '',
+        'file_extensions' => 'txt pdf doc xls odt csv htm ppt',
+        'max_filesize' => '2MB',
+        'description_field' => 0,
+        'user_register_form' => FALSE,
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'type' => 'file_default',
+          'settings' => array(),
+          'module' => 'file',
+          'weight' => -2,
+        )
+      ),
+      'required' => 1,
+      'description' => '',
+      'field_name' => $field_name,
+      'entity_type' => 'node',
+      'bundle' => 'document',
+    );
+    field_create_instance($instance);
+  }
+
+  node_types_rebuild();
+  if (!field_read_instance('node', 'body', 'document')) {
+    cforge_add_body_field('node', 'document', t('Content or synopsis of attached'));
+  }
+}
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function cforge_docs_uninstall() {
+  //remove the vocab
+  $vid = db_query("SELECT vid FROM {taxonomy_vocabulary} WHERE machine_name = 'cforge_docs_categories'")->fetchField();
+  taxonomy_vocabulary_delete($vid);
+  field_delete_field('cforge_docs_categories');
+  field_delete_field('upload_private');
+  field_purge_batch(1);
+  node_type_delete('document');
+  variable_del('node_options_document');
+  variable_del('node_permissions_document');
+}
+
+/*
+ * implements hook_dependencies
+ */
+function cforge_docs_dependencies() {
+  return array(
+    'cforge_docs' => array(
+      7001 => array(
+        'cforge' => 7005
+      )
+    )
+  );
+}
+
+
+/**
+ * tidy up from d6
+ */
+function cforge_docs_update_7000() {
+  module_enable(array('file', 'views'));
+  //it seems that the cf_docs_vid variable may be incorrect, so we'll retrieve it from elsewhere
+  variable_del('cf_docs_vid');
+  variable_del('cf_docs_menu');
+  db_delete('menu_links')->condition('link_path', 'docs')->execute();
+  global $language;
+  cache_clear_all('views_block_items:'.$language->language, 'cache_views');
+  if ($view = views_get_view('documents')) {
+    views_delete_view($view);
+  }
+}
+
+/**
+ * create a private upload field and migrate
+ * if the following module was ready, it would be nicer:
+ * http://drupalmodules.com/module/file-entity-private-upload
+ */
+function cforge_docs_update_7001() {
+  $vid = substr(strrchr(db_query(
+    "SELECT field_name FROM {field_config_instance} WHERE bundle = 'document' and field_name like '%vocab%'"
+    )->fetchField(), '_'), 1);
+  if ($vid) {
+    _cf_rename_upgraded_vocab_field($vid, 'cforge_docs_categories', 'cforge_docs');
+  }
+  cforge_docs_checkfields();
+  if (field_read_instance('node', 'upload', 'document')) {
+    _move_doc_files_to_private();
+    field_delete_instance(field_read_instance('node', 'upload', 'document'));
+  }
+}
+
+function _move_doc_files_to_private() {
+  //get all the files attached to the document nodes, and move them to the new 'upload_private' field
+  $rows = db_query("SELECT * FROM {field_data_upload} WHERE bundle = 'document'")->fetchAll();
+  $fids = array();
+  foreach ($rows as $row) {
+    $fids[] = $row->upload_fid;
+    //rename the columns
+    $row->upload_private_fid = $row->upload_fid;
+    $row->upload_private_display = $row->upload_display;
+    $row->upload_private_description = $row->upload_description;
+    unset($row->upload_fid, $row->upload_display, $row->upload_description);
+    drupal_write_record('field_data_upload_private', $row);
+    drupal_write_record('field_revision_upload_private', $row);
+  }
+  db_delete('field_data_upload')->condition('bundle', 'document')->execute();
+  db_delete('field_revision_upload')->condition('bundle', 'document')->execute();
+  file_get_stream_wrappers();//this should have been done in cforge_update_7005, but no harm in doing it again
+  //now move the actual files to the new private directory.
+  if (count($fids)) {
+    foreach (file_load_multiple($fids) as $file) {
+      if (file_exists($file->uri)) {
+        file_move($file, str_replace('public://', 'private://', $file->uri), FILE_EXISTS_REPLACE);
+      }
+    }
+  }
+}
+
+/**
+ * restore text processing to the document body field, to be more compatible with the upgraded sites
+ */
+function cforge_docs_update_7002() {
+  //remove the html editor from the body field
+  $instance = field_info_instance('node', 'body', 'document');
+  $instance['settings']['text_processing'] = 1;
+  field_update_instance($instance);
+}
+/**
+ * change the body field help text
+ */
+function cforge_docs_update_7003() {
+  $instance = field_read_instance('node', 'body', 'document');
+  if ($instance) {
+    $instance['description'] = '';
+    field_update_instance($instance);
+  }
+  db_delete('role_permission')->condition('permission', 'view non-private documents')->execute();
+}
+
+/**
+ * update permission names to make them consistent.
+ * MUST TEST that these permissions work on the node AND the attachment similarly,
+ * especially for anonymous users.
+ */
+function cforge_docs_update_7004() {
+  if (db_query("SELECT TRUE FROM {role_permission} WHERE permission in ('view cf documents', 'edit cf documents')")->fetchField())return;
+  db_update('role_permission')->fields(array('permission' => 'view cf documents'))->condition('permission', 'view document nodes')->execute();
+  db_update('role_permission')->fields(array('permission' => 'edit cf documents'))->condition('permission', 'edit documents')->execute();
+}
+
+/*
+$file = object (
+  [fid] => 1
+  [uid] => 1
+  [filename] => picture-1.jpg
+  [uri] => public://pictures/picture-1.jpg
+  [filemime] => image/jpeg
+  [filesize] => 35142
+  [status] => 1
+  [timestamp] => 1352309626
+)
+*/
+

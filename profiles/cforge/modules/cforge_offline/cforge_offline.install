@@ -1,0 +1,118 @@
+<?php
+/*
+ * implements hook_install
+ * add the user profile flag
+ */
+function cforge_offline_install() {
+  module_load_install('cforge');
+  //there may already be a populated field, but with the wrong name
+  if (field_info_field('profile_postal')) {
+    cforge_fieldapi_rename_field('profile_postal', 'account_offline');
+  }
+  else cforge_reset_profile_fields('account_offline');
+}
+
+/**
+ * implements hook_uninstall
+ */
+function cforge_offline_uninstall() {
+  module_disable(array('masquerade_nominate', 'masquerade'));
+  field_delete_field('account_offline');
+  field_purge_batch(1);
+}
+
+/**
+ * install masquerade and masquerate nominate
+ */
+function cforge_offline_update_7001() {
+  module_enable(array('masquerade', 'masquerade_nominate'));
+  if (module_exists('masquerade_nominate')) {
+    _block_rehash;
+    user_role_grant_permissions(RID_TRADER, array('masquerade as user'));
+    db_query("UPDATE {block} SET status = 1, region = 'sidebar_second', visibility = 0 , weight = 1 WHERE delta = 'masquerade_nominate'");
+  }
+  else {
+    drupal_set_message(
+      t('Cforge Offline module now requires that you install !masquerade and !masquerade_nominate',
+      array(
+        '!masquerade' => l('Masquerade', 'http://drupal.org/project/masquerade', array('external' => TRUE)),
+        '!masquerade_nominate' => l('Masquerade nominate', 'http://drupal.org/project/masquerade_nominate', array('external' => TRUE)),
+      )
+    ));
+  }
+}
+/**
+ * rename postal field
+ */
+function cforge_offline_update_7002() {
+  cforge_fieldapi_rename_field('profile_postal', 'account_offline');
+}
+
+function cforge_offline_cf_profile_fields() {
+  $field = array(
+    'translatable' => '0',
+    'entity_types' => array(),
+    'settings' => array(
+      'allowed_values' => array(
+        0 => '0',
+        1 => '1',
+      ),
+      'allowed_values_function' => '',
+    ),
+    'foreign keys' => array(
+    ),
+    'indexes' => array(
+      'value' => array(
+        0 => 'value',
+      ),
+    ),
+    'field_name' => 'account_offline',
+    'type' => 'list_boolean',
+    'module' => 'list',
+    'active' => '1',
+    'locked' => '0',
+    'cardinality' => '1',
+    'columns' => array(
+      'value' => array(
+        'type' => 'int',
+        'not null' => false,
+      ),
+    ),
+  );
+  $instance = array(
+    'label' => t('Offline member'),
+    'description' => t('This member does not use the internet.'),
+    'widget' => array(
+      'weight' => 29,
+      'type' => 'options_onoff',
+      'module' => 'options',
+      'active' => 1,
+      'settings' => array(
+        'display_label' => 1,
+      ),
+    ),
+    'settings' => array(
+      'user_register_form' => 1,
+    ),
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'type' => 'list_default',
+        'settings' => array(
+        ),
+        'module' => 'list',
+        'weight' => 34,
+      ),
+    ),
+    'required' => 0,
+    'default_value' => array(
+      0 => array(
+        'value' => 0,
+      ),
+    ),
+    'field_name' => 'account_offline',
+    'entity_type' => 'user',
+    'bundle' => 'user',
+  );
+  return array(array($field), array($instance));
+}

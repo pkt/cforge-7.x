@@ -1,0 +1,188 @@
+<?php
+
+define('NODE_BROADCAST_FLAG', 'sticky');
+
+/*
+ * implements hook_form_alter
+ * add settings to the main cforge settings page
+ */
+function cforge_broadcast_form_cforge_settings_form_alter(&$form, &$form_state) {
+  $form['broadcast'] = array(
+    '#title' => t('Broadcast settings'),
+    '#description' => t('Emails nodes to groups of members.'),
+    '#type' => 'fieldset',
+    '#collapsible' => TRUE,
+    'cforge_broadcast_trader_range' => array(
+      '#title' => t('Trader scope'),
+      '#description' => t('How far can a normal trader broadcast?'),
+      '#type' => 'radios',
+      '#options' => array(
+        'none' => t('Traders cannot broadcast'),
+        'neighbourhood' => t('Only to people in the same neighbourhood'),
+        'all' => t('To all online users')
+      ),
+      '#default_value' => variable_get('cforge_broadcast_trader_range', 'none')
+    )
+  );
+}
+
+/*
+ * implements hook_form_FORM_ID_alter
+ */
+function cforge_broadcast_form_node_form_alter(&$form, &$form_state) {
+  if ($GLOBALS['user']->uid != 1) {
+    $form['options'][NODE_BROADCAST_FLAG]['#access'] = FALSE;
+  }
+  else {
+    $form['options'][NODE_BROADCAST_FLAG]['#title'] = t('Has been broadcast');
+  }
+
+  if (in_array($form['#node']->type, array('proposition', 'story', 'document', 'event' ))) {
+    $form['options']['status']['#description'] = t("Uncheck this to hide this item");
+    if (!$form['#node']->{NODE_BROADCAST_FLAG}) {
+      $broadcast_options = array(
+        '' => '--'. t('Choose').'--',
+        'user_chooser_segment_me' => t('Just to me'),
+        'user_chooser_segment_roles:'.RID_TRADER => t('All other active traders'),
+        'user_chooser_segment_neighbourhood' => t('Everyone in my neighbourhood'),
+      );
+      //check if and to whom the current user can broadcast, then present the appropriate widget
+      if (empty($GLOBALS['user']->roles[RID_COMMITTEE])) {
+        switch (variable_get('cforge_broadcast_trader_range', 'none')) {
+          case 'none': return;
+          case 'all':continue;
+          case 'neighbourhood':
+            unset($broadcast_options['user_chooser_segment_roles:3']);
+        }
+      }
+      $form['broadcast'] = array(
+        '#title' => t('Broadcast'),
+        '#description' => t('This can only be broadcast once.'),
+        '#type' => 'fieldset',
+        '#weight' => 100,
+        'audience' => array(
+          '#title' => t('Send to'),
+          '#type' => 'user_chooser_many',
+          '#weight' => 1,
+          '#options' => $broadcast_options,
+          '#required' => FALSE
+        ),
+        'send' => array(
+          '#type' => 'submit',
+          '#description' => t('Each item can be broadcast only once.'),
+          '#weight' => 2,
+          '#value' => t('Save & Broadcast'),
+          '#submit' => array('node_broadcast_submit'),
+          '#attributes' => array('onclick' => 'if(!confirm("'.t('Are you sure you want to broadcast this?').'")){return false;}'),
+        ),
+      );
+      if (count($form['broadcast']['audience']['#options']) == 1) {
+        $form['broadcast']['audience']['#value'] = key($form['broadcast']['audience']['#options']);
+        $form['broadcast']['send']['#value'] = t(
+          'Save & Broadcast to: @whoever',
+          array('@whoever' => current($form['broadcast']['audience']['#options']))
+        );
+      }
+      if (isset($form['image'])) {
+        $form['broadcast']['#description'] .= ' '.t('Images cannot be included in broadcast mails');
+      }
+      $form['#validate'][] = 'node_broadcast_validate';
+    }
+  }
+}
+
+function node_broadcast_validate($form, $form_state) {
+  if ($form_state['triggering_element']['#value'] == t('Save & Broadcast')) {
+    if (!is_array($form_state['values']['audience'])) {
+      form_set_error('audience', 'user_chooser not working');
+    }
+    if (empty($form_state['values']['audience'])) {
+      form_set_error('audience', t('No-one to broadcast to!'));
+    }
+  }
+}
+
+/*
+ * additional submit handler for node form
+ */
+function node_broadcast_submit($form, $form_state) {
+  if (count($form_state['values']['audience']) > 1) {
+    //if it's only gone to one person it's hardly been 'broadcast'
+    $form_state['values'][NODE_BROADCAST_FLAG] = 1;
+  }
+  node_form_submit($form, $form_state);
+  $node = node_load($form_state['nid']);
+  $form_state['redirect'] = 'node/'.$node->nid;
+  $params = array('node' => $node);
+  //have to check this for performance
+  foreach(user_load_multiple($form_state['values']['audience']) as $account) {
+    $batch['operations'][] = array(
+      'drupal_mail',
+      array(
+        'cforge_broadcast',//module
+        'broadcast', //key
+        $account->mail, //dest
+        user_preferred_language($account),//lang
+        $params,
+        variable_get('site_mail'), //from
+        TRUE //really send
+      )
+    );
+  }
+  $batch['title'] = t('Sending @count mails', array('@count' => count($batch['operations'])));
+  $batch['error_message'] = t('An unrecoverable error has occurred. You can find the error message below. It is advised to copy it to the clipboard for reference.');
+  $batch['finished'] = 'cforge_launch_disable';
+
+  batch_set($batch);
+}
+
+
+/*
+ * implements hook_mail
+ * only one $key possible, which is broadcast
+ */
+function cforge_broadcast_mail($key, &$message, $params) {
+  $node = &$params['node'];
+  $sender = user_load($node->uid);
+  $message['subject'] = t('@site_name: @node_title',
+    array('@site_name' => variable_get('site_name'), '@node_title' => $node->title)
+  );
+  $message['body'][] = t('@name posted a new @type.', array(
+    '@name' => $sender->name,
+    '@type' => node_type_get_type($node->type)->name
+  ));
+  $render = node_view($node);
+  unset($render['comments']);
+  $message['body'][] = drupal_render($render);
+  $message['headers']['From'] = $sender->mail;
+
+  if (isset($node->upload) && is_array($node->upload)) {
+    $items = (array)reset($node->upload);
+    foreach($items as $att) {
+      if (!$att['fid']) continue;
+      $file = file_load($att['fid']);
+      $message['params']['attachments'][] = array(
+        'uri' => $file->uri,
+        'filecontent' => file_get_contents($file->uri),
+        'filename' => $file->filename,
+        'filemime' => file_get_mimetype($file->uri)
+      );
+    }
+  }
+}
+
+/*
+ * user chooser handler to enable sending of test mails to the current user only.
+ */
+function cforge_broadcast_uchoo_segments() {
+  return array(
+    'user_chooser_segment_me' => t('Just me')
+  );
+}
+function user_chooser_segment_me($query) {
+  $query->condition('uid', $GLOBALS['user']->uid);
+
+}
+function in_user_chooser_segment_me($args, $uid = NULL) {
+  return $GLOBALS['user']->uid == $uid;
+}

@@ -1,0 +1,1429 @@
+div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, html, body {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  vertical-align: baseline;
+  background: transparent;
+}
+
+html,body {
+  background: #314C74 url('images/bg-body.png') repeat-x left top;
+  overflow-x:auto;
+  font-size: 100%;
+  font-size: 12px;
+  line-height: 1.6em;
+}
+body {
+  font-family: 'Lucida Grande', "Lucida Sans Unicode", Verdana, Helvetica, Arial, sans-serif;
+  color: #666;
+  font-size: 12px;
+  text-align:center;
+}
+
+#wrapper {
+  margin-top:2.5em;
+  padding-top:8pt;
+  background: #fff;
+  text-align: left;
+}
+
+#footer-content,
+.bottom .middle {
+  background: #fff;
+}
+
+
+/* -------------------------------------------------------------------------
+ * Tables
+ * ---------------------------------------------------------------------- */
+table, th, thead th, td, td.menu-disabled, #blocks td.block {
+  border-color: #ddd;
+}
+
+th, thead th {
+  background: #fff url('images/bg-shade-light.png') repeat-x bottom left;
+  color: #777;
+  text-align: center;
+}
+
+td.active, tr.even, tr.odd {
+  background-color: #fff;
+}
+
+td.menu-disabled, tr.even td {
+  background: #eee;
+}
+
+
+/* -------------------------------------------------------------------------
+ * Messagen Background images
+ * ---------------------------------------------------------------------- */
+ div.error, div.status, div.warning {
+  border-color: #ddd;
+  border: 1px solid;
+  margin: 0 0 10px 0;
+}
+div.status {
+  background-color: #eee;
+  padding: 10px 10px 10px;
+}
+div.status:before {
+  content:'message: ';
+}
+div.error {
+  background: #eee url('images/bg-error.gif') no-repeat left top;
+  padding: 45px 10px 10px!important;
+}
+
+div.warning {
+  background: #eee url('images/bg-message.gif') no-repeat left top;
+  padding: 45px 10px 10px!important;
+}
+
+/* -------------------------------------------------------------------------
+ * Nodes
+ * ---------------------------------------------------------------------- */
+.node .info p {
+  color: #888;
+}
+
+.node-sticky  {
+  border-color: #ddd;
+}
+
+.node .content dt  {
+  background: #fff url('images/bg-shade-light.png') repeat-x bottom left;
+  color: #777;
+  border-color: #ddd;
+}
+
+.node .content dl, .node .content dd {
+  border-color: #ddd;
+}
+
+.node dd:hover  {
+  background: #ddd;
+}
+
+/* -------------------------------------------------------------------------
+ * Comments
+ * ---------------------------------------------------------------------- */
+.comment  {
+  background: #fff url('images/bg-shade-white-lrg.png') repeat-x left bottom;
+  border-color: #ddd;
+}
+
+.comment .info {
+  color: #888;
+}
+
+/* -------------------------------------------------------------------------
+ * Polls
+ * ---------------------------------------------------------------------- */
+.sidebar .block-poll .content .title,
+.sidebar .block-poll .content .choices .form-item label,
+.sidebar .block-poll .content .choices {
+  color: #666;
+}
+
+.poll .bar .foreground {
+  background: #858585 url('images/bg-shade-dark.png') repeat-x bottom left;
+  color: #fff;
+}
+
+.poll .bar {
+  background: #fff url('images/bg-shade-light.png') repeat-x bottom left;
+  color: #777;
+}
+
+/* -------------------------------------------------------------------------
+ * Forms
+ * ---------------------------------------------------------------------- */
+
+.form-radio, .form-checkbox, .form-file, .form-select, select, .form-text, input, .form-textarea, textarea {
+  color: #000;
+  font-family: 'Lucida Grande', Verdana, Arial, sans-serif;
+}
+
+.form-textarea  {
+  background: #fff url('images/bg-shade-white-lrg.png') repeat-x bottom left;
+  color: #000;
+}
+
+.form-item .description {
+  color: #888;
+}
+
+.form-item .error, .marker, .new, .form-required {
+  border-color: #C00;
+}
+
+.form-file:focus, .form-text:focus, input:focus, .form-textarea:focus, textarea:focus  {
+  background: #eee;
+}
+
+fieldset, .form-text, .form-textarea  {
+  border-color: #ddd;
+}
+
+html.js fieldset.collapsible legend a {
+  /* background:transparent url('images/icons/bullet_toggle_minus.png') no-repeat 5px 0;*/
+  padding: 0 0 0 24px;
+}
+
+html.js fieldset.collapsed legend a {
+  /*background:url('images/icons/bullet_toggle_plus.png') no-repeat 5px 0;*/
+}
+
+/* -------------------------------------------------------------------------
+ * Buttons (Node Links)
+ * ---------------------------------------------------------------------- */
+.btn-tags {
+  background: url('images/bg-tags.png') no-repeat left center;
+  padding-left: 2em;
+}
+
+/* Note: bg-buttons.png class should not be changed, unless the page background is change to something other than white */
+.buttons span {
+  background: url('images/bg-buttons.png') no-repeat;
+}
+
+.buttons em {
+  color: #fff;
+}
+
+/* Note: This is the background color of the button itself.  It can be replaced with any color image, or just a background color. */
+.buttons a.button {
+  background: #b3b3b3 url('images/bg-shade-medium.png') repeat-x bottom left;
+  color: #fff;
+}
+
+.buttons a.button:hover {
+  background: #858585 url('images/bg-shade-dark.png') repeat-x bottom left;
+  color: #fff;
+}
+
+.buttons a.button:hover em {
+  color: #fff!important;
+}
+
+/* -------------------------------------------------------------------------
+ * Pagers
+ * ---------------------------------------------------------------------- */
+.pager a, .pager a:visited  {
+  background: #fff;
+  border-color: #ddd;
+  color: #888;
+}
+
+.pager li.pager-current  {
+  background: #858585 url('images/bg-shade-dark.png') repeat-x bottom left;
+  color: #fff;
+}
+
+.pager a:hover {
+  border-color: #ddd;
+  background: #B3B3B3 url('images/bg-shade-medium.png') repeat-x bottom left;
+  color: #fff;
+}
+
+
+#navigation li.leaf a:hover {
+  background: #B3B3B3 url('images/bg-shade-medium.png') repeat-x bottom left!important;
+}
+
+#navigation .expanded .leaf a {
+  background: none!important;
+}
+
+
+
+/* -------------------------------------------------------------------------
+ * Tabs
+ * ---------------------------------------------------------------------- */
+/* Primary */
+.tabs-primary li a,
+.tabs-primary li a:visited {
+  background: #fff url('images/bg-shade-light.png') repeat-x bottom left;
+  color: #777;
+}
+.tabs-primary,
+.tabs-primary li a,
+.tabs-primary li a:visited,
+.tabs-primary li:first-child a {
+  border-color: #ddd;
+}
+
+.tabs-primary li a:hover,
+.tabs-primary li a:visited:hover {
+  border-color: #B3B3B3;
+  background: #B3B3B3 url('images/bg-shade-medium.png') repeat-x bottom left;
+  color: #fff;
+}
+
+.tabs-primary li.active a,
+.tabs-primary li.active a:visited {
+  background: #858585 url('images/bg-shade-dark.png') repeat-x bottom left;
+  color: #fff;
+}
+
+.tabs-primary li.active a,
+.tabs-primary li.active a:visited,
+.tabs-primary li:first-child a.active {
+  background: #858585 url('images/bg-shade-dark.png') repeat-x bottom left;
+  border-color: #555;
+  color: #fff;
+  font-size: .95em;
+  font-weight: normal;
+}
+
+
+/* Secondary */
+.tabs-secondary {
+  background: #888 url('images/bg-shade-dark.png') repeat-x scroll left bottom;
+  color: #fff;
+}
+
+.tabs-secondary li a,
+.tabs-secondary li a:visited,
+.tabs-secondary li a:hover,
+.tabs-secondary li a.active {
+  color: #fff;
+  font-weight: normal;
+}
+
+/* Highlight the active sub-selection */
+.tabs-secondary li a.active {
+  font-weight: bold;
+}
+
+.tabs-secondary li a.active:before {
+  content: '( ';
+}
+
+.tabs-secondary li a.active:after {
+  content: ' )';
+}
+
+/* -------------------------------------------------------------------------
+ * Misc
+ * ---------------------------------------------------------------------- */
+.block-region {
+  background-color: #91A6C1;
+  color: #fff;
+}
+
+.admin-list dd {
+  color: #888;
+}
+
+.admin-list dt  {
+  border-color: #ddd;
+}
+
+
+#block-user-1 li.expanded a{
+  font-weight:bold;
+  color:#314C74;
+}
+#block-user-1 li.expanded ul a{
+  font-weight:normal;
+  color:#888888;
+}
+
+
+
+/* -------------------------------------------------------------------------
+ * Header
+ * ---------------------------------------------------------------------- */
+#page-title { /* Needs to match the top of the background gradient image color */
+  background: #91A6C1;
+  color: #fff;
+}
+
+#header {
+  height: auto;
+}
+
+#header #site-name a {
+  font-family: 'Lucida Grande', Verdana, Arial, sans-serif;
+  color: #fff;
+}
+
+#header #slogan {
+  color: #fff;
+}
+
+/* -------------------------------------------------------------------------
+ * Links/General
+ * ---------------------------------------------------------------------- */
+a, a:active, a:visited, li a.active {
+  color: rgb(0, 113, 188);
+}
+
+a:hover, .buttons div a:hover {
+  color: #000;
+}
+
+code, pre {
+  font-family: 'Monaco', 'Consolas', 'Deja Vu Sans Mono', 'Courier New', courier, monospace;
+  color: #888;
+}
+
+blockquote, cite {
+  background: url('images/bg-cite.png') no-repeat;
+  color: #888;
+  font-style: italic;
+  padding: 10px 0 0 45px;
+}
+
+/* -------------------------------------------------------------------------
+ * Headings
+ * ---------------------------------------------------------------------- */
+h1 a, h2 a, h3 a, h4 a, h5 a, .node .title a {
+  color: #314C74;
+}
+
+th, thead th {
+  background: #fff url('images/bg-shade-light.png') repeat-x bottom left;
+  color: #777;
+}
+
+td.active, tr.even, tr.odd {
+  background-color: #fff;
+  border-color: #fff;
+}
+h1, h2, h3, h4, h5, h6,  #main h1.title {
+  font-family: 'Lucida Grande', Verdana, Arial, sans-serif;
+}
+
+/* -------------------------------------------------------------------------
+ * Sidebar
+ * ---------------------------------------------------------------------- */
+
+.sidebar .title{
+  background-color: rgb(0, 113, 188);
+  color: #fff;
+}
+
+div.sidebar div#block-system-user-menu .title {
+  background-color: #2aab49
+  color: #fff;
+}
+div.sidebar .block{
+  background: #f3f3f3 url('images/blockbg.jpg') repeat-x top right;
+}
+
+.sidebar ul.menu li a.active {
+  background: #858585 url('images/bg-shade-dark.png') repeat-x bottom left;
+  color: #fff;
+}
+
+
+/* Level 1 */
+.sidebar ul.menu li a{
+  text-indent: 5px !important;
+  display:block;
+}
+/* Level 2 */
+.sidebar ul.menu li ul {
+  padding-left:10px;
+}
+.sidebar ul.menu li ul li{
+  border-bottom:none;
+}
+.sidebar ul.menu li ul li a{
+  line-height: 2em;
+}
+
+
+.sidebar ul.menu li li:last-child a {
+  border-color: #ddd;
+}
+
+.sidebar .item-list ul li {
+  color: #888;
+}
+
+/* Hover/Active */
+.sidebar ul.menu li.expanded a:hover,
+.sidebar ul.menu li.collapsed a:hover,
+.sidebar ul.menu li.leaf a:hover,
+.sidebar ul.menu a:hover,
+.sidebar ul.menu a.active {
+  color: #fff!important;
+  border-color: #ddd;
+  background: #B3B3B3 url('images/bg-shade-medium.png') repeat-x bottom left!important;
+}
+
+.sidebar ul.menu li li:last-child a {
+  border-color: #ddd;
+}
+
+.sidebar .item-list ul li {
+  color: #888;
+}
+
+
+/* -------------------------------------------------------------------------
+ * Messagen Background images
+ * ---------------------------------------------------------------------- */
+ div.error, div.status, div.warning {
+  border-color: #ddd;
+  border: 1px solid;
+  margin: 0 0 10px 0;
+}
+div.status {
+  background-color: #eee;
+  padding: 10px 10px 10px;
+}
+div.status:before {
+  content:'message: ';
+}
+div.error {
+  background: #eee url('images/bg-error.gif') no-repeat left top;
+  padding: 45px 10px 10px!important;
+}
+
+div.warning {
+  background: #eee url('images/bg-message.gif') no-repeat left top;
+  padding: 45px 10px 10px!important;
+}
+
+/* -------------------------------------------------------------------------
+ * Nodes
+ * ---------------------------------------------------------------------- */
+.node .info p {
+  color: #888;
+}
+
+
+/* -------------------------------------------------------------------------
+ * Comments
+ * ---------------------------------------------------------------------- */
+.comment  {
+  background: #fff url('images/bg-shade-white-lrg.png') repeat-x left bottom;
+  border-color: #ddd;
+}
+
+.comment .info {
+  color: #888;
+}
+
+/* -------------------------------------------------------------------------
+ * Forms
+ * ---------------------------------------------------------------------- */
+
+.form-radio, .form-checkbox, .form-file, .form-select, select, .form-text, input, .form-textarea, textarea {
+  color: #000;
+  font-family: 'Lucida Grande', Verdana, Arial, sans-serif;
+}
+
+.form-textarea  {
+  background: #fff url('images/bg-shade-white-lrg.png') repeat-x bottom left;
+  color: #000;
+}
+
+.form-item .description {
+  color: #888;
+}
+
+.form-item .error, .marker, .new, .form-required {
+  border-color: #C00;
+}
+
+.form-file:focus, .form-text:focus, input:focus, .form-textarea:focus, textarea:focus  {
+  background: #eee;
+}
+
+fieldset, .form-text, .form-textarea  {
+  border-color: #ddd;
+}
+
+html.js fieldset.collapsible legend a {
+/*  background:transparent url('images/icons/bullet_toggle_minus.png') no-repeat 5px 0; */
+  padding: 0 0 0 24px;
+}
+
+html.js fieldset.collapsed legend a {
+/*  background:url('images/icons/bullet_toggle_plus.png') no-repeat 5px 0;*/
+}
+
+/* -------------------------------------------------------------------------
+ * Buttons (Node Links)
+ * ---------------------------------------------------------------------- */
+.btn-tags {
+  background: url('images/bg-tags.png') no-repeat left center;
+  padding-left: 2em;
+}
+
+/* Note: bg-buttons.png class should not be changed, unless the page background is change to something other than white */
+.buttons span {
+  background: url('images/bg-buttons.png') no-repeat;
+}
+
+.buttons em {
+  color: #fff;
+}
+
+/* Note: This is the background color of the button itself.  It can be replaced with any color image, or just a background color. */
+.buttons a.button {
+  background: #b3b3b3 url('images/bg-shade-medium.png') repeat-x bottom left;
+  color: #fff;
+}
+
+.buttons a.button:hover {
+  background: #858585 url('images/bg-shade-dark.png') repeat-x bottom left;
+  color: #fff;
+}
+
+.buttons a.button:hover em {
+  color: #fff!important;
+}
+
+/* -------------------------------------------------------------------------
+ * Pagers
+ * ---------------------------------------------------------------------- */
+.pager a, .pager a:visited  {
+  background: #fff;
+  border-color: #ddd;
+  color: #888;
+}
+
+.pager li.pager-current  {
+  background: #858585 url('images/bg-shade-dark.png') repeat-x bottom left;
+  color: #fff;
+}
+
+.pager a:hover {
+  border-color: #ddd;
+  background: #B3B3B3 url('images/bg-shade-medium.png') repeat-x bottom left;
+  color: #fff;
+}
+
+
+
+/* -------------------------------------------------------------------------
+ * Navigation
+ * ---------------------------------------------------------------------- */
+ /* Primary Navigation (sources)
+ * Administration Menu
+ * http://drupal.org/project.admin_menu
+ * Sons of suckerfish
+ * http://www.htmldog.com/articles/suckerfish
+ */
+#navigation {
+  width: 100%;
+  clear: both;
+  min-height: 3em;
+  border-bottom: none;
+  background:#FFFFFF url(images/primary-links.jpg) repeat-x scroll left center;
+}
+
+#navigation ul.links {
+  padding: 0;
+  list-style: none;
+  line-height: 3em;
+  z-index: 1000;
+  position: static;
+  /*display:block;*/
+}
+
+.wrap-center, .wrap-center ul{
+  display:table;
+  margin:0pt auto;
+}
+
+#navigation li {
+  float: left;
+  line-height: 30px;
+  margin: 0 !important;
+  padding: 0;
+  list-style-image: none;
+  list-style-type: none;
+  border-left: 2px solid #ddd;
+  font-size: 1.25em;
+}
+
+#navigation li:first-child {
+  border-left: none;
+}
+
+#navigation li a,
+#navigation li a:visited{
+  color:#0071bc;
+  text-decoration: none;
+}
+#navigation li a:hover,
+#navigation li:hover a:hover,
+#navigation li.expanded li:hover a,
+#navigation li.expanded:hover li a:hover,
+#navigation li li a:hover,
+#navigation li li:hover a,
+#navigation li li:hover a:hover {
+  border-color: #ddd;
+  background: #B3B3B3 url('images/bg-shade-medium.png') repeat-x bottom left;
+  color: #fff;
+}
+#navigation ul a {
+  display: block;
+  margin: 0;
+  padding: 0 1.20em;
+  text-decoration: none;
+}
+
+
+/* Links */
+
+.sidebar a {
+  text-decoration:none;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6,
+div.view-id-user_directory div.view-header {
+  clear: both;
+  display: block;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 400;
+  letter-spacing: -1px;
+  line-height: 1.4em;
+  margin-bottom: 10px;
+  margin-top: 5px;
+}
+
+h1 a{
+  text-decoration:none;
+}
+
+h2 {
+  font-size: 1.8em;
+}
+
+h3, div.view-id-user_directory div.view-header {
+  font-size: 1.6em;
+}
+
+h4 {
+  font-size: 1.4em;
+}
+
+h5 {
+  font-size: 1.2em;
+}
+
+th a {text-decoration:none;}
+
+
+/* General Tags */
+p {
+  margin: 5px 0 15px;
+}
+
+.region-headerright {
+  float:right;
+  text-align:right;
+}
+.region-headerright ul li, span.views-field-title, div.views-field-value, div.views-field-name, .container-inline .form-item {
+	display:inline;
+}
+
+/* tables still need 'cellspacing="0"' in the markup */
+
+/* Tables */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin: 10px 0;
+}
+
+table caption {
+  font-size: 1.4em;
+  line-height: 1.6em;
+}
+
+th {
+  border: none;
+  padding: 4px 2px;
+  font-size:1.2em;
+}
+
+td {
+  padding: 4px;
+  vertical-align: top;
+  font-size: 1em;
+}
+
+.table-wrapper {
+  overflow: auto;
+}
+
+.node .table-wrapper,
+.view .table-wrapper {
+  overflow: visible;
+}
+
+.table-wrapper table {
+  margin: 10px .2%;
+  width: 99.5%;
+}
+
+table.package,
+#tracker table {
+  width: 99.5%;
+}
+
+tr.even,tr.odd {
+  border-bottom: none;
+  padding: 0;
+}
+
+/*------------------------------------------------------------------------
+ * LAYOUT
+ *----------------------------------------------------------------------*/
+
+#wrapper, #footer {
+  height: auto !important;
+  min-height: 100%;
+  /*width: 960px;*/
+  margin: 0 auto -5em;
+}
+#footer ol, #footer ul{margin:0;}
+
+/* Rounded corners in footer */
+.bottom {
+  height: 16px;
+  clear: both;
+}
+
+.bottom span {
+  position: relative;
+  height: 16px;
+  display: inline-block;
+  line-height: 16px;
+}
+
+.bottom .fl {
+  float: left;
+  background: url('images/bg-footer-bl.png') no-repeat left bottom;
+  width: 2.5%;
+}
+
+.bottom .middle {
+  float: left;
+  width: 95%;
+  z-index: 99;
+}
+
+.bottom .fr {
+  background: url('images/bg-footer-br.png') no-repeat right bottom;
+  width: 2.5%;
+  float: left;
+  z-index: 100;
+}
+
+
+#main {
+  width: 55%;
+  float: left;
+}
+
+/* General */
+.container {
+  clear: both;
+  text-align:left;
+}
+
+.main-inner {
+  padding: 10px 10px;
+}
+
+
+/* height must match .push margin top vertical total     */
+#page-title {
+  display: block;
+  padding-right: 16px;
+  line-height: 2em;
+}
+
+/*------------------------------------------------------------------------
+ * CONTENT REGIONS (content_top, content_bottom)
+ *----------------------------------------------------------------------*/
+
+#block-system-main{clear:both;}
+
+#main .block .title {
+  font-size: 1.6em;
+}
+
+/*------------------------------------------------------------------------
+ * NODES
+ *----------------------------------------------------------------------*/
+
+.node {
+  clear: both;
+  display: block;
+  margin: 0;
+  padding: 10px;
+}
+
+
+.node .content {
+  padding: 5px 0 15px;
+  clear: both;
+}
+
+.node .content ol {
+  list-style-type: decimal;
+  margin: 0 0 0 35px;
+}
+
+.node .content ul {
+  list-style-type: disc;
+  margin: 0 0 0 35px;
+}
+
+.node .content li {
+  padding: 2px 0;
+}
+
+/* Comments */
+#comments {
+  padding: 15px 10px;
+}
+
+.comment {
+  border: 1px solid;
+  clear: both;
+  display: block;
+  margin: 0 0 15px 0;
+}
+
+.comment .title {
+  display: block;
+  font-size: 1.5em;
+  letter-spacing: -1px;
+  line-height: 2em;
+  text-indent: 8px;
+}
+
+.comment .title .new {
+  padding-left: 4px;
+}
+
+.comment .info {
+  clear: both;
+  display: block;
+  font-size: 0.95em;
+  padding: 5px 10px;
+}
+
+.comment .info .picture {
+  display: inline;
+  margin: 0 10px;
+}
+
+div.user-picture{
+  clear:none;
+  float:right;
+}
+
+#comments h3, #comments .content{clear:none;}
+#comments .links{clear:right;float:right;}
+#comments div.comment{padding:10px 10px 0 10px;}
+#comments h3{display:inline;}
+
+/* Both Sidebars */
+div.sidebar {
+  width: 20%;
+  float: left;
+  overflow: hidden;
+  padding: 10px;
+}
+
+.sidebar .title {
+  display: block;
+  font-weight: 700;
+  letter-spacing: normal;
+  text-align: left;
+  font-size: 1.1em;
+  padding: 5px 10px;
+}
+
+.sidebar .block .content .title {
+  background: none!important;
+  border: none!important;
+}
+
+.sidebar .block {
+  overflow: hidden;
+  margin: 0 0 15px;
+  padding: 0;
+}
+
+.sidebar ul.menu ul,
+.sidebar ul.menu ul ul {
+  border: none;
+}
+
+.sidebar ul.menu li {
+  list-style: none;
+  list-style-image: none;
+  list-style-position: outside;
+  margin: 0;
+  padding: 0;
+  border-bottom: thin solid #ddd
+}
+t
+.sidebar ul.menu a,
+.sidebar ul.menu a:visited {
+  /*border-bottom: 1px solid;*/
+  display: block;
+  line-height: 2.5em;
+}
+
+.sidebar ul.menu li:last-child a {
+  border-bottom: 0;
+}
+
+.sidebar ul.menu li li a {
+  text-indent: 18px;
+}
+
+.sidebar ul.menu ul {
+  background: none;
+  padding-top: 0;
+}
+
+.sidebar .item-list ul {
+  list-style: disc outside;
+  margin: 0 0 0 7px;
+}
+
+.sidebar .item-list ul li {
+  list-style-type: disc;
+  margin: 0;
+}
+
+.sidebar .content, .sidebar .content-menu {
+  padding: 10px;
+}
+
+.sidebar #user-login-form {
+  text-align: left;
+}
+
+/* User Profile */
+.profile .picture {
+  float: right;
+}
+.profile h3{
+  clear:both;
+  border-bottom:none;
+}
+
+/* Feed Icon */
+.left #feed-icon {
+  text-align: right;
+  padding: 0 5px 0 0;
+  clear: both;
+}
+
+.right #feed-icon {
+  text-align: left;
+  padding: 0 0 0 5px;
+  clear: both;
+}
+
+
+li a.active {
+  font-weight: 700;
+}
+
+/* Labels/Descriptions */
+.form-item .description {
+  font-size: .95em;
+}
+
+
+/* Errors/Markers */
+div.warning, div.error {
+  border: 1px solid;
+  margin: 0 0 10px 0;
+  padding: 45px 10px 10px!important;
+}
+
+.form-item .error {
+  border: 1px solid;
+}
+
+/* Inputs */
+.form-radio,
+.form-checkbox,
+.form-file,
+.form-select, select,
+.form-text, input,
+.form-textarea, textarea {
+  font-size: 1em;
+}
+
+.form-radio,
+.form-checkbox {
+  border: none;
+}
+
+.form-select option, select option {
+  padding: 1px;
+}
+
+.form-text,
+.form-textarea, .form-autocomplete  {
+  padding: 4px 2px;
+  border: solid 1px;
+}
+
+/* Radio/Checkbox Labels */
+.form-item label.option {
+  display: inline;
+  font-weight: normal;
+  text-transform: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Fieldsets */
+fieldset {
+  padding: 4px 10px;
+  margin: 10px 0;
+  border: 1px solid;
+}
+
+fieldset legend a,
+fieldset legend a:active,
+fieldset legend a:focus,
+fieldset legend a:visited {
+  text-decoration: none;
+}
+
+fieldset fieldset {
+  border: none;
+  margin: 0;
+  padding: 10px 0;
+}
+
+fieldset legend {
+  font-size: .95em;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+html.js fieldset.collapsible .fieldset-wrapper {
+  overflow: auto!important;
+}
+
+
+/* Form item wrappers */
+.form-checkboxes, .form-radios {
+  margin: 1em 0 1em 0;
+}
+
+.form-checkboxes .form-item, .form-radios .form-item {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+/*------------------------------------------------------------------------
+TABS
+------------------------------------------------------------------------*/
+
+.tab-wrapper {
+  clear: both;
+  width: 100%;
+  margin: 10px 0;
+}
+
+.tabs-primary {
+  border-bottom: 1px solid;
+  height: 3.2em;
+  width: 100%;
+}
+
+.tabs-primary ul {
+  padding: 0;
+  margin: 0;
+  clear: both;
+}
+
+.tabs-primary li {
+  float: left;
+  list-style: none;
+  font-weight: bold;
+  line-height: 3em;
+  margin: .35em 0 0 0;
+}
+
+.tabs-primary li.active {
+  line-height: 3.5em;
+  margin: 0;
+}
+
+.tabs-primary li a,
+.tabs-primary li a:visited {
+  float: left;
+  display: block;
+  padding: 0 8px;
+  text-decoration: none;
+  line-height: 3em;
+  font-size: .95em;
+}
+
+
+.tabs-primary li.active a,
+.tabs-primary li.active a:visited {
+  line-height: 3.35em;
+  font-weight: bold;
+}
+
+.tabs-primary li a:hover,
+.tabs-primary li.active a:hover {
+  text-decoration: none;
+}
+
+.tabs-primary li a:focus,
+.tabs-primary li a:active {
+  outline: none;
+}
+
+/* ---- Second Level ---- */
+
+.tabs-secondary {
+  clear: both;
+  float: left;
+  width: 100%;
+  margin: -2px 0 1em 0;
+}
+
+.tabs-secondary ul {
+  clear: left;
+  margin: 0;
+  padding: 0;
+}
+
+.tabs-secondary li {
+  font-size: .95em;
+  float: left;
+  list-style: none;
+}
+
+.tabs-secondary li a,
+.tabs-secondary li a:visited {
+  float: left;
+  display: block;
+  padding: 0px 8px;
+  text-decoration: none;
+  line-height: 2em;
+  white-space: nowrap;
+}
+
+.tabs-secondary li a:hover,
+.tabs-secondary li a.active {
+  text-decoration: none;
+}
+
+/*------------------------------------------------------------------------
+ * PAGERS
+ *-----------------------------------------------------------------------*/
+ul.pager {
+  clear: both;
+  margin: 15px 0;
+}
+
+.pager a, .pager a:visited {
+  background: #fff;
+  padding: 0.5em;
+  border:  solid 1px;
+  text-decoration: none!important;
+}
+
+.pager a:hover {
+  padding: 0.5em;
+  border: solid 1px;
+}
+
+.item-list .pager li {
+  margin: 0 4px 0 0;
+  padding: 0;
+}
+
+.item-list .pager li.pager-current {
+  padding: 0.5em;
+  margin:  0 4px 0 0;
+  border: solid 1px;
+}
+
+div.view div.date-nav-wrapper li.date-prev{
+  right:inherit;
+  left: 0;
+  background:inherit;
+}
+div.view div.date-nav-wrapper li.date-next{
+  background:inherit;
+}
+
+#comments {
+  padding:0!important;
+  clear:both;
+}
+
+#comments a.active {
+  font-weight:400;
+}
+
+
+/*------------------------------------------------------------------------
+ * MODULE SUPPORT
+ *-----------------------------------------------------------------------*/
+
+/* Administer page */
+div.admin .left {
+  width:45.5%;
+}
+
+div.admin .right {
+  width:45.5%;
+}
+
+
+.admin-list dd {
+  font-size: 0.95em;
+  margin: 0;
+  padding: 5px 0 15px;
+}
+
+/* blocks page */
+#blocks td.block {
+  border-top-style: none;
+  border-left-style: none;
+  margin: 0;
+  padding: 2px 2px 2px 8px;
+}
+
+/*------------------------------------------------------------------------
+ * CUSTOMISED
+ *-----------------------------------------------------------------------*/
+ #edit-body-wrapper {
+   width: 100%;
+   clear: both;
+ }
+
+#header {
+  background:none;
+  padding: 8pt 15px 0 15px;
+}
+#header h1{
+  display: inline;
+  font-size: 3.5em;
+  font-weight: bold;
+  font-style: italic;
+  margin-top: 0px;
+  clear:none;
+}
+
+#header .logo {
+  float:left;
+  height:80px;
+  padding: 5px 15px 0 0;
+}
+
+.slogan{font-weight:bold; color:#48f; padding-left:1em;}
+#header .slogan{font-size:1.25em;}
+
+
+.secondary-links{float:right; clear:right;}
+.secondary-links li {display:inline;}
+.secondary-links li.a{color:#314C74;;}
+
+.view-footer{
+  text-align:center;
+}
+div.contact-summary {
+  border: medium solid gray;
+  margin:1em 0em;
+  padding:0.5em;
+  clear:both;
+  float:left;
+  width:100%;
+}
+
+table.profile-balances{
+  width:inherit;
+}
+
+.push {
+  clear: both;
+  height: 5em;
+}
+
+#footer {
+  clear: both;
+  font-size: .95em;
+  height: auto;
+  min-height: 5em;
+  text-align: center;
+  margin: 5em auto 0em;
+  padding: 0 0 1em;
+}
+
+#content-top {
+  margin-top:2em;
+  text-align:center;
+  width:100%;
+  color:#fff;
+}
+
+#content-top div{
+  display:inline;
+  padding:0 0.5em;
+}
+#content-bottom {
+  clear:both
+}
+
+#header div.stats{
+  float:right;
+  text-align:right;
+}
+
+li.leaf {padding: 0.2em 0pt 0pt 6pt}
+
+input#edit-transaction-description-und-0-value{width:90%;}
+
+div.transaction .links li{
+  border: 1px solid #006;
+  padding: 0.2em 0.4em;
+  background: #eee;
+  margin: 0.2em;
+}
+div.transaction .links li a:hover{
+  background: #ddd;
+  text-decoration: none;
+}
+ul.action-links {
+  list-style: none;
+}
+ul.action-links li {
+  display:inline;
+}
+ul.action-links li a {
+  padding-left: 15px;
+  background: url(images/add.png) no-repeat left center;
+  margin: 0 10px 0 0;
+}
+#credit, #credit a{color:#fff;}
+
+a.advanced-help-link{margin-right:3px;}
+
+div#profile-picbox{float:right;}
+div#profile-picbox div.field{clear:right;}

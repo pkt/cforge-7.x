@@ -1,0 +1,214 @@
+# $Id$
+#
+# Greek translation of Drupal (general)
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from files:
+#  cforge_currencies.mcapiforms_default.inc: n/a
+#  cforge_currencies.views_default.inc: n/a
+#  cforge_currencies.module: n/a
+#  cforge_currencies.install: n/a
+#  cforge_currencies.info: n/a
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2013-04-28 20:51+0300\n"
+"PO-Revision-Date: 2013-04-28 20:51+0300\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Greek <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+
+#: cforge_currencies.mcapiforms_default.inc:22
+msgid "I am requesting"
+msgstr "Πρόκειται να πάρω"
+
+#: cforge_currencies.mcapiforms_default.inc:23
+msgid "I am acknowledging"
+msgstr "Πρόκειται να δώσω"
+
+#: cforge_currencies.mcapiforms_default.inc:50
+msgid "Make a payment"
+msgstr "Νέα συναλλαγή"
+
+#: cforge_currencies.mcapiforms_default.inc:51
+msgid "Description of the exchange:\n[mcapiform:transaction_description]\nin category\n[mcapiform:offers_wants_categories]\nwith\n[mcapiform:secondperson]\n[mcapiform:direction]\nthe sum of\n[mcapiform:worth]\n"
+msgstr ""
+"Περιγραφή συναλλαγής: "
+"[mcapiform:transaction_description] στην κατηγορία "
+"[mcapiform:offers_wants_categories] με τον "
+"[mcapiform:secondperson] [mcapiform:direction] συνολικά "
+"[mcapiform:worth]"
+
+#: cforge_currencies.mcapiforms_default.inc:61;118
+msgid "Are you sure?"
+msgstr "Είστε σίγουρος;"
+
+#: cforge_currencies.mcapiforms_default.inc:66;123
+msgid "Submit"
+msgstr "Υποβολή"
+
+#: cforge_currencies.mcapiforms_default.inc:68
+msgid "The transaction will be finalised when the other user signs it."
+msgstr ""
+"Η συναλλαγή θα ολοκληρωθεί μόλις την "
+"επικυρώσει και το άλλο μέλος."
+
+#: cforge_currencies.mcapiforms_default.inc:107
+msgid "Log a transaction"
+msgstr "Καταχώρηση συναλλαγής"
+
+#: cforge_currencies.mcapiforms_default.inc:108
+msgid "Payer: [mcapiform:payer]\n\nPayee: [mcapiform:payee]\n\nDescription: [mcapiform:transaction_description]\n\nCategory: [mcapiform:offers_wants_categories]\n\n[mcapiform:worth]\n"
+msgstr ""
+"Πληρωτής: [mcapiform:payer] Αποδέκτης "
+"πληρωμής: [mcapiform:payee] Περιγραφή: "
+"[mcapiform:transaction_description] Κατηγορία: "
+"[mcapiform:offers_wants_categories] [mcapiform:worth]"
+
+#: cforge_currencies.views_default.inc:70;185;486
+msgid "Payee"
+msgstr "Αποδέκτης πληρωμής"
+
+#: cforge_currencies.views_default.inc:76;186;485
+msgid "Payer"
+msgstr "Πληρωτής"
+
+#: cforge_currencies.views_default.inc:81
+msgid "Description"
+msgstr "Περιγραφή"
+
+#: cforge_currencies.views_default.inc:181
+msgid "[name] gave [@name]"
+msgstr "[name] έδωσε [@name]"
+
+#: cforge_currencies.views_default.inc:187
+msgid "Serial number"
+msgstr "Σειριακός αριθμός"
+
+#: cforge_currencies.views_default.inc:188
+msgid "Name"
+msgstr "Όνομα"
+
+#: cforge_currencies.views_default.inc:189;487
+msgid "Worth"
+msgstr "Αξία"
+
+#: cforge_currencies.views_default.inc:190
+msgid "Transactions"
+msgstr "Συναλλαγές"
+
+#: cforge_currencies.views_default.inc:191
+msgid "[name] gave [transaction_description]"
+msgstr "[name] έδωσε [transaction_description]"
+
+#: cforge_currencies.views_default.inc:477
+msgid "This is the default accountant's interface. It is simply a transaction view with all the filters exposed. More accountants tools are needed, depending on how the system is to be used."
+msgstr ""
+"Αυτή είναι η προεπιλεγμένη λογιστική "
+"εμφάνιση. Είναι απλά μια προβολή με "
+"πρόσβαση σε όλα τα πεδία. Ανάλογα με το "
+"πως θα χρησιμοποιηθείο το σύστημα, "
+"χρειάζονται περισσότερα λογιστικά "
+"εργαλεία."
+
+#: cforge_currencies.views_default.inc:482
+msgid "Transaction management"
+msgstr "Διαχείριση συναλλαγών"
+
+#: cforge_currencies.views_default.inc:483
+msgid "All transactions can be seen from here. Use the filters to list what you need."
+msgstr ""
+"Όλες οι συναλλαγές μπορούν  να φανούν  "
+"από εδώ. Χρησιμοποιήστε τα φίλτρα της "
+"λίστας για οτι χρειαστήτε"
+
+#: cforge_currencies.views_default.inc:484
+msgid "Recorded"
+msgstr "Καταγραφή"
+
+#: cforge_currencies.views_default.inc:488
+msgid "State"
+msgstr "Κατάσταση"
+
+#: cforge_currencies.views_default.inc:489
+msgid "Quantity"
+msgstr "Ποσότητα"
+
+#: cforge_currencies.views_default.inc:673
+msgid "Active traders"
+msgstr "Ενεργά μέλη"
+
+#: cforge_currencies.views_default.inc:674
+msgid "The [uid2] active users have made [serial] exchanges, totalling [volume]. Thomas Greco's system health index is: [greco]"
+msgstr ""
+"Οι [uid2] ενεργοί χρήστεςέχουν κάνει "
+"[serial] συναλλαγές, συνολικής αξίας [volume]. "
+"Ο δείκτης του υγείας συστήματος του "
+"Thomas Greco είναι: [greco]"
+
+#: cforge_currencies.views_default.inc:678
+msgid "In the last year, our [uid2] active users have done [serial] transactions, totalling [volume]"
+msgstr ""
+"Τον τελευταίο χρόνο, οι [uid2] ενεργοί "
+"χρήστες μας, έχουν κάνει [serial] "
+"συναλλαγές, συνολικού ύψους [volume]"
+
+#: cforge_currencies.views_default.inc:679
+msgid "Thomas Greco's system health index"
+msgstr "Δείκτης υγείας συστήματος του Thomas Greco"
+
+#: cforge_currencies.module:39
+msgid "Awaiting your signature"
+msgstr "Εκκρεμεί η επιβεβαίωση σας"
+
+#: cforge_currencies.module:56 cforge_currencies.install:101
+msgid "Balance extents"
+msgstr "Μέγεθος υπολοίπου"
+
+#: cforge_currencies.module:71
+msgid "System trading stats"
+msgstr "Στατιστικά συστήματος συναλλαγών"
+
+#: cforge_currencies.module:106
+msgid "Once this account has traded, this value cannot be changed."
+msgstr ""
+"Από τη στιγμή που ο λογαριασμός "
+"εμπορεύθηκε, η τιμή δεν μπορεί να "
+"αλλάξει."
+
+#: cforge_currencies.module:107
+msgid "Please ensure the mail for this account goes to a responsible person: @mail"
+msgstr ""
+"Επιβεβαι'ωστε ότι το email για το "
+"λογαριασμό πάει στον υπεύθυνο: @mail"
+
+#: cforge_currencies.module:17
+msgid "Exchanges"
+msgstr "Συναλλαγές"
+
+#: cforge_currencies.install:112
+msgid "My balances"
+msgstr "Το υπόλοιπό μου"
+
+#: cforge_currencies.install:147
+msgid "Category"
+msgstr "Κατηγορία"
+
+#: cforge_currencies.info:0
+msgid "Cforge currencies"
+msgstr "Νομίσματα Cforge"
+
+#: cforge_currencies.info:0
+msgid "Standard LETS / Timebank accounting with intertrade and mirror of national currency"
+msgstr ""
+"Πρότυπο LETS / TimeBank λογιστικής με intertrade "
+"και τον αντοιστιχία σε εθνικό νόμισμα"
+
+#: cforge_currencies.info:0
+msgid "Community Forge"
+msgstr "Community Forge"
+

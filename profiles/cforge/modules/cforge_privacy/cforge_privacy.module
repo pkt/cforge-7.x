@@ -1,0 +1,143 @@
+<?php
+
+/*
+ * menu callback
+ */
+function cforge_privacy_form_cforge_settings_form_alter(&$form) {
+  $form['privacy'] = array(
+    '#title' => t('User profile field permissions'),
+    '#description' => t('Determine which user profile data is visible to whom'),
+    '#type' => 'fieldset',
+    'cforge_privacy_personal' => array(
+      '#title' => t('Individuals choose their own privacy level'),
+      '#type' => 'checkbox',
+      '#default_value' => variable_get('cforge_privacy_personal', 0)
+    )
+  );
+  $form['privacy']['cforge_privacy_default'] = _cforge_privacy_default_chooser(variable_get('cforge_privacy_default', 'normal'));
+}
+
+/*
+ * implements hook_form_FORM_ID_alter
+ * in uniform mode, we want to see fields with setting 3 under the manage tab
+ */
+function cforge_privacy_form_user_profile_form_alter(&$form, &$form_state) {
+  //the user's own preferences
+  if ($form['#user_category'] == 'account' && variable_get('cforge_privacy_personal', 0)) {
+    $default = array_key_exists('cforge_privacy_level', $form['#user']->data) ?
+      $form['#user']->data['cforge_privacy_level'] :
+      NULL;
+    $form['cforge_privacy_level'] = _cforge_privacy_default_chooser($default);
+  }
+  return;
+}
+
+/*
+ * implements hook_field_access
+ * $op can be 'edit' or 'view'
+ */
+function cforge_privacy_field_access($op, $field, $entity_type, $entity, $account) {
+  if ($entity_type != 'user' || $op != 'view') return;
+  $level = _cf_privacy_level($account);
+/*
+ * special per-field settings
+  switch ($field['field_name']) {
+    case 'profile_address': //includes first_name, last_name & obligatory field dependent_locality
+    case 'profile_notes':
+    case 'profile_phone':
+    case 'account_offline':
+    case 'manage_notes':
+    case 'manage_responsibility':
+  }
+ *
+ */
+  //other fields are easy to handle
+  if ($level == 'public') return TRUE;
+  elseif ($level == 'private') return $account->uid == $GLOBALS['user']->uid || user_access('administer users');
+  else return $GLOBALS['user']->uid;
+}
+
+/*
+ * implements theme hook_process_username
+ * needs to run AFTER cforge_process_username - check module weights!
+ */
+function cforge_privacy_process_username(&$vars) {
+  $account = &$vars['account'];
+  $level = _cf_privacy_level($account);
+  if ($level == 'private' && !user_access('administer users') ||
+      $level == 'normal' && $GLOBALS['user']->uid == 0) {
+    $vars['name'] = t('Member @uid', array('@uid' => $account->uid));
+  }
+  else $vars['name'] = $account->name;
+}
+
+function _cf_privacy_level($account) {
+  if (!property_exists($account, 'data')) $account = user_load($account->uid);
+  static $levels = array(); //this could even be cached
+  if (!array_key_exists($account->uid, $levels)) {
+    $levels[$account->uid] = variable_get('cforge_privacy_personal', 0) && array_key_exists('cforge_privacy_level', (array)$account->data) ?
+      $account->data['cforge_privacy_level'] :
+      variable_get('cforge_privacy_default', 'normal');
+  }
+  return $levels[$account->uid];
+}
+
+function _cforge_privacy_default_chooser($default_val) {
+  return array(
+    '#title' => t('Default privacy level'),
+    '#decription' => t('The exact meaning of each option is not yet documented.'),
+    '#type' => 'radios',
+    '#options' => array(
+      'public' => t('Public: Anyone can see content and contact details.'),
+      'normal' => t('Normal: only members of the site can know who I am.'),
+      'private' => t('Private: Only committee members can see my details.')
+    ),
+    '#default_value' => $default_val
+  );
+}
+
+function cforge_privacy_user_presave(&$edit, $account, $category) {
+  if ($category == 'account' && variable_get('cforge_privacy_personal', 0)) {
+    $edit['data']['cforge_privacy_level'] = array_key_exists('cforge_privacy_level', $edit) ? $edit['cforge_privacy_level'] : 'normal';
+  }
+}
+
+
+
+/**
+ * implements uif hook_uif_pre_create
+ * Assign core fields during create
+ */
+function cforge_privacy_uif_pre_create($account, $user_data, $form_state) {
+  $output = array();
+  debug('privacy import needs to be verified');
+  if (array_key_exists('privacy', $user_data)) {
+    // bit weird but this has to be put in both places
+    $output['data']['cforge_privacy_level'] = $user_data['privacy'];//could probably be null
+    $output['cforge_privacy_level'] = $user_data['privacy'];
+  }
+  return $output;
+}
+
+/**
+ * Implementation of hook_uif_help().
+ */
+function cforge_privacy_uif_help() {
+  $description = 'privacy : '. t('One of public|normal|private');
+  return theme('item_list', array('items' => array($description)));
+}
+
+function cforge_privacy_uif_validate_user($user_data, $uid, $form_state) {
+  if (array_key_exists('privacy', $user_data)) {
+    if (!in_array($user_data['privacy'], array('private', 'public', 'normal'))) {
+      return "invalid privacy value for user $uid";
+    }
+  }
+}
+
+/*
+ * we may want to alter the member_list view and the propositions views
+ * to add a filter according to the role of the current user
+ * but to do that, the privacy data would have to be field_api
+ */
+

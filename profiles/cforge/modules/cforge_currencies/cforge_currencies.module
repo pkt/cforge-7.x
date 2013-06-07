@@ -1,0 +1,179 @@
+<?php
+/*
+ * implements hook_menu_alter
+ * also see cforge_currencies_menu_links in cforge_currencies.install
+ */
+function cforge_currencies_menu_alter(&$items) {
+  //to emulate what happened in d6, move all the mass pay menu items
+  foreach (array('', '/one2many', '/many2one', '/one2few', '/few2one') as $arg) {
+    $items['transact/masspay'.$arg] = $items['admin/accounting/masspay'.$arg];
+    $items['transact/masspay'.$arg]['menu_name'] = 'user-menu';
+    $items['transact/masspay'.$arg]['type'] = $arg == '/many2one' ? MENU_DEFAULT_LOCAL_TASK : MENU_LOCAL_TASK;
+    $items['transact/masspay'.$arg]['hidden'] = -1;
+    unset($items['admin/accounting/masspay'.$arg]);
+  }
+  $items['user/%/statement']['title'] = 'Exchanges';
+
+  unset($items['user/%/income_expenditure']);
+
+  //temp
+  variable_set('mcapi_mixed_currencies', 0);
+}
+
+/*
+ * implements hook_block_list_alter
+ * sets block defaults, each of which are overridden in the db once the user has edited them
+ * this runs once for every theme
+ */
+function cforge_currencies_block_info_alter(&$blocks, $theme, $code_blocks) {
+  if ($theme != variable_get('theme_default', $theme)) return;
+  //it's pretty devastating if we modify a block that isn't there
+  if (array_key_exists('mcapi_forms', $blocks) && array_key_exists('1stparty', $blocks['mcapi_forms'])) {
+    $blocks['mcapi_forms']['1stparty']['visibility'] = BLOCK_VISIBILITY_LISTED;
+    $blocks['mcapi_forms']['1stparty']['pages'] =  "transaction*\nmember*\noffer*\nwant*";
+  }
+  if (array_key_exists('mcapi_signatures', $blocks)) {
+    if(array_key_exists('waiting_on_uid', $blocks['mcapi_signatures'])) {
+      $blocks['mcapi_signatures']['waiting_on_uid']['title'] =  t('Awaiting your signature');
+      $blocks['mcapi_signatures']['waiting_on_uid'] += array(
+        'currcodes' => array('credunit'),
+        'user_source' => 1,//view your own profile
+      );
+    }
+    if(array_key_exists('user_pending', $blocks['mcapi_signatures'])) {
+      $blocks['mcapi_signatures']['user_pending']['visibility'] = BLOCK_VISIBILITY_LISTED;
+      $blocks['mcapi_signatures']['user_pending']['pages'] =  "user/*/statement";
+      $blocks['mcapi_signatures']['user_pending'] += array(
+        'currcodes' => array('credunit'),
+        'user_source' => 1,//view your own profile
+      );
+    }
+  }
+  if (array_key_exists('mcapi_limits', $blocks)) {
+    if(array_key_exists('trading_limits', $blocks['mcapi_limits'])) {
+      $blocks['mcapi_limits']['trading_limits']['title'] =  t('Balance extents');
+      $blocks['mcapi_limits']['trading_limits']['visibility'] = BLOCK_VISIBILITY_LISTED;
+      $blocks['mcapi_limits']['trading_limits']['pages'] =  "transact/*\noffers*\nwants*";
+      $blocks['mcapi_limits']['trading_limits'] += array(
+        'currcodes' => array('credunit'),
+        'user_source' => 1,//view your own profile
+      );
+    }
+  }
+  if (array_key_exists('views', $blocks)) {
+    if(array_key_exists('transactions-who_gave_what', $blocks['views'])) {
+      $blocks['views']['transactions-who_gave_what']['visibility'] = BLOCK_VISIBILITY_LISTED;
+      $blocks['views']['transactions-who_gave_what']['pages'] =  "<front>\nnews\nmembers";
+    }
+    if (array_key_exists('trade_analysis-system', $blocks['views'])) {
+      $blocks['views']['trade_analysis-system']['title'] = t('System trading stats');
+      $blocks['views']['trade_analysis-system']['visibility'] = BLOCK_VISIBILITY_NOTLISTED;
+    }
+  }
+}
+
+/**
+ * Implements hook_user_view().
+ * Adds trading stats to the main user profile page.
+ */
+function cforge_currencies_user_view($account, $view_mode) {
+  if (!currency_access('trader_data', 'credunit')) return;
+  $account->content['balance_history'] = array(
+    '#theme' => 'balance_history',
+    '#account' => $account,
+    '#histories' => get_balance_history($account),
+    '#width' => 250,
+  );
+  $account->content['balance_limits'] = balance_limits_view($account->uid);
+  $account->content['balance_limits']['#weight'] = 2;
+  $account->content['balances'] = mcapi_balances_view($account->uid);
+  $account->content['balances']['#weight'] = 3;
+  module_load_include('inc', 'mcapi_signatures');
+  $account->content['pending_transactions'] = list_pending_for_uid($account->uid, array('credunit'));
+  $account->content['pending_transactions']['#weight'] = 3;
+}
+
+/*
+ * implements hook_form_FORM_ID_alter
+ * fix the intertrading settings form against tampering
+ */
+function cforge_currencies_form_intertrade_settings_alter(&$form, $form_state) {
+  $form['intertrading_server']['#disabled'] = TRUE;
+  if ($intertrading_uid = &$form['undertrading_uid']['#default_value']) {
+    $account = user_load($intertrading_uid);
+    $form['intertrading_uid']['#description'] = t('Once this account has traded, this value cannot be changed.') .' '.
+      t('Please ensure the mail for this account goes to a responsible person: @mail',
+        array('@mail' => l($account->mail, "user/$account->uid/edit"))
+    );
+    $balances = mc_balances($account, variable_get('intertrading_cid'));
+    if ($balances['count']) {
+      $form['intertrading_uid']['#disabled'] = TRUE;
+    }
+  }
+}
+
+
+/*
+ * implements hook_form_FORM_ID_alter
+ */
+function cforge_currencies_form_user_profile_form_alter(&$form, &$form_state) {
+  if ($form['#user_category'] == 'manage') {
+    //fool the limits module into giving us the limit fields
+    $temp = $form['#user_category'];
+    $form['#user_category'] = 'account';
+    mcapi_limits_form_user_profile_form_alter($form, $form_state);
+    $form['#user_category'] = $temp;
+  }
+  else {
+    unset($form['limits_personal']);
+  }
+}
+
+
+/*
+ * Implements views hook_views_api
+ */
+function cforge_currencies_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'cforge_currencies'),
+  );
+}
+
+/*
+ * Implements ctools hook_ctools_plugin_api
+ */
+function cforge_currencies_ctools_plugin_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'cforge_currencies'),
+  );
+}
+
+
+/*
+ * implements hook_theme_registry_alter
+ * injects the template files from the current module into the theme registry
+ */
+function cforge_currencies_theme_registry_alter(&$callbacks) {
+  $path = drupal_get_path('module', 'cforge_currencies');
+  $callbacks['balance_limits']['theme path'] = $path;
+  $callbacks['balance_limits']['path'] = $path;
+  $callbacks['balance_limits']['template'] = 'balance-limits';
+}
+
+/**
+ * implements hook_form_TRANSACTION_FORM_alter().
+ * shows only the top level of the offers_wants_categories on the transaction form
+ */
+function cforge_currencies_form_transaction_form_alter(&$form, $form_state) {
+  if (!isset($form['offers_wants_categories'])) return;
+  $lan = field_language('transaction', $form['#transaction'], 'offers_wants_categories');
+  if (array_key_exists('#options', $form['offers_wants_categories'][$lan])) {//because hs_taxonomy widget has no options
+    foreach($form['offers_wants_categories'][$lan]['#options'] as $tid => $name) {
+      if (substr($name, 0, 1) == '-') {
+        unset($form['offers_wants_categories'][$lan]['#options'][$tid]);
+      }
+    }
+  }
+}

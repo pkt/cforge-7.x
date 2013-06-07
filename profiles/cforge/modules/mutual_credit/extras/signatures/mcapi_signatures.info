@@ -1,0 +1,20 @@
+; $Id:
+name = Transaction signing
+description = Use actions and triggers to require signatures before transactions move into pending state. Default assumes all active members will expire at the end of the year
+package = Community Accounting
+configure = admin/accounting/signatures
+core = 7.x
+
+files[] = mcapi_signatures.inc
+files[] = mcapi_signatures.variable.inc
+files[] = views/mcapi_signatures.views.inc
+files[] = views/mcapi_signatures.views_default.inc
+
+dependencies[] = mcapi
+
+; Information added by drupal.org packaging script on 2013-04-29
+version = "7.x-3.0-rc8"
+core = "7.x"
+project = "mutual_credit"
+datestamp = "1367241322"
+

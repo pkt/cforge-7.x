@@ -1,0 +1,221 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: POEditor.com\n"
+"Project-Id-Version: cforge_launch\n"
+"Language: fr\n"
+
+#: cforge_launch.module:39
+msgid "Welcome message"
+msgstr "Message de bienvenue"
+
+#: cforge_launch.module:40
+msgid "This text will be injected at the top of the !mail reminder"
+msgstr "Ce texte sera placé au-dessus du !mail de rappel"
+
+#: cforge_launch.module:40
+msgid "Password recovery email"
+msgstr "Courriel pour mot de passe oublié"
+
+#: cforge_launch.module:56
+msgid "Test mail"
+msgstr "Courriel de test"
+
+#: cforge_launch.module:57
+msgid "Send a test mail to yourself. WARNING! This will log you out."
+msgstr "Envoyez un courriel de test à vous-même. ATTENTION! Ceci va vous déconnecter."
+
+#: cforge_launch.module:60
+msgid "Send test mail"
+msgstr "Envoyer le courriel de test"
+
+#: cforge_launch.module:69
+msgid "LAUNCH NOW!"
+msgstr "LANCEZ MAINTENANT!"
+
+#: cforge_launch.module:75
+msgid "Never launch"
+msgstr "Ne jamais lancer"
+
+#: cforge_launch.module:137
+msgid "Site launch:"
+msgstr "Lancement du site:"
+
+#: cforge_launch.module:156
+msgid "You have already used this one-time login link. It is not necessary to use this link to login anymore. You are already logged in."
+msgstr "Vous avez déjà utilisé ce lien de connexion temporaire. Il n'est plus nécessaire d'utiliser ce lien pour vous connecter. Vous êtes déjà connecté."
+
+#: cforge_launch.module:167
+msgid "You have tried to use a one-time login for an account which has been blocked."
+msgstr "Vous avez tenté d'utiliser le lien de connexion temporaire pour un compte qui a été bloqué."
+
+#: cforge_launch.module:180
+msgid "You have just used your one-time login link. It is no longer necessary to use this link to login. Please change your password."
+msgstr "Vous venez d'utiliser votre lien de connexion temporaire. Il n'est plus nécessaire d'utiliser ce lien pour vous connecter. Veuillez changer votre mot de passe."
+
+#: cforge_launch.module:184
+msgid "<p>This is a one-time login for %user_name and will expire on %expiration_date.</p><p>Click on this button to login to the site and change your password.</p>"
+msgstr "<p>Ceci est un identifiant de connexion temporaire pour %user_name qui expirera le %expiration_date.</p><p>Cliquez sur ce bouton pour vous connecter au site et changer votre mot de passe.</p>"
+
+#: cforge_launch.module:185
+msgid "This login can be used only once."
+msgstr "Cet identifiant ne peut être utilisé qu'une fois."
+
+#: cforge_launch.module:186
+msgid "Log in"
+msgstr "Se connecter"
+
+#: cforge_launch.module:192
+msgid "You have tried to use a one-time login link which has either been used or is no longer valid. Please request a new one using the form below."
+msgstr "Vous avez tenté d'utiliser un lien de connexion temporaire qui a déjà été utilisé ou qui n'est plus valide. Veuillez en demander un nouveau en utilisant le formulaire ci-dessous."
+
+#: cforge_launch.module:362
+msgid "First name (required)"
+msgstr "Prénom (obligatoire)"
+
+#: cforge_launch.module:227
+msgid "Responsibility"
+msgstr "Responsabilité"
+
+#: cforge_launch.module:229
+msgid "Notes, visible only to committee"
+msgstr "Notes, uniquement visibles par le comité"
+
+#: cforge_launch.module:245
+msgid "The following fields are available:"
+msgstr "Les champs suivants sont disponibles:"
+
+#: cforge_launch.module:322
+msgid "Fieldname '@field' is missing from the csv header."
+msgstr "Le champ '@field' manque dans les colonnes du fichier csv."
+
+#: cforge_launch.module:174
+msgid "user"
+msgstr "utilisateur"
+
+#: cforge_launch.module:174
+msgid "User %name used one-time login link at time %timestamp."
+msgstr "L'utilisateur %name a utilisé un lien de connexion temporaire à %timestamp."
+
+#: cforge_launch.module:8
+msgid "Launch"
+msgstr "Message de lancement"
+
+#: cforge_launch.module:9
+msgid "Mail all users with new password"
+msgstr "Message à tous les membres dotés d'un nouveau mot de passe"
+
+#: cforge_launch.info:0
+msgid "Cforge launch"
+msgstr "Lancement de Cforge"
+
+#: cforge_launch.info:0
+msgid "Import users, offers, wants & balances, then mail all users with new password. Transaction imports must be done someotherhow for the time being."
+msgstr "Importer des membres, des offres, des demandes et des soldes, ensuite envoyez à tous les membres un nouveau mot de passe. Les échanges doivent êtres importés d'une autre manière pour le moment."
+
+#: cforge_launch.info:0
+msgid "Community Forge"
+msgstr "Community Forge"
+
+#: cforge_launch.module:28
+msgid "Hello [user:name],\n"
+"We have launched our new site!\n"
+"You can now add your offers and wants, and record your transactions on the website.\n"
+"Don't worry, it's easy and fun, and you can't break anything, so go ahead and have a go.\n"
+"Once you've logged in with the link below, please change your password. And while you're at it, check your personal details and save your profile page.\n"
+"Have a nice visit, we'll see you on the site.\n"
+"[site:name] Team"
+msgstr "Bonjour [user:name],\n"
+"Nous avons lancé notre nouveau site!\n"
+"Vous pouvez maintenant ajouter vos offres et demandes, et enregistrer vos échanges sur le site.\n"
+"Ne vous inquiétez pas, c'est facile et amusant, et vous ne casserez rien, donc allez-y, lancez-vous.\n"
+"Une fois que vous vous êtes connectés avec le lien ci-dessous, s'il vous plaît changer votre mot de passe. Et puisque vous y êtes, vérifiez vos paramètres personnels. Pensez à enregistrer vos modifications.\n"
+"Bonne visite, nous nous reverrons sur le site.\n"
+"L'équipe du [site:name]"
+
+#: cforge_launch.module:41
+msgid "It MUST include the string '[user:one-time-login-url]'"
+msgstr "La chaîne '[user:one-time-login-url]' DOIT être inclue"
+
+#: cforge_launch.module:85
+msgid "Message must include token @token"
+msgstr "Le message doit inclure le jeton @token"
+
+#: cforge_launch.module:93
+msgid "Sending test mail"
+msgstr "Envoi d'un mail test"
+
+#: cforge_launch.module:94;123
+msgid "An unrecoverable error has occurred. You can find the error message below. It is advised to copy it to the clipboard for reference."
+msgstr "Une erreur irrécupérable s'est produite. Vous trouverez le message d'erreur ci-dessous. Il est conseillé de le copier dans le presse-papier pour nous la rapporter."
+
+#: cforge_launch.module:101
+msgid "You were logged out and a test notification was sent to @mail"
+msgstr "Vous avez été déconnectés et un mail test a été envoyé à @mail"
+
+#: cforge_launch.module:122
+msgid "Sending @count mails"
+msgstr "Envoi de @count emails"
+
+#: cforge_launch.module:225
+msgid "Phone 1"
+msgstr "Téléphone 1"
+
+#: cforge_launch.module:226
+msgid "Phone 2"
+msgstr "Téléphone 2"
+
+#: cforge_launch.module:228
+msgid "Open question"
+msgstr "Question ouverte"
+
+#: cforge_launch.module:231
+msgid "roles, separated by pipes"
+msgstr "rôles, séparés par des barres verticales (pipes)"
+
+#: cforge_launch.module:232
+msgid "strtotime() string or unixtime account creation"
+msgstr "chaîne strtotime() ou date de création du compte unixtime"
+
+#: cforge_launch.module:233
+msgid "strtotime() string or unixtime last login"
+msgstr "chaîne strtotime() ou date de dernière connexion unixtime"
+
+#: cforge_launch.module:234
+msgid "1 or 0 for active or blocked"
+msgstr "1 ou 0 pour les utilisateurs actifs ou bloqués"
+
+#: cforge_launch.module:363
+msgid "Family name"
+msgstr "Nom de famille"
+
+#: cforge_launch.module:364
+msgid "Organisation name"
+msgstr "Nom de l'organisation"
+
+#: cforge_launch.module:365
+msgid "Province / Region"
+msgstr "Département / région"
+
+#: cforge_launch.module:366
+msgid "Street"
+msgstr "Rue"
+
+#: cforge_launch.module:367
+msgid "Neighbourhood"
+msgstr "A proximité"
+
+#: cforge_launch.module:368
+msgid "City"
+msgstr "Ville"
+
+#: cforge_launch.module:369
+msgid "ISO 3166-1 country code"
+msgstr "Code pays ISO 3166-1"
+
+#: cforge_launch.module:370
+msgid "Zip / Postcode"
+msgstr "Code postal"
+

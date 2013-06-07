@@ -1,0 +1,37 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: POEditor.com\n"
+"Project-Id-Version: cforge_yell\n"
+"Language: fr\n"
+
+#: cforge_yell.info:0
+msgid "Cforge yellow pages"
+msgstr "Pages jaunes de Cforge"
+
+#: cforge_yell.info:0
+msgid "Settings for offers and wants"
+msgstr "Paramètres pour les offres et demandes"
+
+#: cforge_yell.info:0
+msgid "Community Forge"
+msgstr "Community Forge"
+
+#: cforge_yell.module:9
+msgid "Add an offer/want"
+msgstr "Ajouter une annonce"
+
+#: cforge_yell.module:26
+msgid "Choose a default set of terms for offers / wants"
+msgstr "Choisir un (des) terme(s) par défaut pour offres/demandes"
+
+#: cforge_yell.module:27
+msgid "Used for the address field"
+msgstr "Utilisé dans le champs adresse"
+
+#: cforge_yell.module:33
+msgid "submit"
+msgstr "soumettre"
+

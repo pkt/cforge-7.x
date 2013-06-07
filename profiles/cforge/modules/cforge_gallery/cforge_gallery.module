@@ -1,0 +1,187 @@
+<?php
+
+
+/**
+ * implamentation of hook_help
+ */
+function cforge_gallery_help($path, $arg) {
+  if ($path == 'galleries' && user_access('committee')) {
+    return l(t('Add another image'), 'node/add/image');
+  }
+  if ($path == 'admin/structure/taxonomy/%' && $arg[3] == 'galleries') {
+    return t("Each 'term' is the name of an image gallery. Create and rename as many galleries as you want.");
+  }
+}
+
+/**
+ * Implementation of hook_node_info)().
+ */
+function cforge_gallery_node_info(){
+  $types['image'] = array(
+    'name' => 'Photo',
+    'module' => 'cforge_gallery',
+    'base' => 'cforge_gallery',
+    'description' => t('Image categorised into galleries'),
+    'has_title' => TRUE,
+    'title_label' => t('Caption'),
+    'has_body' => FALSE
+  );
+  return $types;
+}
+
+/*
+ * implements hook_menu
+ */
+function cforge_gallery_menu() {
+  $items['galleries'] = array(
+    'title' => 'Galleries',
+    'page callback' => 'image_galleries',
+    'access arguments' => array('access user profiles'),
+    //'menu_name' => 'secondary-menu'
+  );
+  $items['galleries/%taxonomy_term'] = array(
+    'title callback' => 'taxonomy_term_title',
+    'title arguments' => array(1),
+    'page callback' => 'image_gallery',
+    'page arguments' => array(1),
+    'access arguments' => array('access user profiles'),
+    //'menu_name' => 'secondary-menu'
+  );
+  return $items;
+}
+
+
+function cforge_gallery_block_info() {
+  return array(
+    'random_photo' => array(
+    'info' => t('Random photo'),
+    'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+    'pages' => 'gallery',
+    'title' => '<none>',
+    'cache' => DRUPAL_NO_CACHE,
+    )
+  );
+}
+
+/*
+ * implements hook_view
+ */
+function cforge_gallery_block_view($delta) {
+  $nids = db_select('field_data_galleries', 'g')->fields('g', array('entity_id'))->orderRandom()->execute()->fetchCol();
+  if (empty($nids)) return;
+  $node = node_load(current($nids));
+  $img = theme('image_style', array(
+    'path' => $node->image[LANGUAGE_NONE][0]['uri'],
+    'style_name' => 'medium'
+  ));
+  return array(
+    'subject' => t('Random image'),
+    'content' => l($img, 'galleries', array('html' => TRUE))
+  );
+}
+
+/**
+ * Implementation of hook_form)().
+ */
+function cforge_gallery_form(&$node, $form_state){
+  return node_content_form($node, $form_state);
+}
+
+/*
+ * implements hook_theme
+ */
+function cforge_gallery_theme() {
+  return array(
+    'gallery_preview' => array(
+      'variables' => array(
+        'term' => NULL
+      )
+    )
+  );
+}
+/*
+ * implements views hook_views_api
+ */
+function cforge_gallery_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'cforge_gallery'),
+  );
+}
+
+/*
+ * menu callback
+ * present each gallery, with a random image from each
+ */
+function image_galleries() {
+  //get all the terms from the galleries vocab
+  $tree = taxonomy_get_tree(db_query("SELECT vid FROM {taxonomy_vocabulary} WHERE machine_name = 'galleries'")->fetchField());
+  foreach($tree as $term) {
+    $render[$term->tid] = array(
+      '#theme' => 'gallery_preview',
+      '#term' => $term,
+    );
+  }
+  return drupal_render($render);
+}
+/*
+ * menu callback
+ */
+function image_gallery($term) {
+  drupal_set_title (t('Gallery: @galleryname', array('@galleryname' => $term->name)));
+  $breadcrumb[] = l(t('Home'), NULL);
+  drupal_set_breadcrumb(array_reverse($breadcrumb));
+  drupal_add_feed('taxonomy/term/' . $term->tid . '/feed', 'RSS - ' . $term->name);
+
+  if ($nids = taxonomy_select_nodes($term->tid, FALSE, FALSE, array('t.nid' => 'DESC'))) {
+    $nodes = node_load_multiple($nids);
+    $build = node_view_multiple($nodes);
+    $build['pager'] = array(
+      '#theme' => 'pager',
+      '#weight' => 5,
+     );
+  }
+  else {
+    $build['no_content'] = array(
+      '#prefix' => '<p>',
+      '#markup' => t('There is currently no content classified with this term.'),
+      '#suffix' => '</p>',
+    );
+  }
+  return $build;
+}
+
+/*
+ * default_implementation of theme hook 'gallery_preview'
+ */
+function theme_gallery_preview($variables) {
+  $term = &$variables['term'];
+  $nids = taxonomy_select_nodes($term->tid, FALSE);
+  if (!$nids) return;
+  shuffle($nids);
+  $node = node_load(current($nids));
+  $img = theme('image_style', array(
+    'path' => $node->image[LANGUAGE_NONE][0]['uri'],
+    'style_name' => 'medium'
+  ));
+  $attributes = array(
+    'html' => TRUE,
+    'title' => t('See the whole gallery!')
+  );
+  $dest = 'galleries/'.$term->tid;
+  $output = '<div style = "background-color:#eee; margin:5px; float:left; padding:5px; width:220px; height: 270px">';
+  $output .=  l($img, $dest, $attributes);
+  $output .= '<h4 valign = "top">' .l($term->name, $dest, $attributes) .'</h4>';
+  $output .= $term->description.'</div>';
+  return $output;
+}
+
+/*
+ * implements hook_node_view_alter
+ * put the gallery name before the node title
+ */
+function cforge_gallery_node_view_alter(&$build, $type) {
+  if ($build['#bundle'] == 'image') {
+    unset($build['links']);
+  }
+}

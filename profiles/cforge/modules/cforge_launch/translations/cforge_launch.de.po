@@ -1,0 +1,214 @@
+# $Id$
+#
+# LANGUAGE translation of Drupal (general)
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from files:
+#  cforge_launch.module: n/a
+#  cforge_launch.info: n/a
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2012-11-06 11:42+0100\n"
+"PO-Revision-Date: 2012-11-17 19:58+0100\n"
+"Last-Translator: Marlies Remy <marliesremy@buewin.ch>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"X-Generator: Poedit 1.5.4\n"
+
+#: cforge_launch.module:29
+msgid ""
+"Hello [user:name],\n"
+"We have launched our new site!\n"
+"You can now add your offers and wants, and record your transactions on the "
+"website.\n"
+"Don't worry, it's easy and fun, and you can't break anything, so go ahead "
+"and have a go.\n"
+"Once you've logged in with the link below, please change your password. And "
+"while you're at it, check your personal details and save your profile page.\n"
+"Have a nice visit, we'll see you on the site.\n"
+"[site:name] Team"
+msgstr ""
+"Halllo [user:name],\n"
+"WIr haben unsere neue Seite in Betireb genommen!\n"
+"Sie können nun Angebote und Nachfragen hinzufügen, und ihre Transaktionen "
+"auf der Webseite aufzeichnen.\n"
+"Keine Sorge, das ist einfach und macht Spass, sie können nichts zerstören, "
+"also einfach ausprobieren.\n"
+"Wenn Sie mit dem unteren Link eingeloggt sind, ändern sie bitte ihr "
+"Passwort. Überprüfen sie bei dieser Gelegenheit ihre persönlichen Angaben "
+"und speichern diese.\n"
+"Wir wünschen einen angenehmen Besuch und freuen uns, sie auf der Webseite "
+"anzutreffen.\n"
+"[site:name] Team"
+
+#: cforge_launch.module:40
+msgid "Welcome message"
+msgstr "Willkommens Nachricht"
+
+#: cforge_launch.module:41
+msgid "This text will be injected at the top of the !mail reminder"
+msgstr "Dieser Text wird zuoberst auf !mail reminder angezeigt"
+
+#: cforge_launch.module:41
+msgid "Password recovery email"
+msgstr "Passwort-Ersatz Nachricht"
+
+#: cforge_launch.module:55
+msgid "Test mail"
+msgstr "Testnachricht"
+
+#: cforge_launch.module:56
+msgid "Send a test mail to yourself. WARNING! This will log you out."
+msgstr ""
+"Versende eine Testnachricht an dich selber. ACHTUNG! Dadurch wirst du "
+"ausgeloggt."
+
+#: cforge_launch.module:59
+msgid "Send test mail"
+msgstr "Versende eine Testnachricht"
+
+#: cforge_launch.module:68
+msgid "LAUNCH NOW!"
+msgstr "STARTE JETZT!"
+
+#: cforge_launch.module:74
+msgid "Never launch"
+msgstr "Nie starten"
+
+#: cforge_launch.module:86;104
+msgid "Notified @mail"
+msgstr "Benachrichtigen @mail"
+
+#: cforge_launch.module:103
+msgid "Failed to mail @mail"
+msgstr "Gescheiterte Nachricht @mail"
+
+#: cforge_launch.module:110
+msgid "Site launch:"
+msgstr ""
+
+#: cforge_launch.module:129
+msgid ""
+"You have already used this one-time login link. It is not necessary to use "
+"this link to login anymore. You are already logged in."
+msgstr ""
+"Sie haben diesen einmaligen Loginlink schon benutzt. Es ist nicht länger "
+"nötige, diesen Link wieder zu benutzen. Sie sind schon eingelogged."
+
+#: cforge_launch.module:140
+msgid ""
+"You have tried to use a one-time login for an account which has been blocked."
+msgstr ""
+"Sie haben versucht eine einmalige Anmeldung für ein Konto, das gesperrt "
+"wurde zu verwenden."
+
+#: cforge_launch.module:153
+msgid ""
+"You have just used your one-time login link. It is no longer necessary to "
+"use this link to login. Please change your password."
+msgstr ""
+"Sie haben einen einaligen Loginlink verwendet. Es ist nicht nötig, diesen "
+"wieder zu benutzen. Ändern Sie bitte Ihr Passwort."
+
+#: cforge_launch.module:157
+msgid ""
+"<p>This is a one-time login for %user_name and will expire on "
+"%expiration_date.</p><p>Click on this button to login to the site and change "
+"your password.</p>"
+msgstr ""
+"<p>Dies ist ein einmaliger Login für %user_name und wird am %expiration_date "
+"auslaufen.</p><p>Klicken Sie auf diese Schaltfläche um sich auf der Seite "
+"anzumelden und ändern Sie Ihr Passwort.</p>"
+
+#: cforge_launch.module:158
+msgid "This login can be used only once."
+msgstr "Dieser Login kann nur einalig verwendet werden."
+
+#: cforge_launch.module:159
+msgid "Log in"
+msgstr "Anmelden"
+
+#: cforge_launch.module:165
+msgid ""
+"You have tried to use a one-time login link which has either been used or is "
+"no longer valid. Please request a new one using the form below."
+msgstr ""
+"Sie haben einen einmaligen Loginlink verwendet, der nicht mehr gültig ist. "
+"Bitte fordern Sie mit dem untenstehenden Formular ein neues Passwort an."
+
+#: cforge_launch.module:186
+msgid "First name (required)"
+msgstr "Vorname (obligatorisch)"
+
+#: cforge_launch.module:187
+msgid "Family name (required)"
+msgstr "Familienname obligatorisch)"
+
+#: cforge_launch.module:188
+msgid "Phone numbers, separated by colons"
+msgstr "Telefonnummer, durch Doppelpunkte trennen"
+
+#: cforge_launch.module:189
+msgid "Locality, or area code"
+msgstr "Ort. oder Postleitzahl"
+
+#: cforge_launch.module:190
+msgid "Responsibility"
+msgstr "Verantwortung"
+
+#: cforge_launch.module:191
+msgid "Adress"
+msgstr "Adresse"
+
+#: cforge_launch.module:192
+msgid "Notes, visible only to committee"
+msgstr "Notizen, nur für Komitee sichtbar"
+
+#: cforge_launch.module:193
+msgid "Created date"
+msgstr "Erstellungsdatum"
+
+#: cforge_launch.module:196
+msgid "The following fields are available:"
+msgstr "Folgende Felder stehen zur Verfügung:"
+
+#: cforge_launch.module:248
+msgid "Fieldname '@field' is missing from the csv header."
+msgstr "Feldname '@field' des CSV Header fehlt."
+
+#: cforge_launch.module:147
+msgid "user"
+msgstr "Benutzer"
+
+#: cforge_launch.module:147
+msgid "User %name used one-time login link at time %timestamp."
+msgstr "Benutzer %name hat am %timestamp einen einmaligen Link benutzt."
+
+#: cforge_launch.module:8
+msgid "Launch"
+msgstr ""
+
+#: cforge_launch.module:9
+msgid "Mail all users with new password"
+msgstr "Allen Benutzern mit neuem Passwort mailen."
+
+#: cforge_launch.info:0
+msgid "Cforge launch"
+msgstr "Cforge launch"
+
+#: cforge_launch.info:0
+msgid ""
+"Import users, offers, wants & balances, then mail all users with new "
+"password. Transaction imports must be done someotherhow for the time being."
+msgstr ""
+"Benutzer, Angebote, Nachfragen & Salden importieren, denn allen Benutzern "
+"mit neuem Passwort mailen. Transaction imports must be done someotherhow for "
+"the time being."
+
+#: cforge_launch.info:0
+msgid "Community Forge"
+msgstr "Community Forge"

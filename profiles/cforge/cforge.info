@@ -1,0 +1,63 @@
+name = Community Forge
+description = Manage your local community, with credit clearing
+version = "7.x-1.0-beta6"
+core = 7.x
+
+files[] = cforge.drush.inc
+files[] = cforge.install
+files[] = cforge.views.inc
+files[] = cforge.views_default.inc
+files[] = cforge.tokens.inc
+;need to catch the hooks in here
+;files[] = default.front
+
+;core optional
+dependencies[] = aggregator
+dependencies[] = block
+dependencies[] = comment
+dependencies[] = contact
+dependencies[] = dblog
+dependencies[] = file
+dependencies[] = field
+dependencies[] = help
+dependencies[] = list
+dependencies[] = menu
+dependencies[] = node
+dependencies[] = path
+dependencies[] = search
+dependencies[] = taxonomy
+dependencies[] = update
+dependencies[] = text
+dependencies[] = trigger
+
+;contrib
+dependencies[] = addressfield
+dependencies[] = advanced_help
+dependencies[] = backup_migrate
+dependencies[] = captcha
+dependencies[] = ctools
+dependencies[] = image_captcha
+dependencies[] = ckeditor
+dependencies[] = date
+dependencies[] = date_api
+dependencies[] = mcapi
+dependencies[] = mailsystem
+dependencies[] = mimemail
+dependencies[] = usertabs
+dependencies[] = views
+dependencies[] = views_data_export
+
+;devel
+;dependencies[] = views_ui
+;dependencies[] = admin_menu
+;dependencies[] = field_ui
+;dependencies[] = contextual
+;dependencies[] = devel
+
+
+; Information added by drupal.org packaging script on 2013-05-30
+version = "7.x-1.0-rc5"
+core = "7.x"
+project = "cforge"
+datestamp = "1369879264"
+

@@ -1,0 +1,225 @@
+<?php
+
+
+function cforge_yell_install() {
+  db_query("UPDATE {system} SET weight = :weight WHERE name = 'cforge_yell'", array(
+    ':weight' => db_query("SELECT weight FROM {system} WHERE name = 'cforge_custom'")->fetchField() + 1
+  ));
+
+  //this ensure that the link from previous versions can be manipulated by hook_menu_link_alter
+  db_query("UPDATE {menu_links} set customized = 0 WHERE link_path = 'node/add/proposition'");
+
+  //offers_wants settings
+  variable_set('offers_wants_proposition_wants', TRUE);
+  global $language;
+  cache_clear_all('views_block_items'.$language->language, 'cache_views');
+}
+
+/*
+ * implement cforge hook_cf_role_permissions
+ */
+function cforge_yell_cf_role_permissions() {
+  return array(
+    RID_TRADER => array('post proposition' => 'offers_wants'),
+    RID_COMMITTEE => array('edit propositions' => 'offers_wants')
+  );
+}
+
+function cforge_yell_uninstall() {
+  require_once DRUPAL_ROOT . '/includes/menu.inc';
+  $mlids = db_query("SELECT mlid FROM {menu_links} WHERE module = 'cforge_yell'")->fetchCol();
+  foreach ($mlids as $mlid) {
+    menu_delete_item($mlid);
+  }
+  //offers_wants settings
+  variable_del('offers_wants_expire_auto', TRUE);
+  variable_del('cforge_proposition_has_body', TRUE);
+  variable_del('offers_wants_proposition_wants', TRUE);
+}
+
+
+function yell_vocabs() {
+  $vocabs = array(
+    'English LETS' => array(
+      '#children' => FALSE,
+      'Arts & Culture' => array('tango', 'show', 'storytelling', 'clown', 'improvis', 'cinema', 'expression', 'flyer', 'brochure', 'culptures', 'photographer', 'album', 'book', 'culture', 'novel', 'voice', 'reading', 'poetry', 'books', 'writing', 'drawing', 'photog'),
+      'Business Services & Clerical' => array('writing', 'papers', 'clarif', 'admini', 'council', 'office', 'classif', 'correspond', 'photocop', 'mail', 'marketing', 'publicity', 'spelling', 'correction', 'syntax', 'translat', 'networking', 'content', 'reorgani', 'minutes', 'proofread', 'spelling'),
+      'Clothing' => array('jeans', 'skirts', 'dress', 'sock', 'purse', 'apron', 'dress', 'watches', 'sandals', 'shirt', 'shoes', 'shirt', 'jacket', 'handbags', 'coat', 'jacket', 'waist', 'jacket', 'glove'),
+      'Computing & Electronics' => array('comput', 'disc', 'disk', 'music', 'download', 'digital', 'office', 'management', 'FileMaker', 'given', 'digital', 'electronic', 'internet', 'email', 'camera', 'phone', 'software', 'Mac', 'audio', 'digitising', 'Excel', 'Quickbooks', 'Photoshop', 'mobile', 'MP3', 'movie', 'radio', 'wireless', 'wi-fi', 'phone', 'CD', 'DVD'),
+      'Education & Language' => array('German', 'Italian', 'language', 'training', 'lessons', 'French', 'school', 'tutor'),
+      'Food' => array('Bread', 'Dough', 'mixer', 'kitchen', 'stove', 'fungus', 'vinegar', 'egg', 'salad', 'organic', 'honey', 'rosemary', 'tart', 'sweet', 'biscuit', 'thyme', 'syrup', 'dessert', 'seed', 'pesto', 'vegetable', 'couscous', 'semolina', 'meal', 'glass', 'casserole', 'dish', 'soup', 'pastry', 'mint', 'sauce', 'caviar', 'elderberry', 'drink', 'grinder', 'jelly', 'jam', 'juice', 'drink', 'recipe', 'pie', 'veg'),
+      'Health & Wellness' => array('beauty', 'childre', 'haircut', 'scrub', 'spirit', 'massage', 'therapy', 'shaman', 'healer', 'acne', 'Reiki', 'meditation', 'health', 'genealogical', 'disability', 'babysitting', 'aloe', 'fascia', 'acupuncture', 'therapy', 'osteopathy', 'homeopathic', 'listening', 'difficulties', 'muscle', 'dyeing', 'removal', 'migraine', 'sensory', 'stress', 'cabinet', 'gymnastic'),
+      'House & garden' => array('carpet', 'balcony', 'decor', 'lawn', 'mower', 'ironing', 'Garland', 'Yucca', 'porcelain', 'fridge', 'stove', 'washer', 'mill', 'corkscrew', 'carpet', 'cleaning', 'papyrus', 'ceiling', 'chair', 'ground', 'sofa', 'pillow', 'library', 'chairs', 'cleaning', 'glass', 'vacuum', 'cleaner', 'freezer', 'shelves', 'interior', 'soil', 'water', 'closet', 'garden', 'household', 'cleaning'),
+      'Sports & Leisure' => array('scuba', 'walking', 'rental', 'punch', 'rucksack', 'GPS', 'sailboat', 'overnight', 'hiking', 'snowshoeing', 'canoe', 'rental', 'walking', 'ski', 'snowboard', 'snowshoe', 'hiking', 'trip', 'discover', 'vacancy'),
+      'Skills & DIY' => array('embroidery', 'saw', 'sanding', 'lacquer', 'varnish', 'electric', 'adjustment', 'arrangement', 'floor', 'decoration', 'makeover', 'necklace', 'jewelry', 'semi-precious', 'bracelet', 'loops', 'sculpture', 'watercolor', 'canvas', 'acrylic', 'floral', 'fantasy', 'craft', 'beads', 'repair', 'fabric', 'paint', 'tool', 'renovation', 'work', 'Carpenter', 'roof', 'heating'),
+      'Transport' => array('bicycle', 'bike', 'helmet', 'transport', 'airport', 'bike', 'scooter', 'bicycle', 'van', 'minibus', 'transport', 'moving', 'trailer', 'ticket'),
+      'Miscellaneous' => array()
+    ),
+    'SEL Francais' => array(
+      '#children' => FALSE,
+      'Administration' => array('restructuration', 'réorganisation', 'dactylographie', 'feuille', 'traduction', 'secrétariat', 'syntaxe', 'marketing', 'correction', 'orthographe', 'publicité', 'mail', 'photocop', 'correspondance', 'classement', 'bureau', 'conseil', 'administrative', 'clarification', 'Rédaction', 'paperasses', 'réseau', 'contenu', 'procès-verbaux', 'orthographe', 'correction', 'Relecture'),
+      'Alimentation' => array('herbier', 'Pâte', 'mixer', 'Pain', 'Cuisine', 'champignon', 'cuisinière', 'vinaigre', 'Orgonite', 'aspergettes', 'salade', 'oeuf', 'miel', 'bio', 'betty bossy', 'ravioli', 'Tarte', 'Tapenade', 'romarin', 'Laurier', 'bonbon', 'biscuit', 'Desserts', 'graine', 'Thym', 'Sirop', 'pesto', 'légume', 'semoule', 'couscous', 'levain', 'épeautre', 'germoir', 'Repas', 'Tisane', 'verres', 'casserole', 'Soupe', 'Plat', 'Feuilleté', 'menthe', 'courgeépices', 'raves', 'compote', 'râppe', 'boisson', 'Caviar', 'sureau', 'Hachoir', 'confiture', 'vera', 'Gelée', 'boisson', 'Jus', 'recette', 'pâté', 'végét', 'gomasio', 'Liqu'),
+      'Artisanat & Bricolage' => array('scie', 'ponçeuse', 'broderies', 'ponçage', 'Réglage', 'laque', 'vernis', 'électrique', 'parquet', 'arrangement', 'décoration', 'collier', 'relooking', 'bijoux', 'pierre', 'semi-précieuse', 'bracelet', 'aquarelle', 'catels', 'boucles', 'sculpture', 'Toile', 'acrylique', 'Floraux', 'fantaisie', 'bricolage', 'réparation', 'perles', 'peinture', 'art', 'Tissu', 'perçuese', 'outil', 'petits travaux', 'Menuisier', 'etau', 'rénovation', 'montage', 'revêtement', 'toiture', 'fumisterie', 'chauffage'),
+      'Arts & Culture' => array('spectacle', 'tango', 'clown', 'conte', 'mprovisation', 'cinéma', 'expression', 'dépliant', 'flyer', 'brochure', 'culpture', 'photographe', 'album', 'alligraphie', 'fusain', 'livre', 'Couture', 'roman', 'livres', 'poesie', 'voix', 'Lecture', 'dessin', 'ecriture', 'invention', 'photographie'),
+      'Cours &amp; Langues' => array('allemand', 'anglais', 'devoir', 'langue', 'italien', 'formation', 'eçons', 'cours', 'Répétiteur', 'Soutien scolaire', 'français', 'animation', 'nitiation'),
+      'Informatique &amp; Eléctro' => array('nformatique', 'télécharger', 'disco', 'compile', 'musique', 'bureautique', 'numérique', 'gestion', 'web', 'digital', 'FileMaker', 'donnée', 'nternet', 'email', 'électronique', 'ordinateur', 'caméra', 'téléphone', 'Mac', 'logiciels', 'software', 'audio', 'numériser', 'diapositive', 'Excel', 'Word', 'Quickbooks', 'MP3', 'enregistrement', 'hotoshop', 'natel', 'lecteur', 'film', 'radio', 'haut-parleur', 'wireless', 'wi-fi', 'CD', 'DVD', 'phone'),
+      'Maison &amp; Jardin' => array('tapis', 'biblioth', 'balcon', 'sommier', 'décor', 'gazon', 'tondeuse', 'repasser', 'Guirlande', 'Yucca', 'porcelaine', 'Frigo', 'vaisselle', 'poêle', 'poivrier', 'moulin', 'hache', 'tire-bouchon', 'moquette', 'tapis', 'nettoyage', 'papyrus', 'plafond', 'mur', 'fauteuil', 'duvet', 'drap', 'canapé', 'terre', 'biblio', 'oreiller', 'vitre', 'aspirateur', 'Ménage', 'chaises', 'nettoyeur', 'plante', 'Étagères', 'matelas', 'parquet', 'congélateur', 'aménagement', 'intérieur', 'sol', 'boiserie', 'meuble', 'armoire', 'nappe', 'jardin', 'ménage', 'drap', 'nettoyage'),
+      'Mobilité' => array('vélo', 'bike', 'transport', 'casque', 'CFF', 'Voiturage', 'aéroport', 'moto', 'scooter', 'bicycle', 'camion', 'van', 'Minibus', 'trajets', 'campagne', 'transport', 'voiture', 'velo', 'déménagement', 'remorque'),
+      'Santé &amp; Soins' => array('viscéral', 'beauté', 'soignant', 'Garde d\'enfants', 'haptonomie', 'Kinésio', 'cupress', 'coupe de cheveux', 'masque', 'sacrée', 'gommage', 'spirit', 'massage', 'traitement', 'coachin', 'guériss', 'shaman', 'acnée', 'Huile', 'Reiki', 'méditation', 'santé', 'généalog', 'handicap', 'baby-sitting', 'aloe', 'fascia', 'thérapie', 'Soins', 'Acupuncture', 'Ostéopathie', 'homéopathiques', 'écoute', 'Difficultés', 'musculaire', 'teinture', 'épilation', 'apprivoiser', 'migraine', 'sensoriel', 'stress', 'Cabinet', 'gymnasti'),
+      'Sports &amp; Evasion' => array('scuba', 'location', 'séjour', 'promenade', 'sac de frappe', 'loger', 'GPS', 'voilier', 'raquette', 'Canoë', 'nuitée', 'randonnée', 'location', ' tente', 'marche', 'Löwa', 'ski', 'snowboard', 'balade', 'Tenue', 'plongée', 'raquettes', 'randonnées', 'ballade', 'découvert', 'voyage', 'vacance', 'sortie'),
+      'Vêtements plus' => array('vêtement', 'chaussette', 'Jeans', 'jupon', 'robe', 'sac à main', 'Tablier', 'sandales', 'montres', 'habits', 'chaussure', 'pantalon', 'shirt', 'chemise', 'Sacsà main', 'doudoune', 'blouse', 'veste', 'ceinture', 'manteau', 'gant', 'veston', 'gilet', 'chausettes', 'bonnet', 'chapeau'),
+      'Divers' => array(),
+    ),
+    'SEL Belgique, (2 Tier)' => array(
+      '#children' => TRUE,
+      'A Ménage / Entretien maison' => array(
+        '#children' => FALSE,
+        "Nettoyage/ produits d'entretien" => array(),
+        'Lessive, repassage' => array(),
+        'Couture, tricot' => array(),
+        'Rangement' => array(),
+        'Ménage - Divers' => array()
+      ),
+      'B Travaux maisons' => array(
+        '#children' => FALSE,
+        'Travaux lourds' => array(),
+        'Petits travaux divers' => array(),
+        'Peinture, tapissage, décoration' => array(),
+        'Electricité' => array(),
+        'Plomberie, chauffage' => array(),
+        'Carrelage, plafonnage, maçonnerie' => array(),
+        'Menuiserie, planchers, meubles' => array(),
+        "Isolation, économies d'énergie" => array(),
+        "Travaux - Divers" => array(),
+      ),
+      'C Enfants / Ados' => array(
+        '#children' => FALSE,
+        'Grossesse et bébé' => array(),
+        'Baby sitting' => array(),
+        'Stages, animations créatives' => array(),
+        'Aide scolaire' => array(),
+        'Jeux et jouets' => array(),
+        'Enfants - Divers' => array(),
+      ),
+      'D Alimentation / Gastronomie' => array(
+        '#children' => FALSE,
+        'Nettoyage fruits et légumes' => array(),
+        'Boissons, soupes, sauces' => array(),
+        'Plats' => array(),
+        'Desserts' => array(),
+        'Tables d&#039;hôtes' => array(),
+        'Cours, conseils, recettes' => array(),
+        'Alimentation - Divers' => array()
+      ),
+      'E Santé / Bien-être / Accompagnement' => array(
+        '#children' => FALSE,
+        'Coiffure, esthétique visage et corps' => array(),
+        'Massage, thérapies, produits naturels' => array(),
+        'Personnes âgées, malades, immobilisées' => array(),
+        "Accompagnement, coaching et conseils 'psy'" => array(),
+        'Santé - Divers' => array()
+      ),
+      'F Administration / Gestion' => array(
+        '#children' => FALSE,
+        'Classement de papiers, de dossiers' => array(),
+        'Dactylographie, mise en page' => array(),
+        'Courriers, démarches administratives' => array(),
+        'Assurances, questions juridiques' => array(),
+        'Fiscalité, pension, chômage' => array(),
+        'Administration - Divers' => array(),
+      ),
+      'G Cours / Formations / Conseils' => array(
+        '#children' => FALSE,
+        'Langues, conversation, traduction' => array(),
+        'Ecriture, rédaction, orthographe' => array(),
+        "Recherche d'emploi" => array(),
+        'Gestion et animation de groupes' => array(),
+        'Cours - Divers' => array()
+      ),
+      'H Jardin / Animaux / Nature' => array(
+        '#children' => FALSE,
+        'Jardin : conception, entretien, conseils' => array(),
+        'Culture potagère, vergers' => array(),
+        'Récolte de fruits, légumes, plantes' => array(),
+        "Taille d'arbres et arbustes" => array(),
+        'Animaux (domestiques -élevage)' => array(),
+        'Biodiversité, nichoirs, découverte nature' => array(),
+        'Engrais, semences, plants, produits divers' => array(),
+        'Jardin et animaux - Divers' => array()
+      ),
+      'I Arts / Culture / Sports & loisirs' => array(
+        '#children' => FALSE,
+        'Artisanat, peinture, dessin, sculpture' => array(),
+        'Musique, chant, danse' => array(),
+        'Photo, vidéo, cinema' => array(),
+        'Animations, spectacles' => array(),
+        'Fêtes : conseils, organisation, aide' => array(),
+        'Promenades, excursions' => array(),
+        "Jeux (de société, d'extérieur)" => array(),
+        'Sports' => array(),
+        'Culture et sport - Divers' => array(),
+      ),
+      'J Transports / Voyages /Hébergement' => array(
+        '#children' => FALSE,
+        'Courses' => array(),
+        'Covoiturage et transport' => array(),
+        'Déménagement' => array(),
+        'Auto-moto-vélo' => array(),
+        'Voyages, randonnées' => array(),
+        'Hébergement, échange maisons' => array(),
+        'Gardiennage maison' => array(),
+        'Transport - Divers => array()'
+      ),
+      'K Informatique /Électroménager' => array(
+        '#children' => FALSE,
+        'Dépannage informatique' => array(),
+        'Réparation électroménager' => array(),
+        'Formations Internet / email' => array(),
+        'Formations logiciels' => array(),
+        'Informatique, électroménager - Divers' => array(),
+      ),
+      'Z Divers (non classées)' => array(
+        '#children' => FALSE,
+      ),
+    )
+  );
+  return $vocabs;
+}
+
+function cforge_yell_update_7001() {
+  $view = views_get_view('ow_offers');
+  if ($view) views_delete_view($view);
+  $view = views_get_view('ow_wants');
+  if ($view) views_delete_view($view);
+}
+
+/*
+ * submit callback for ow_vocab_chooser
+ */
+function ow_vocab_chooser_submit($form, $form_state) {
+  $vocabs = yell_vocabs();
+  $terms = $vocabs[$form_state['values']['ow_terms']];
+  _yell_vocabs_import(taxonomy_vocabulary_machine_name_load('offers_wants_categories')->vid, $terms);
+}
+
+//nesting function
+function _yell_vocabs_import($vid, $terms, $parent = 0) {
+  $w = 0;
+  foreach (element_children($terms) as $name) {
+    $term = (object)array(
+      'name' => $name,
+      'description' => '',
+      'weight' => $w++,
+      'vid' => $vid,
+      'parent' => $parent,
+      'format' => 'plain_text'
+    );
+    if (!$terms['#children'] && module_exists('synonyms')) {
+      $term['synonyms'] = implode("\n", $terms[$name]);
+    }
+    taxonomy_term_save((object)$term);
+    if ($terms['#children']) {
+      _yell_vocabs_import($vid, $terms[$name], $term->tid);
+    }
+  }
+}

@@ -1,0 +1,86 @@
+<?php
+
+//have to decide whether to create a node type especially for this
+//also look at what the d6->d7 upgrade does
+
+/**
+ * implamentation of hook_help
+ */
+function cforge_docs_help($path) {
+  if ($path == 'docs' && user_access('edit cf documents')) {
+    return l(t('Add another document'), 'node/add/document');
+  }
+}
+
+/**
+ * Implementation of hook_node_info)().
+ */
+function cforge_docs_node_info(){
+  $types['document'] = array(
+    'name' => 'Document',
+    'module' => 'cforge_docs',
+    'base' => 'cforge_docs',
+    'description' => t('Page with attached Document(s) which can be categorised.'),
+    'has_title' => TRUE,
+    'title_label' => t('Document title'),
+  );
+  return $types;
+}
+
+
+/*
+ * node access control for the document type
+ * also used by the node system for the file access itself via node_file_download_access
+ * $op = view, update, delete, create
+ */
+function cforge_docs_access($op, $node, $account = NULL) {
+  if (!$account) $account = $GLOBALS['user'];
+  switch($op) {
+    case 'update':
+    case 'delete':
+    case 'create':
+      return user_access('edit cf documents', $account);
+    case 'view':
+      return user_access('view cf documents', $account);
+  }
+  return FALSE;
+}
+
+/*
+function cforge_docs_node_access($node, $op, $account) {
+  $type = is_object($node) ? $node->type : $node;
+  if ($type == 'document' && !$GLOBALS['user']->uid) return NODE_ACCESS_DENY;
+}
+ * 
+ */
+
+
+/**
+ * Implementation of hook_permission
+ */
+function cforge_docs_permission(){
+  return array(
+    'edit cf documents' => array(
+      'title' => t('Edit document nodes'),
+      'description' => t('Edit nodes with file attachments')
+    ),
+    'view cf documents' => array(
+      'title' => t('view cf documents'),
+      'description' => t("Overrides the core node permission:") . ' '. t('View published content')
+    ),
+  );
+}
+
+/**
+ * Implementation of hook_form)().
+ */
+function cforge_docs_form(&$node, $form_state){
+  return node_content_form($node, $form_state);
+}
+
+function cforge_docs_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'cforge_docs'),
+  );
+}

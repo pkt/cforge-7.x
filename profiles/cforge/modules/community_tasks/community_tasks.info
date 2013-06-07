@@ -1,0 +1,19 @@
+; $Id: community_tasks.info,v 1.2 2009/08/15 15:56:15 matslats Exp $
+name = Community Tasks
+description = Users sign up to volunteer task requests and are credited when they are completed
+package = Local communities
+core = 7.x
+
+files[] = community_tasks.views.inc
+files[] = community_tasks.views_default.inc
+files[] = theme/node-community_task.tpl.php
+files[] = views/community_tasks.views.inc
+files[] = views/community_tasks.views_default.inc
+files[] = views/views_handler_field_community_tasks_state.inc
+
+; Information added by drupal.org packaging script on 2012-12-02
+version = "7.x-1.0-beta1"
+core = "7.x"
+project = "community_tasks"
+datestamp = "1354446104"
+

@@ -1,0 +1,89 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: POEditor.com\n"
+"Project-Id-Version: sky_seldulac\n"
+"Language: fr\n"
+
+#: page.tpl.php:75
+msgid "Site designed and hosted for free by !cforge, a non-profit association registered in Geneva, Switzerland."
+msgstr "Site conçu et hébergé gratuitement par !cforge, une association à but non-lucratif basée à Genève, Suisse."
+
+#: template.php:56
+msgid "Subscribe to !feed-title"
+msgstr "S'abonner à !feed-title"
+
+#: user-profile.tpl.php:40
+msgid "Balance history"
+msgstr "Historique du solde"
+
+#: user-profile.tpl.php:41
+msgid "Stats"
+msgstr "Statistiques"
+
+#: user-profile.tpl.php:42
+msgid "Pending transactions"
+msgstr "Échanges en attente de confirmation"
+
+#: sky_seldulac.info:0
+msgid "Cforge (Sky)"
+msgstr "Cforge (Sky)"
+
+#: sky_seldulac.info:0
+msgid "The default theme for Community Forge, based on contrib theme, Sky"
+msgstr "Thème par défaut de Community Forge, basé sur le thème de contribution 'Sky'"
+
+#: sky_seldulac.info:0
+msgid "Help"
+msgstr "Aide"
+
+#: sky_seldulac.info:0
+msgid "Left sidebar"
+msgstr "Barre latérale gauche"
+
+#: sky_seldulac.info:0
+msgid "Right sidebar"
+msgstr "Barre latérale droite"
+
+#: sky_seldulac.info:0
+msgid "Header right"
+msgstr "En-tête droite"
+
+#: sky_seldulac.info:0
+msgid "Menus"
+msgstr "Menus"
+
+#: sky_seldulac.info:0
+msgid "Content"
+msgstr "Contenu"
+
+#: sky_seldulac.info:0
+msgid "Content bottom"
+msgstr "Contenu en bas"
+
+#: sky_seldulac.info:0
+msgid "Content footer"
+msgstr "Contenu pied de page"
+
+#: sky_seldulac.info:0
+msgid "Footer"
+msgstr "Pied de page"
+
+#: certificate.tpl.php:35
+msgid "On @recorded<br />!payer <strong>paid</strong> !payee</br />the sum of !worth"
+msgstr "Le @recorded !payer <strong>a donné à</strong> !payee la somme de !worth"
+
+#: certificate.tpl.php:48
+msgid "For:"
+msgstr "Pour:"
+
+#: certificate.tpl.php:59
+msgid "Dependent transactions"
+msgstr "Transactions dépendantes"
+
+#: sky_seldulac.info:0
+msgid "Community Forge"
+msgstr "Community Forge"
+

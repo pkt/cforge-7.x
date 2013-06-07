@@ -1,0 +1,19 @@
+; $Id: 
+name = Intertrading client
+description = Exchange with other mutual credit systems using a ClearingCentral 2 server. Contact Community Forge for details
+package = Community Accounting
+core = "7.x"
+
+configure = admin/accounting/intertrade
+
+dependencies[] = mcapi
+dependencies[] = mcapi_limits
+;dependencies[] = mcapi_index_views
+
+
+; Information added by drupal.org packaging script on 2013-04-29
+version = "7.x-3.0-rc8"
+core = "7.x"
+project = "mutual_credit"
+datestamp = "1367241322"
+

@@ -1,0 +1,107 @@
+<?php
+
+/*
+ * implements hook_theme
+ * there's a conflict with hook_custom_theme
+ */
+function cforge_offline_theme() {
+  return array (
+    'offline_contact' => array(
+      'template' => 'offline_contact',
+      'variables' => array(
+        'account' => NULL,
+      )
+    ),
+    'print_table' => array(
+      'template' => 'print-table',
+      'variables' => array(
+        'table' => '',
+        'page_title' => '',
+      ),
+    )
+  );
+}
+
+
+/*
+ * implements hook_form_FORM_ID_alter
+ * show the profile field only on the 'account' tab
+ */
+function cforge_offline_form_user_profile_form_alter(&$form, &$form_state) {
+  if ($form['#user_category'] == 'account') {
+
+  }
+  else {
+    $form['account_offline']['#access'] = FALSE;
+    $form['masquerade']['#access'] = FALSE;
+  }
+}
+
+
+/**
+ * Implements hook_user_view_alter().
+ * adds the contact card to the user profile page
+ */
+function cforge_offline_user_view_alter(&$build) {
+  if (isset($build['profile_address']) && $build['profile_address']['#access']) {
+    //the #object wasn't properly loaded when the field was built
+    $css = 'padding: 3em; float:left; margin: 0 2em 2em 0;';
+    $account = &$build['profile_address']['#object'];
+
+    if (($postalfield = field_get_items('user', $account, 'account_offline')) && $postalfield[0]['value']) {
+      //Envelope image will not be broken if the site isn't at the server's DocumentRoot.
+      //However using url() will break if the site is using a language prefix
+      $imagefile = drupal_get_path('module', 'cforge_offline') . '/envelope.jpg';
+      $css .= "background-size: 100% 100%; background-image: url('/$imagefile');";
+    }
+    else {
+      $css .= "box-shadow: 2px 2px 2px 1px #888; border: 1px solid #777;background-color:#e0e0e0e";
+    }
+    drupal_add_css('div.offline-contact{'.$css.'}', array('type' => 'inline'));
+    $build['offline_contact'] = array(
+      '#theme' => 'offline_contact',
+      '#account' => $account,
+      '#weight' => -20,
+    );
+    unset($build['profile_address']);
+  }
+  //committee would not normally masquerade unless specifically nominated, which case they'll see the name in the block
+  unset($build['masquerade']);
+}
+
+/*
+ * implements theme hook_preprocess_offline_contact
+ */
+function template_preprocess_offline_contact(&$vars){
+  //for some reason the account object needs to be reloaded.
+  $vars['profile_address'] = field_view_field('user', user_load($vars['account']->uid), 'profile_address');
+  $vars['profile_address']['#label_display'] = 'hidden';
+}
+
+/*
+ * Implements views hook_views_api
+ */
+function cforge_offline_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'cforge_offline'),
+  );
+}
+
+
+/**
+ * implements uif hook_uif_pre_create
+ * Assign core fields during create
+ */
+function cforge_offline_uif_pre_create($account, $user_data, $form_state) {
+  $fields['account_offline'][LANGUAGE_NONE][0]['value'] = @$user_data['account_offline'];
+  return $fields;
+}
+
+/**
+ * Implementation of hook_uif_help().
+ */
+function cforge_offline_uif_help() {
+  $description = 'account_offline : '. t('Not a regular internet user - 1 or 0');
+  return theme('item_list', array('items' => array($description)));
+}

@@ -1,0 +1,201 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: POEditor.com\n"
+"Project-Id-Version: cforge_currencies\n"
+"Language: fr\n"
+
+#: cforge_currencies.mcapiforms_default.inc:68
+msgid "The transaction will be finalised when the other user signs it."
+msgstr "L'échange sera finalisé dès confirmation par l'autre membre."
+
+#: cforge_currencies.views_default.inc:70;185;485
+msgid "Payee"
+msgstr "Receveur"
+
+#: cforge_currencies.views_default.inc:76;186;484
+msgid "Payer"
+msgstr "Donneur"
+
+#: cforge_currencies.views_default.inc:187
+msgid "Serial number"
+msgstr "Numéro de série"
+
+#: cforge_currencies.views_default.inc:188
+msgid "Name"
+msgstr "Nom"
+
+#: cforge_currencies.views_default.inc:189;486
+msgid "Worth"
+msgstr "Valeur"
+
+#: cforge_currencies.views_default.inc:190
+msgid "Transactions"
+msgstr "Échanges"
+
+#: cforge_currencies.views_default.inc:476
+msgid "This is the default accountant's interface. It is simply a transaction view with all the filters exposed. More accountants tools are needed, depending on how the system is to be used."
+msgstr "Interface comptable par défaut. C'est une simple vue d'échanges avec tous les filtres exposés. Plus d'outils de comptabilité peuvent être nécessaires, selon l'usage du système."
+
+#: cforge_currencies.views_default.inc:481
+msgid "Transaction management"
+msgstr "Gestion des échanges"
+
+#: cforge_currencies.views_default.inc:482
+msgid "All transactions can be seen from here. Use the filters to list what you need."
+msgstr "Tous les échanges peuvent être consultés ici. Utilisez les filtres pour afficher ce que vous cherchez."
+
+#: cforge_currencies.views_default.inc:483
+msgid "Recorded"
+msgstr "Enregistré"
+
+#: cforge_currencies.views_default.inc:487
+msgid "State"
+msgstr "État"
+
+#: cforge_currencies.views_default.inc:488
+msgid "Quantity"
+msgstr "Quantité"
+
+#: cforge_currencies.module:106
+msgid "Once this account has traded, this value cannot be changed."
+msgstr "Après l'échange avec ce compte, cette valeur ne peut plus être modifiée."
+
+#: cforge_currencies.module:107
+msgid "Please ensure the mail for this account goes to a responsible person: @mail"
+msgstr "Veillez à ce que l'adresse courriel de ce compte soit attribuée à une personne responsable: @mail"
+
+#: cforge_currencies.module:71
+msgid "System trading stats"
+msgstr "Statistiques du système d'échanges"
+
+#: cforge_currencies.info:0
+msgid "Cforge currencies"
+msgstr "Unités d'échange de Cforge"
+
+#: cforge_currencies.info:0
+msgid "Standard LETS / Timebank accounting with intertrade and mirror of national currency"
+msgstr "Comptabilité standard pour SEL ou Banque de Temps, avec échanges inter-SEL / Banque de Temps et reflet la devise nationale"
+
+#: cforge_currencies.info:0
+msgid "Community Forge"
+msgstr "Community Forge"
+
+#: cforge_currencies.mcapiforms_default.inc:22
+msgid "I am requesting"
+msgstr "Je demande"
+
+#: cforge_currencies.mcapiforms_default.inc:61;118
+msgid "Are you sure?"
+msgstr "Êtes-vous certain?"
+
+#: cforge_currencies.mcapiforms_default.inc:66;123
+msgid "Submit"
+msgstr "Soumettre"
+
+#: cforge_currencies.module:17
+msgid "Exchanges"
+msgstr "Échanges"
+
+#: cforge_currencies.module:56 cforge_currencies.install:98
+msgid "Balance extents"
+msgstr "L'étendue du solde"
+
+#: cforge_currencies.install:109
+msgid "My balances"
+msgstr "Mes soldes"
+
+#. Accompagne "I am requesting" sur le formulaire d'encodage des échanges: traducction choisie : je demande et je donne
+#: cforge_currencies.mcapiforms_default.inc:23
+msgid "I am acknowledging"
+msgstr "Je donne"
+
+#: cforge_currencies.mcapiforms_default.inc:50
+msgid "Make a payment"
+msgstr "Faire un paiement"
+
+#: cforge_currencies.mcapiforms_default.inc:51
+msgid "Description of the exchange:\n"
+"[mcapiform:transaction_description]\n"
+"in category\n"
+"[mcapiform:offers_wants_categories]\n"
+"with\n"
+"[mcapiform:secondperson]\n"
+"[mcapiform:direction]\n"
+"the sum of\n"
+"[mcapiform:worth]\n"
+""
+msgstr "J'ai échangé :\n"
+"[mcapiform:transaction_description]\n"
+"dans la catégorie\n"
+"[mcapiform:offers_wants_categories]\n"
+"avec\n"
+"[mcapiform:secondperson]et maintenant\n"
+"[mcapiform:direction]\n"
+"la somme de\n"
+"[mcapiform:worth]\n"
+""
+
+#: cforge_currencies.mcapiforms_default.inc:107
+msgid "Log a transaction"
+msgstr "Consigner un échange"
+
+#: cforge_currencies.mcapiforms_default.inc:108
+msgid "Payer: [mcapiform:payer]\n"
+"\n"
+"Payee: [mcapiform:payee]\n"
+"\n"
+"Description: [mcapiform:transaction_description]\n"
+"\n"
+"Category: [mcapiform:offers_wants_categories]\n"
+"\n"
+"[mcapiform:worth]\n"
+""
+msgstr "Le donneur : [mcapiform:payer]\n"
+"\n"
+"Le receveur : [mcapiform:payee]\n"
+"\n"
+"Description : [mcapiform:transaction_description]\n"
+"\n"
+"Catégorie : [mcapiform:offers_wants_categories]\n"
+"\n"
+"[mcapiform:worth]"
+
+#: cforge_currencies.views_default.inc:81
+msgid "Description"
+msgstr "Description"
+
+#: cforge_currencies.views_default.inc:181
+msgid "[name] gave [@name]"
+msgstr "[name] a donné à [@name]"
+
+#: cforge_currencies.views_default.inc:191
+msgid "[name] gave [transaction_description]"
+msgstr "[name] a donné [transaction_description]"
+
+#: cforge_currencies.views_default.inc:672
+msgid "Active traders"
+msgstr "Utilisateurs actifs"
+
+#: cforge_currencies.views_default.inc:673
+msgid "The [uid2] active users have made [serial] exchanges, totalling [volume]. Thomas Greco's system health index is: [greco]"
+msgstr "Les utilisateurs actifs [uid2] ont fait les échanges [serial], totalisant [volume]. L'index Thomas Greco du système de santé est: [greco]"
+
+#: cforge_currencies.views_default.inc:677
+msgid "In the last year, our [uid2] active users have done [serial] transactions, totalling [volume]"
+msgstr "L'an passé, nos [uid2] utilisateurs actifs ont fait [serial] transactions totalisant [volume]"
+
+#: cforge_currencies.views_default.inc:678
+msgid "Thomas Greco's system health index"
+msgstr "Index (suivant le système de Thomas Greco)"
+
+#: cforge_currencies.module:39
+msgid "Awaiting your signature"
+msgstr "En attente de votre signature"
+
+#: cforge_currencies.install:144
+msgid "Category"
+msgstr "Catégorie"
+

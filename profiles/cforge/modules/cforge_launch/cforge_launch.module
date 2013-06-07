@@ -1,0 +1,454 @@
+<?php
+
+/*
+ * implements hook_menu
+ */
+function cforge_launch_menu() {
+
+  variable_set('user_password_reset_timeout', 30*86400);//30 days
+
+  $items['admin/people/launch'] = array(
+    'title' => 'Launch',
+    'description' => 'Mail all users with new password',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('cforge_launch'),
+    'access arguments' => array('administer users'),//or user 1
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 50
+  );
+  return $items;
+}
+
+function cforge_launch_menu_alter($items) {
+  //after launch, override the password reset login function so it doesn't expire after 24 hours
+  $items['user/reset/%/%/%']['page arguments'][0] = 'cforge_user_pass_reset';
+}
+
+/*
+ * Launch sequence
+ */
+//menu_callback drupal_get_form argument: provide a checklist and lauch button
+function cforge_launch($form_state) {
+  $def = variable_get('cf_welcome', NULL) ? variable_get('cf_welcome', NULL) : t("Hello [user:name],
+We have launched our new site!
+You can now add your offers and wants, and record your transactions on the website.
+Don't worry, it's easy and fun, and you can't break anything, so go ahead and have a go.
+Once you've logged in with the link below, please change your password. And while you're at it, check your personal details and save your profile page.
+Have a nice visit, we'll see you on the site.
+[site:name] Team") . "
+=======================
+";
+
+  $form['cf_welcome'] = array(
+    '#title' => t('Welcome message'),
+    '#description' => t("It MUST include the string '[user:one-time-login-url]'")      ,
+    '#type' => 'textarea',
+    '#rows' => 10,
+    '#default_value' => $def,
+    '#weight' => 0,
+    '#element_validate' => array('cforge_launch_message_validate'),
+  );
+  $form['token_tree'] = array(
+    '#theme' => 'token_tree',
+    '#token_types' => array('user'),
+    '#global_types' => FALSE,
+    '#show_restricted' => TRUE,
+    '#weight' => 1,
+  );
+  $form['testmail'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Test mail'),
+    '#description' => t('Send a test mail to yourself. WARNING! This will log you out.'),
+    'sendtest' => array(
+      '#type' => 'submit',
+      '#value' => t('Send test mail'),
+      '#submit' => array('cforge_test_launch'),
+    ),
+    '#weight' => 2,
+  );
+  $form['actions'] = array(
+    '#weight' => 10,
+    'launch' => array(
+      '#type' => 'submit',
+      '#value' => t('LAUNCH NOW!'),
+      '#submit' => array('cforge_launch_now'),
+      '#weight' => 1,
+    ),
+    'dontlaunch' => array(
+      '#type' => 'submit',
+      '#value' => t('Never launch'),
+      '#submit' => array('cforge_launch_disable'),
+      '#weight' => 2,
+    )
+  );
+  return $form;
+}
+
+function cforge_launch_message_validate(&$element, &$form_state) {
+  if(!strpos($element['#value'], '[user:one-time-login-url]')) {
+    form_error($element, t('Message must include token @token', array('@token' => '[user:one-time-login-url]')));
+  }
+}
+
+
+function cforge_test_launch($form, $form_state) {
+  variable_set('cf_welcome', $form_state['values']['cf_welcome']);
+
+  $batch['operations'][] = array('drupal_mail', cf_welcome_mail_args($GLOBALS['user']));
+  $batch['title'] = t('Sending test mail');
+  $batch['error_message'] = t('An unrecoverable error has occurred. You can find the error message below. It is advised to copy it to the clipboard for reference.');
+  $batch['finished'] = 'cforge_launch_test_finish';
+
+  batch_set($batch);
+  batch_process('admin/people');
+}
+function cforge_launch_test_finish() {
+  echo(t('You were logged out and a test notification was sent to @mail', array('@mail' => $GLOBALS['user']->mail)));
+  module_invoke_all('user_logout', $user);
+  session_destroy();
+  die('<br /><a href = "/">Refresh</a>');
+}
+
+function cforge_launch_now($form, $form_state) {
+  variable_set('cf_welcome', $form_state['values']['cf_welcome']);
+  $users = user_load_multiple(NULL, array('status' => TRUE, 'login' => 0));
+  unset($users[$GLOBALS['user']->uid]);
+  drupal_set_message("not sending to current user ".$GLOBALS['user']->name, 'warning');
+
+  foreach($users as $account) {
+    if (empty($account->roles[RID_SYSTEM]) || !empty($account->roles[RID_TRADER])) {
+      $batch['operations'][] = array('drupal_mail', cf_welcome_mail_args($account));
+    }
+    else {
+      drupal_set_message("not sending to system account $account->name", 'warning');
+      unset($users[$account->uid]);
+    }
+  }
+  $batch['title'] = t('Sending @count mails', array('@count' => count($users)));
+  $batch['error_message'] = t('An unrecoverable error has occurred. You can find the error message below. It is advised to copy it to the clipboard for reference.');
+  $batch['finished'] = 'cforge_launch_disable';
+  batch_set($batch);
+  batch_process('admin/people');
+}
+
+function cf_welcome_mail_args($account){
+  $params = array('user' => $account);
+  return array('cf_launch', 'password_reset', $account->mail, user_preferred_language($account), $params, variable_get('site_mail'), TRUE);
+}
+
+//wrapper function to inject the mail ahead of the body
+function cf_launch_mail($key, &$message, $params) {
+  if ($key == 'password_reset') {
+    $message['subject'] = t('Site launch:') .' '. variable_get('site_name');
+    $message['body'][] = token_replace(
+      variable_get('cf_welcome') . variable_get('user_mail_password_reset_notify'),
+      $params,
+      array('callback' => 'user_mail_tokens')
+    );
+  }
+}
+
+/*
+ * Menu (alter) callback; process one time login link and redirects to the user page on success.
+ * this is identical to user_pass_reset, except it doesn't check for expiry
+ */
+function cforge_user_pass_reset(&$form_state, $uid, $timestamp, $hashed_pass, $action = NULL) {
+  module_load_include('pages.inc', 'user');
+  global $user;
+
+  // Check if the user is already logged in. The back button is often the culprit here.
+  if ($user->uid) {
+    drupal_set_message(t('You have already used this one-time login link. It is not necessary to use this link to login anymore. You are already logged in.'));
+    drupal_goto();
+  }
+  else {
+    // Time out, in seconds, until login URL expires. 24 hours = 86400 seconds.
+    $timeout = 86400;
+    $current = time();
+    // Some redundant checks for extra security ?
+    if ($timestamp < $current && $account = user_load(array('uid' => $uid, 'status' => 1)) ) {
+      // Deny one-time login to blocked accounts.
+      if (drupal_is_denied('user', $account->name) || drupal_is_denied('mail', $account->mail)) {
+        drupal_set_message(t('You have tried to use a one-time login for an account which has been blocked.'), 'error');
+        drupal_goto();
+      }
+
+      if ($account->uid && $hashed_pass == user_pass_rehash($account->pass, $timestamp, $account->login)) {
+        // First stage is a confirmation form, then login
+        if ($action == 'login') {
+          watchdog('user', 'User %name used one-time login link at time %timestamp.', array('%name' => $account->name, '%timestamp' => $timestamp));
+          // Set the new user.
+          $user = $account;
+          // user_authenticate_finalize() also updates the login timestamp of the
+          // user, which invalidates further use of the one-time login link.
+          user_authenticate_finalize($form_state['values']);
+          drupal_set_message(t('You have just used your one-time login link. It is no longer necessary to use this link to login. Please change your password.'));
+          drupal_goto('user/'. $user->uid .'/edit');
+        }
+        else {
+          $form['message'] = array('#value' => t('<p>This is a one-time login for %user_name and will expire on %expiration_date.</p><p>Click on this button to login to the site and change your password.</p>', array('%user_name' => $account->name, '%expiration_date' => format_date($timestamp + $timeout))));
+          $form['help'] = array('#value' => '<p>'. t('This login can be used only once.') .'</p>');
+          $form['submit'] = array('#type' => 'submit', '#value' => t('Log in'));
+          $form['#action'] = url("user/reset/$uid/$timestamp/$hashed_pass/login");
+          return $form;
+        }
+      }
+      else {
+        drupal_set_message(t('You have tried to use a one-time login link which has either been used or is no longer valid. Please request a new one using the form below.'));
+        drupal_goto('user/password');
+      }
+    }
+    else {
+      // Deny access, no more clues.
+      // Everything will be in the watchdog's URL for the administrator to check.
+      drupal_access_denied();
+    }
+  }
+}
+
+/*
+ * implements hook_disable
+ */
+function cforge_launch_disable() {
+//  module_disable(array('offers_wants_import', 'mcapi_import', 'uif'));
+  variable_del('cf_welcome');
+  db_delete('menu_links')->condition('module', 'cforge_launch')->execute();
+  menu_rebuild();
+  drupal_set_message("Best to disable modules 'uif', 'mcapi_import'");
+}
+
+
+
+/*
+ * for use with the user import framework (uif)
+ */
+/**
+ * Implementation of hook_uif_help().
+ */
+function cforge_launch_uif_help() {
+  $items = array(
+    'phone1 : '. t('Phone 1'),
+    'phone2 : '. t('Phone 2'),
+    'responsibility : '. t('Responsibility'),
+    'profile_notes : '. t('Open question'),
+    'manage_notes : '. t('Notes, visible only to committee'),
+    //uif module forgot to document this
+    'roles : '. t('roles, separated by pipes'),
+    'created : '. t('strtotime() string or unixtime account creation'),
+    'login : '. t('strtotime() string or unixtime last login'),
+    'status : '. t('1 or 0 for active or blocked')
+  );
+  foreach (field_info_instances('user', 'user') as $instance) {
+    $fieldname = &$instance['field_name'];
+    //only add the fields created through the UI, coz cforge has used this prefix a lot
+    if (substr($fieldname, 0, 5) == 'field') {
+      $field_info = field_info_field($fieldname);
+      if (!array_key_exists('value', $field_info['columns'])) continue;
+      $items[] = $fieldname .' : '. $instance['label'] .' (auto)';
+    }
+  }
+  return '<p>' . t('The following fields are available:') . '</p>' . theme('item_list', array('items' => $items));
+}
+
+
+/**
+ * implements uif hook_uif_pre_create
+ * Assign core fields during create
+ */
+function cforge_launch_uif_pre_create($account, $user_data, $form_state) {
+  $fields = array();
+  if (array_key_exists('profile_phone1', $user_data) && !empty($user_data['phone1'])) {
+    $fields['profile_phones'][LANGUAGE_NONE][0]['value'] = $user_data['phone1'];
+    $fields['profile_phones'][LANGUAGE_NONE][0]['format'] = 'plain_text';
+    if (!empty($user_data['phone2'])) {
+      $fields['profile_phones'][LANGUAGE_NONE][1]['value'] = $user_data['phone2'];
+      $fields['profile_phones'][LANGUAGE_NONE][1]['format'] = 'plain_text';
+    }
+  }
+  if (array_key_exists('profile_notes', $user_data) && !empty($user_data['profile_notes'])) {
+    $fields['profile_notes'][LANGUAGE_NONE][0]['value'] = @$user_data['profile_notes'];
+    $fields['profile_notes'][LANGUAGE_NONE][0]['format'] = 'plain_text';
+  }
+  if (array_key_exists('manage_notes', $user_data) && !empty($user_data['manage_notes'])) {
+    $fields['manage_notes'][LANGUAGE_NONE][0]['value'] = @$user_data['manage_notes'];
+    $fields['manage_notes'][LANGUAGE_NONE][0]['format'] = 'plain_text';
+  }
+  if (array_key_exists('responsibility', $user_data) && !empty($user_data['responsibility'])) {
+    $fields['manage_responsibility'][LANGUAGE_NONE][0]['value'] = @$user_data['responsibility'];
+    $fields['manage_responsibility'][LANGUAGE_NONE][0]['format'] = 'plain_text';
+  }
+  if (array_key_exists('status', $user_data)) {
+    $fields['status'] = @$user_data['status'];
+  }
+  if (array_key_exists('created', $user_data) && !empty($user_data['created'])) {
+    $fields['created'] = strtotime($user_data['created']);
+  }
+  if (array_key_exists('login', $user_data) && !empty($user_data['login'])) {
+    $fields['login'] = @$user_data['login'];
+  }
+  foreach (field_info_instances('user', 'user') as $instance) {
+    $fieldname = &$instance['field_name'];
+    //only add the fields created through the UI, coz cforge has used this prefix a lot
+    if (substr($fieldname, 0, 5) == 'field') {
+      if (array_key_exists($fieldname, $user_data) && !empty($user_data[$fieldname])) {
+        $fields[$fieldname][LANGUAGE_NONE][0]['value'] = $user_data[$fieldname];
+        $fields[$fieldname][LANGUAGE_NONE][0]['format'] = 'filtered_html';
+      }
+    }
+  }
+  return $fields;
+}
+
+/**
+ * implements uif hook_uif_post_create
+ */
+function cforge_launch_uif_post_create($account, $user_data, $form_state) {
+  if (array_key_exists('login', $user_data)) {
+    if (!is_numeric($user_data['login'])) {
+      $user_data['login'] = strtotime($user_data['login']);
+    }
+    if (is_integer($user_data['login'])) {
+      drupal_set_message('Updating last login date for user '.$account->uid);
+      db_update('users')
+        ->fields(array('login' => $user_data['login']))
+        ->condition('uid', $account->uid)
+        ->execute();
+    }
+  }
+}
+
+/**
+ * Implementation of hook_uif_validate_header().
+ * TODO ensure the firstname column is present
+ */
+function cforge_launch_uif_validate_header($header, $form_state) {
+  $errors = array();
+  if (!in_array('first_name', $header)) {
+    return array(t("Fieldname '@field' is missing from the csv header.", array('@field' => 'first_name')));
+  }
+}
+
+/*
+ * TODO after these are tested contribute them to the module
+ */
+/**
+ * implements uif hook_uif_pre_create
+ * Assign core fields during create
+ */
+function addressfield_uif_pre_create($account, $user_data, $form_state) {
+  foreach (field_info_fields() as $field_name => $field_info) {
+    if ($field_info['type'] == 'addressfield' && array_key_exists('user', $field_info['bundles'])) break;//having set field_name
+  }
+  $fields = array();
+  $columns = array(
+    'first_name' => 'first_name',
+    'last_name' => 'last_name',
+    'organisation_name' =>'organisation_name',
+    'street_address' => 'thoroughfare',
+    'neighbourhood' => 'dependent_locality',
+    'city' => 'locality',
+    'county' => 'administrative_area',
+    'region' => 'sub_administrative_area',
+    'country' => 'country',
+    'postal_code' => 'postal_code'
+  );
+  foreach($columns as $csvfield => $addressfieldCol) {
+    $fields[$field_name][LANGUAGE_NONE][0][$addressfieldCol] = @$user_data[$csvfield];
+  }
+  debug($fields);
+  return $fields;
+}
+
+/**
+ * Implementation of hook_uif_help().
+ */
+function addressfield_uif_help() {
+  $items = array(
+    'first_name : '. t('First name (required)'),
+    'last_name : '. t('Family name'),
+    'organisation_name : ' . t('Organisation name'),
+    'administrative_area : ' . t('Province / Region'),
+    'street_address : '. t('Street'),
+    'neighbourhood : '. t('Neighbourhood'),
+    'city : '. t('City'),
+    'country : '. t('ISO 3166-1 country code'),
+    'postal_code : '. t('Zip / Postcode'),
+  );
+  return theme('item_list', array('items' => $items));
+}
+
+
+function HOOK_install() {
+  $website_field = array (
+    'translatable' => '0',
+    'entity_types' => array (),
+    'settings' => array (
+      'max_length' => '64',
+    ),
+    'foreign keys' => array (
+      'format' => array (
+        'table' => 'filter_format',
+        'columns' => array (
+          'format' => 'format',
+        ),
+      ),
+    ),
+    'indexes' => array (
+      'format' => array (
+        0 => 'format',
+      ),
+    ),
+    'field_name' => 'field_website',
+    'type' => 'text',
+    'module' => 'text',
+    'active' => '1',
+    'cardinality' => '1',
+    'columns' => array (
+      'value' => array (
+        'type' => 'varchar',
+        'length' => '64',
+        'not null' => false,
+      ),
+      'format' => array (
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => false,
+      ),
+    ),
+  );
+  field_create_field($website_field);
+
+  $instance = array (
+    'label' => 'Website',
+    'widget' => array (
+      'weight' => '21',
+      'type' => 'text_textfield',
+      'module' => 'text',
+      'active' => 1,
+      'settings' => array (
+        'size' => '60',
+      ),
+    ),
+    'settings' => array (
+      'text_processing' => '0',
+      'user_register_form' => 1,
+    ),
+    'display' => array (
+      'default' => array (
+        'label' => 'above',
+        'type' => 'text_default',
+        'settings' => array (),
+        'module' => 'text',
+        'weight' => 21,
+      ),
+    ),
+    'required' => 0,
+    'description' => 'Do you have a web site?',
+    'default_value' => array (),
+    'field_name' => 'field_website',
+    'entity_type' => 'user',
+    'bundle' => 'user',
+    'deleted' => '0',
+  );
+  field_create_instance($instance);
+}

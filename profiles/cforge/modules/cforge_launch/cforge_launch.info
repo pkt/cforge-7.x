@@ -1,0 +1,18 @@
+; $Id$
+name = Cforge launch
+description = Import users, offers, wants & balances or transaction, then mail all users with new password.
+core = 7.x
+package = Community Forge
+configure = admin/people/import
+
+dependencies[] = mcapi
+dependencies[] = uif
+dependencies[] = mcapi_import
+dependencies[] = offers_wants_import
+
+; Information added by drupal.org packaging script on 2013-05-30
+version = "7.x-1.0-rc5"
+core = "7.x"
+project = "cforge"
+datestamp = "1369879264"
+

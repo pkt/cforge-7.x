@@ -1,0 +1,98 @@
+# $Id$
+#
+# LANGUAGE translation of Drupal (general)
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from files:
+#  cforge_events.views_default.inc: n/a
+#  cforge_events.module: n/a
+#  cforge_events.install: n/a
+#  cforge_events.info: n/a
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2012-11-06 11:41+0100\n"
+"PO-Revision-Date: 2012-11-17 17:41+0100\n"
+"Last-Translator: Marlies Remy <marliesremy@buewin.ch>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"X-Generator: Poedit 1.5.4\n"
+
+#: cforge_events.views_default.inc:237
+msgid "Master"
+msgstr ""
+
+#: cforge_events.views_default.inc:238
+msgid "more"
+msgstr "mehr"
+
+#: cforge_events.views_default.inc:239
+msgid "Apply"
+msgstr "ansuchen"
+
+#: cforge_events.views_default.inc:240
+msgid "Reset"
+msgstr "zurücksetzen"
+
+#: cforge_events.views_default.inc:241
+msgid "Sort by"
+msgstr "sortieren nach"
+
+#: cforge_events.views_default.inc:242
+msgid "Asc"
+msgstr ""
+
+#: cforge_events.views_default.inc:243
+msgid "Desc"
+msgstr ""
+
+#: cforge_events.views_default.inc:244
+msgid "Year page"
+msgstr "Jahr Seite"
+
+#: cforge_events.views_default.inc:245
+msgid "Tous / Toutes"
+msgstr "Alle"
+
+#: cforge_events.views_default.inc:246
+msgid "Month Block"
+msgstr "Montas Block"
+
+#: cforge_events.views_default.inc:247
+msgid "Upcoming"
+msgstr "bevorstehend"
+
+#: cforge_events.views_default.inc:248
+msgid "Upcoming events block"
+msgstr "becorstehende Veranstaltungsblock"
+
+#: cforge_events.module:12
+msgid "Content type with date field"
+msgstr "Inhalttyp mit Datumsfeld"
+
+#: cforge_events.module:14
+msgid "Title"
+msgstr "Titel"
+
+#: cforge_events.install:105
+msgid "Details"
+msgstr "Details"
+
+#: cforge_events.install:149
+msgid "Upcoming events"
+msgstr "Bevorstehende Veranstaltungen"
+
+#: cforge_events.info:0
+msgid "Cforge Events"
+msgstr "Cforge Veranstaltungen"
+
+#: cforge_events.info:0
+msgid "Post events and view on calendar"
+msgstr "Veranstaltung einschreiben und auf dem Kalender anzeigen"
+
+#: cforge_events.info:0
+msgid "Community Forge"
+msgstr "Community Forge"

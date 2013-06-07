@@ -1,0 +1,88 @@
+/*member list view with double alpha pager*/
+.view-member-list .attachment-before .view-header,
+.view-member-list .attachment-before .view-content {
+	float:left;
+	padding-right:1em;
+	clear:none;
+}
+.view-member-list .attachment-before .view-header p{
+	 margin-top:0;
+	}
+.view-member-list .views-summary-unformatted a:visited{
+  text-decoration:none;
+}
+.view-member-list div.view-content{
+  clear:left
+}
+
+.view .image-gallery-nodes ul li{
+  vertical-align:top;
+  height:180px !important;
+}
+#block-menu-secondary-menu{clear:right;}
+
+/* phone fields on user profile edit page*/
+div#profile-phone1-add-more-wrapper td.field-multiple-drag,
+div#profile-phone1-add-more-wrapper div.tabledrag-toggle-weight-wrapper,
+div#profile-phone1-add-more-wrapper .tabledrag-hide{display:none;}
+
+
+div#edit-profile-firstname, div#edit-profile-familyname{float:left;padding-right:1em;}
+div#edit-account{clear:left;}
+
+a.advanced-help-link{display:inline-block; float:none;}
+
+fieldset#edit-name-address-und-0{clear:left;}
+div.field-name-name-address span{clear:left;}
+form div.form-item-name-address-und-0-name-block-first-name,
+form div.form-item-name-address-und-0-name-block-last-name,
+form div.form-item-name-address-und-0-locality-block-postal-code{display:inline;}
+
+/* acquia marina tweaks - experimental use of theme */
+div.region-preface-top ul li, .region-header-top ul li {
+    float: left;
+    list-style: none outside none;
+    position: relative;
+}
+div.region-preface-top ul li a{
+  display: block;
+  padding: 0.75em 1em;
+  text-decoration: none !important
+}
+div.region-header-top ul li a{
+  display: block;
+  padding: 0.25em 0.5em;
+  text-decoration: none !important
+}
+div.region-preface-top div.block, .region-header-top div.block{
+  margin-bottom:0;
+}
+div#preface-top-outer{padding-top:0;}
+div#header-top ul{margin-bottom:0; float:right;}
+div.region-header-top ul li a{}
+/* special settings to position search block in header */
+div#block-search-form.block{
+  width:inherit;
+  float:right;
+}
+div#sidebar-first div.block div.inner-wrapper, div#sidebar-second div.block div.inner-wrapper{
+  background: url("http://dctb.timebanks.org/sites/all/themes/acquia_marina/images/block-gradient.png") repeat-x scroll 50% 100% rgb(255, 255, 255);
+  border: medium solid lightgray;
+  border-radius: 9px;
+}
+
+div#sidebar-first div.block h2.block-title, div#sidebar-second div.block h2.block-title{
+  background: none repeat scroll 0% 0% rgb(65, 131, 175);
+  color: rgb(255, 255, 255);
+  text-shadow: 1px 1px rgb(84, 84, 84);
+  text-transform: inherit;
+  padding: 5px;
+  border-radius: 6px;
+  font-family: inherit;
+}
+div#sidebar-first div.block div.content, div#sidebar-second div.block div.content{
+  padding:5px;
+}
+div#main-wrapper{padding-top: 10px;}
+div#content-tabs{margin:inherit;}
+div#preface-top{font-size:150%;}

@@ -1,0 +1,50 @@
+# $Id$
+#
+# LANGUAGE translation of Drupal (general)
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from files:
+#  cforge_yell.module: n/a
+#  cforge_yell.install: n/a
+#  cforge_yell.info: n/a
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2012-11-06 11:42+0100\n"
+"PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: cforge_yell.module:11
+msgid "Add a listing"
+msgstr ""
+
+#: cforge_yell.module:22
+msgid "Choose default categories for the offers/wants directory: !link"
+msgstr ""
+
+#: cforge_yell.install:11
+msgid "offers & wants"
+msgstr ""
+
+#: cforge_yell.install:16
+msgid "Manage secondary member options, contact, galleries, etc."
+msgstr ""
+
+#: cforge_yell.info:0
+msgid "Cforge yellow pages"
+msgstr ""
+
+#: cforge_yell.info:0
+msgid "Settings for offers and wants"
+msgstr ""
+
+#: cforge_yell.info:0
+msgid "Community Forge"
+msgstr ""
+

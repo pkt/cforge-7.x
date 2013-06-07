@@ -1,0 +1,583 @@
+<?php
+// $Id: mc_offer_want.install,v 1.3 2010/05/01 15:52:49 matslats Exp $
+
+/**
+ * Implementation of hook_install().
+ */
+function offers_wants_install() {
+  //if a previous d7 version was here, otherwise this won't do any harm
+  db_query("UPDATE {taxonomy_vocabulary} SET machine_name = 'offers_wants_categories' WHERE machine_name = 'cforge_plaza_categories'");
+  db_query("UPDATE {taxonomy_vocabulary} SET machine_name = 'offers_wants_types' WHERE machine_name = 'cforge_plaza_types'");
+
+  $vocab = (object)array(
+    'name' => t('Offer/want types'),
+    'machine_name' => 'offers_wants_types',
+    'module' => 'offers_wants',
+    'description' => implode(' ', array(
+      t("This vocabulary provides another dimension for dicing offers/wants."),
+      t("Makes a view tab on the views pages")
+    ))
+  );
+  taxonomy_vocabulary_save($vocab);
+  $term = (object)array(
+    'name' => t('Goods'),
+    'description' => '',
+    'vid' => $vocab->vid,
+    'format' => 'plain_text',
+  );
+  taxonomy_term_save($term);
+  //and put a term in that vocab
+
+  //create a vocab which will be used for the directory
+  //check if it already exists and if so, run the upgrade script while we're at it
+  $vid = db_query("SELECT vid FROM {taxonomy_vocabulary} WHERE module = 'offers_wants' AND machine_name NOT IN ('offers_wants_types', 'offers_wants_categories')")->fetchfield();
+  if (!$vid) {
+    $vocab = (object)array(
+      'name' => t('Market sectors'),
+      'machine_name' => 'offers_wants_categories',
+      'module' => 'offers_wants',
+      'description' => t("For categorising community activities. Use like the Yellow pages")
+    );
+    taxonomy_vocabulary_save($vocab);
+    //just save one example term
+    $term = (object)array(
+      'name' => t('Administration'),
+      'description' => '',
+      'vocabulary_machine_name' => 'offers_wants_categories',
+      'format' => 'plain_text',
+    );
+    taxonomy_term_save($term);
+  }
+
+  _ow_add_field_instance('body');
+  _ow_add_field_instance('offers_wants_categories');
+  _ow_add_field_instance('offers_wants_types');
+  //this field was created immediately before coz this module depends on image modulez
+  _ow_add_field_instance('image');
+
+
+  db_query("UPDATE {system} SET weight = 5 WHERE name = 'offers_wants'");
+  variable_set('node_options_proposition', array('status'));
+  variable_set('node_permissions_proposition', 0);
+  variable_set('comment_proposition', 1);
+  variable_set('jquerymenu_edit_link', 0);
+  variable_set('jquerymenu_hover', 1);
+  setup_taxonomy_hs($vid);
+}
+
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function offers_wants_uninstall() {
+
+  field_delete_field('offers_wants_types');
+  field_delete_field('offers_wants_categories');
+  field_purge_batch(2);
+  //identify the vocabulary and delete it.
+  foreach (db_query("SELECT vid FROM {taxonomy_vocabulary} WHERE module = 'offers_wants'")->fetchCol() as $vid) {
+    taxonomy_vocabulary_delete($vid); //fields should be deleted automatically
+  }
+
+  variable_del('offers_wants_proposition_wants');
+  variable_del('offers_wants_expire_auto');
+  variable_del('offers_wants_publish_period');
+  variable_del('offers_wants_expire_notice_days');
+  variable_del('cforge_cron_previous');
+  variable_del('comment_proposition'); //if comment module is installed
+  variable_del('node_permissions_propositions');
+}
+
+/**
+ * Implementation of hook_schema().
+ */
+function offers_wants_schema() {
+  return array(
+    'offers_wants' => array(
+      'description' => t('The main table to hold the scheduler data.'),
+      'fields' => array(
+        'nid' => array(
+          'description' => t('The foreign key to node.nid'),
+          'type' => 'int',
+          'unsigned' => TRUE,
+          'not null' => TRUE,
+        ),
+        'end' => array(
+          'description' => t('When, if ever the proposition is valid until'),
+          'type' => 'int',
+          'not null' => TRUE,
+          'default' => 0
+        ),
+        'want' => array(
+          'description' => t('If this item is requested. (Default, zero is an offer)'),
+          'type' => 'int',
+          'size' => 'small',
+          'not null' => TRUE,
+          'default' => 0
+        )
+      ),
+      'primary key' => array('nid'),
+    ),
+  );
+}
+
+
+function offers_wants_update_dependencies() {
+  return array(
+    'offers_wants' => array(
+      '7000' => array(
+        'system' => 7052,//NB all the field modules are enabled in 6027
+      )
+    ),
+  );
+}
+
+/**
+ * Standardise the vocab fields, which can now have predetermined machine_names
+ */
+function offers_wants_update_7000() {
+  db_query("UPDATE {node_type} SET disabled = 0, base = 'proposition' WHERE type = 'proposition'");
+  //now we're going to rename the taxonomy fields, so they are constant for the rest of the module
+  _ow_rename_upgraded_vocab_field(variable_get('offers_wants_cat_vid', 0), 'offers_wants_categories');
+  _ow_rename_upgraded_vocab_field(variable_get('offers_wants_type_vid', 0), 'offers_wants_types');
+  //ensure the vocabs are attached as fields
+  _update_ow_add_field_instance('offers_wants_categories');
+  _update_ow_add_field_instance('offers_wants_types');
+
+  $field = current(_update_7000_field_read_fields(array('field_name' => 'image')));
+  if ($instance = _offers_wants_instance('image')) {
+    _update_7000_field_create_instance($field, $instance);
+  }
+}
+/**
+ * update the database
+ */
+function offers_wants_update_7001() {
+  db_drop_field('offers_wants', 'end');
+  variable_set('jquerymenu_edit_link', 0);
+}
+
+/**
+ * cleanup
+ */
+function offers_wants_update_7002() {
+  //rename any saved views to be congruent with the new default views
+  db_query("UPDATE {views_view} SET name = 'ow_offers' WHERE name = 'offers'");
+  db_query("UPDATE {views_view} SET name = 'ow_wants' WHERE name = 'wants'");
+  //clean up legacy stuff
+  variable_del('offers_wants_broadcast');
+  variable_del('offers_wants_proposition_types');
+  variable_del('offers_wants_publish_period');
+  variable_del('offers_wants_expiry');
+  variable_del('offers_wants_expire_notice_days');
+  variable_del('offers_wants_expire_notice_subject');
+  variable_del('offers_wants_expire_notice_template');
+  variable_del('offers_wants_cat_vid');
+  variable_del('offers_wants_type_vid');
+  variable_del('cforge_plaza_vid');
+
+  db_query("DELETE FROM {variable} WHERE name LIKE '%offer' OR name LIKE '%want'");
+  db_query("DELETE FROM {block_role} WHERE module IN ('mc_offer_want', 'cc_offer_want')");
+  db_drop_table('mc_offer_want_expires');
+  db_drop_table('cforge_propositions');
+  $schema = offers_wants_schema();
+
+  db_change_field('offers_wants', 'expires', 'end', $schema['offers_wants']['fields']['end']);
+}
+
+function _ow_rename_upgraded_vocab_field($vid, $field_name) {
+  $vocab = taxonomy_vocabulary_load($vid);
+  if (empty($vocab)) {
+    drupal_set_message("Failed to load vocab $vid to rename it"); return;
+  }
+  $old_name = $vocab->machine_name;
+  $vocab->machine_name = $field_name;
+  $vocab->module = 'offers_wants';
+  //save the vocabulary with the new machinename
+  taxonomy_vocabulary_save($vocab);
+
+  $old_field = 'taxonomy_'.$old_name;
+  $old_column = $old_field ."_tid";
+  $data_table = 'field_data_'.$field_name;
+  $revision_table = 'field_revision_'.$field_name;
+  $new_column = $field_name ."_tid";
+  db_query("UPDATE {field_config} SET field_name = '$field_name' WHERE field_name = '$old_field'");
+  db_query("UPDATE {field_config_instance} SET field_name = '$field_name' WHERE field_name = '$old_field'");
+  db_rename_table('field_data_'.$old_field, $data_table);
+  db_rename_table('field_revision_'.$old_field, $revision_table);
+  db_query("ALTER TABLE {$data_table} CHANGE $old_column $new_column int(10) unsigned DEFAULT NULL");
+  db_query("ALTER TABLE {$revision_table} CHANGE $old_column $new_column int(10) unsigned DEFAULT NULL");
+}
+
+function _update_ow_add_field_instance($field_name) {
+  module_load_include('info.inc', 'field');
+  _field_info_collate_types(TRUE);
+  module_load_install('field');
+  $field = current(_update_7000_field_read_fields(array('field_name' => $field_name)));
+  if (!$field) {
+    $field = _offers_wants_fields($field_name);
+    _update_7000_field_create_field($field);
+  }
+  if ($instance = _offers_wants_instance($field_name)) {
+    _update_7000_field_create_instance($field, $instance);
+  }
+}
+function _ow_add_field_instance($field_name) {
+  _field_info_collate_types(TRUE);
+  if (!field_info_field($field_name)) {
+    field_create_field(_offers_wants_fields($field_name));
+  }
+  if (field_info_instance('node', $field_name, 'proposition')) return;
+  if ($instance = _offers_wants_instance($field_name)) {
+    field_create_instance($instance);
+  }
+}
+
+function _offers_wants_fields($field_name) {
+  $field = array('field_name' => $field_name);
+  switch ($field_name) {
+    //usually the body field will exist already
+    case 'body': return $field + array(
+      'entity_types' => array(),
+      'translatable' => '1',
+      'type' => 'text_long',
+      'module' => 'text',
+      'cardinality' => '1',
+      'columns' => array(
+        'value' => array(
+          'type' => 'text',
+          'size' => 'big',
+          'not null' => FALSE,
+        ),
+        'summary' => array(
+          'type' => 'text',
+          'size' => 'big',
+          'not null' => FALSE,
+        ),
+        'format' => array(
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => FALSE,
+        ),
+      ),
+      'bundles' => array(
+        'node' => array(),
+        'transaction' => array(),
+      )
+    );
+    case 'offers_wants_categories': return $field + array(
+      'field_name' => 'offers_wants_categories',
+      'type' => 'taxonomy_term_reference',
+      'entity_types' => array(),
+      'module' => 'offers_wants',
+      'bundles' => array(
+        'node' => array(
+          'proposition',
+        )
+      ),
+      'settings' => array(
+        'allowed_values' => array(
+          0 => array(
+            'vocabulary' => 'offers_wants_categories',
+            'parent' => 0
+          )
+        )
+      )
+    );
+    case 'offers_wants_types': return $field + array(
+      'field_name' => 'offers_wants_types',
+      'type' => 'taxonomy_term_reference',
+      'entity_types' => array(),
+      'module' => 'offers_wants',
+      'bundles' => array(
+        'node' => array(
+          'proposition',
+        )
+      ),
+      'settings' => array(
+        'allowed_values' => array(
+          array(
+            'vocabulary' => 'offers_wants_types',
+            'parent' => '0',
+          ),
+        ),
+      ),
+    );
+    case 'image': return $field + array(
+      'field_name' => 'image',
+      'type' => 'image',
+      'module' => 'image',
+      'entity_types' => array(),
+      'settings' => array(
+        'uri_scheme' => 'public',
+        'file_directory' => 'propositions',
+        'file_extensions' => 'png gif jpg jpeg',
+        'max_filesize' => '800k'
+      ),
+    );
+  }
+}
+
+function _offers_wants_instance($field_name) {
+  $instance = field_read_instance('node', $field_name, 'proposition', array('include_inactive' => TRUE));
+  if ($instance) return;
+  $defaults = array(
+    'field_name' => $field_name,
+    'bundle' => 'proposition',
+    'entity_type' => 'node'
+  );
+  switch ($field_name) {
+    case 'body': return $defaults + array(
+      'label' => t('Tell your story...'),
+      'description' => '',
+      'widget' => array(
+        'weight' => '12',
+        'type' => 'text_textarea',
+        'module' => 'text',
+        'active' => 1,
+        'settings' => array(
+          'rows' => '5',
+          'summary_rows' => 1,
+        ),
+      ),
+      'settings' => array(
+        'text_processing' => '1',
+        'display_summary' => 0,
+        'user_register_form' => FALSE,
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'type' => 'text_default',
+          'settings' => array(),
+          'module' => 'text',
+          'weight' => 2,
+        ),
+        'teaser' => array(
+          'type' => 'hidden',
+          'label' => 'above',
+          'settings' => array(),
+          'weight' => 0,
+        ),
+      ),
+      'required' => 0,
+    );
+    case 'offers_wants_categories': return $defaults + array(
+      'label' => t('Offer/want categories'),
+      'description' => t('Main categorisation for offers and wants'),
+      'required' => TRUE,
+      'settings' => array(),//todo
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'type' => 'taxonomy_term_reference_link',
+          'weight' => 0,
+          'module' => 'taxonomy'
+        )
+      ),
+      'widget' => array(
+        'weight' => 4,
+        'type' => 'options_select',
+        'module' => 'options',
+        'active' => 1,
+        'settings' => array(),
+      ),
+    );
+    case 'offers_wants_types': return $defaults + array(
+      'label' => t('Offer/want types'),
+      'required' => FALSE,
+      'settings' => array(),//todo
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'type' => 'taxonomy_term_reference_link',
+          'weight' => 0,
+          'module' => 'taxonomy'
+        )
+      ),
+      'widget' => array(
+        'weight' => 4,
+        'type' => 'options_select',
+        'module' => 'options',
+        'active' => 1,
+        'settings' => array(),
+      ),
+    );
+    case 'image': return $defaults + array(
+      'label' => t('Image'),
+      'description' => '',
+      'widget' => array(
+        'weight' => -1,
+        'type' => 'image_image',
+        'module' => 'image',
+        'active' => 1,
+        'settings' => array(),
+      ),
+      'settings' => array(
+        'file_extensions' => 'png gif jpg jpeg',
+        'max_filesize' => '2MB',
+        'max_resolution' => '1024x768',
+        'min_resolution' => '400x300',
+        'default_image' => ''
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'type' => 'image',
+          'settings' => array(
+            'image_style' => 'large',
+          ),
+           'module' => 'image',
+        ),
+        'teaser' => array(
+          'type' => 'hidden',
+          'label' => 'above',
+          'settings' => array( )
+        )
+      ),
+      'required' => 0,
+      'id' => 29,
+      'field_id' => 18,
+      'field_name' => 'image',
+      'entity_type' => 'node',
+      'bundle' => 'image',
+      'deleted' => 0
+    );
+  }
+}
+
+
+function setup_taxonomy_hs($vid) {
+  drupal_set_message('installation function setup_taxonomy_hs needs testing when hierarchical select is ready');
+  variable_set('taxonomy_hierarchical_select_'.$vid, 1);
+  variable_set('hs_config_taxonomy-'.$vid, array(
+    'config_id' => 'taxonomy-1',
+    'save_lineage' => 1,
+    'enforce_deepest' => 0,
+    'entity_count' => 0,
+    'require_entity' => 0,
+    'resizable' => 1,
+    'level_labels' => array(
+      'status' => 1,
+      'labels' => array(
+        0 => t('Category'),
+        1 => t('Subcategory'),
+      )
+    ),
+    'dropbox' => array(
+      'status' => 1,
+      'title' => t('All selections'),
+      'limit' => 0,
+      'reset_hs' => 1,
+    ),
+    'editability' => array(
+      'status' => 0,
+      'item_types' => array(),
+      'allowed_levels' => array(
+        0 => 1,
+        1 => 1
+      ),
+      'allow_new_levels' => 0,
+      'max_levels' => 1
+    )
+  ));
+}
+/**
+ * Correct installation error in image field instance
+ */
+function offers_wants_update_7003() {
+  $instance = field_read_instance('node', 'image', 'proposition');
+  if (!$instance['field_name']) return;//this at least allows the upgrade to continue
+  $instance['settings']['default_image'] = '';
+  if (isset($instance['descriiption'])) {
+    $instance['description'] = $instance['descriiption'];
+    unset($instance['descriiption']);
+  }
+  field_update_instance($instance);
+  variable_set('comment_proposition', 1);//just to be sure
+}
+
+/**
+ * set up the categories select widget
+ */
+function offers_wants_update_7004() {
+  $types_instance = field_read_instance('node', 'offers_wants_types', 'proposition');
+  if ($types_instance) {
+    $types_instance['widget']['type'] = 'options_buttons';
+    field_update_instance($types_instance);
+  }
+
+  //for this field its more complex because it could be hierarchical, and use different widgets
+  //however there's a function which checks the vocab and sets the widget
+  //so all we have to do is run that function with a value not equal to the existing hierarchy
+  $hierarchy = db_query(
+    "SELECT TRUE FROM {taxonomy_term_hierarchy} h LEFT JOIN {taxonomy_term_data} d ON h.tid = d.tid AND d.vid = :vid",
+    array(':vid' => $categories_vid = taxonomy_vocabulary_machine_name_load('offers_wants_categories')->vid)
+  )->fetchField();
+  db_query(
+    "UPDATE {taxonomy_vocabulary} SET hierarchy = :hierarchy WHERE machine_name = 'offers_wants_categories'",
+    array(':hierarchy' => intval($hierarchy))
+  );
+  $pseudo_form = array('#vocabulary' => (object)array('hierarchy' => 'nothing yet'));
+  update_proposition_categories_widget($pseudo_form);
+
+}
+/**
+ * delete the blocks from previous version
+ */
+function offers_wants_update_7005() {
+  db_delete('block')->condition('module', 'mc_offer-want')->execute();
+}
+
+/**
+ * convert permissions from the previous version
+ */
+function offers_wants_update_7006() {
+  db_delete('role_permission')->condition('permission', 'view propositions')->execute();
+  variable_set('node_permissions_proposition', 0);
+}
+/**
+ * refresh config of hierarchical select module, if used.
+ */
+function offers_wants_update_7007() {
+  if (!module_exists('hs_taxonomy')) return;
+  $vocab = taxonomy_vocabulary_machine_name_load('offers_wants_categories');
+  variable_set("hs_config_taxonomy-$vocab->vid", _ow_get_hs_taxonomy_config($vocab->vid));
+}
+
+/**
+ * configure the new 'convert' feature
+ */
+function offers_wants_update_7008() {
+  if (module_exists('mcapi_forms')) variable_set('ow_convert_path', 'transact/1stparty');
+}
+
+
+function _ow_get_hs_taxonomy_config($vid) {
+  return array(
+    'config_id' => 'taxonomy-'.$vid,
+    'save_lineage' => 1,
+    'enforce_deepest' => 0,
+    'resizable' => 1,
+    'level_labels' => array(
+      'status' => 1,
+      'labels' => array (//I can't find the original english in the module, if it exists
+        0 => 'Choisissez ici une catégorie (obligatoire)',
+        1 => 'Sous-catégorie',
+    ),
+    ),
+    'dropbox' => array (
+      'status' => 0,
+      'title' => t('All selections'),
+      'limit' => 1,
+      'reset_hs' => 0
+    ),
+    'editability' => array(
+      'status' => 0,
+      'item_types' => array(),
+      'allowed_levels' => array(),
+      'allow_new_levels' => 0,
+      'max_levels' => 1
+    )
+  );
+}

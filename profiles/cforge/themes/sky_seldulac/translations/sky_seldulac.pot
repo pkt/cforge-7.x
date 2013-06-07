@@ -1,0 +1,89 @@
+# $Id$
+#
+# LANGUAGE translation of Drupal (general)
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from files:
+#  balances.tpl.php: n/a
+#  page.tpl.php: n/a
+#  statement.tpl.php: n/a
+#  template.php: n/a
+#  user-profile.tpl.php,v 1.2.2.1 2008/10/15 13:52:04 dries
+#  sky_seldulac.info: n/a
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2012-02-21 18:22+0100\n"
+"PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: balances.tpl.php:30
+msgid "Cleared balance"
+msgstr ""
+
+#: balances.tpl.php:34
+msgid "Pending Balance"
+msgstr ""
+
+#: balances.tpl.php:38
+msgid "Total income"
+msgstr ""
+
+#: balances.tpl.php:42
+msgid "Spending limit"
+msgstr ""
+
+#: statement.tpl.php:45
+msgid "Description"
+msgstr ""
+
+#: statement.tpl.php:46
+msgid "With"
+msgstr ""
+
+#: statement.tpl.php:48
+msgid "Income"
+msgstr ""
+
+#: statement.tpl.php:49
+msgid "Expenditure"
+msgstr ""
+
+#: statement.tpl.php:50
+msgid "Running Total"
+msgstr ""
+
+#: template.php:92
+msgid "Site designed and hosted for free by !cforge, a non-profit association registered in Geneva, Switzerland."
+msgstr ""
+
+#: template.php:386
+msgid "Anonymous"
+msgstr ""
+
+#: template.php:403
+msgid "View member profile."
+msgstr ""
+
+#: template.php:411
+msgid "Member @uid"
+msgstr ""
+
+#: user-profile.tpl.php:63
+msgid "Balance Limits"
+msgstr ""
+
+#: user-profile.tpl.php:65
+msgid "Balance"
+msgstr ""
+
+#: user-profile.tpl.php:71
+msgid "Balance history"
+msgstr ""
+

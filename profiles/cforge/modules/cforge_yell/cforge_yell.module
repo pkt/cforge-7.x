@@ -1,0 +1,67 @@
+<?php
+
+
+/*
+ * implements hook_menu_alter
+ */
+function cforge_yell_menu_alter(&$items) {
+  $items['admin/structure/taxonomy']['page callback'] = array('cf_taxonomy_overview_vocabularies');
+  t('Add an offer/want');//for po extraction
+}
+
+function cf_taxonomy_overview_vocabularies($form) {
+  if (!taxonomy_get_tree(taxonomy_vocabulary_machine_name_load('offers_wants_categories')->vid)) {
+    form_load_include($form_state, 'install', 'cforge_yell');
+    return drupal_get_form('ow_vocab_chooser');
+  }
+  else return drupal_get_form('taxonomy_overview_vocabularies');
+}
+
+
+//form callback
+function ow_vocab_chooser($form, &$form_state) {
+  form_load_include($form_state, 'install', 'cforge_yell');
+  return array(
+    'ow_terms' => array(
+      '#title' => t('Choose a default set of terms for offers / wants'),
+      '#description' => t('Used for the address field'),
+      '#type' => 'select',
+      '#options' => drupal_map_assoc(array_keys(yell_vocabs()))
+    ),
+    'submit' => array(
+      '#type' => 'submit',
+      '#value' => t('submit')
+    )
+  );
+}
+
+/*
+ * implements hook_block_list_alter
+ * add more information to the blocks created by offers_wants views
+ */
+function cforge_yell_block_info_alter($blocks) {
+  if (array_key_exists('offers_wants', $blocks)) {
+    if (array_key_exists('propositions_taxonomy_block', $blocks['offers_wants'])) {
+      $blocks['offers_wants']['propositions_taxonomy_block']['visibility'] = BLOCK_VISIBILITY_LISTED;
+      $blocks['offers_wants']['propositions_taxonomy_block']['pages'] = "offer*\nwant*";
+    }
+    if (array_key_exists('add_proposition', $blocks['offers_wants'])) {
+      $blocks['offers_wants']['add_proposition']['visibility'] = BLOCK_VISIBILITY_LISTED;
+      $blocks['offers_wants']['add_proposition']['pages'] = "offer*\nwant*\nuser/*/propositions";
+    }
+    if (array_key_exists('ow_offers-latest', $blocks['offers_wants'])) {
+      $blocks['offers_wants']['ow_offers-latest']['visibility'] = BLOCK_VISIBILITY_LISTED;
+      $blocks['offers_wants']['ow_offers-latest']['pages'] = "<front>";
+    }
+    if (array_key_exists('ow_wants-latest', $blocks['offers_wants'])) {
+      $blocks['offers_wants']['ow_wants-latest']['visibility'] = BLOCK_VISIBILITY_LISTED;
+      $blocks['offers_wants']['ow_wants-latest']['pages'] = "<front>";
+    }
+  }
+}
+
+//implements alter hook_views_default_views
+function cforge_yell_views_default_views_alter(&$views) {
+  $views['ow_offers']->display['all']->display_options['tab_options']['weight'] = 1;
+  $views['ow_wants']->display['all']->display_options['tab_options']['weight'] = 3;
+}

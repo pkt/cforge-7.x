@@ -1,0 +1,188 @@
+<?php
+
+function cforge_currencies_install() {
+  //this only applies in cforge context, but won't break anything
+  db_query("UPDATE {system} SET weight = :weight WHERE name = 'cforge_currencies'", array(
+    ':weight' => db_query("SELECT weight FROM {system} WHERE name = 'cforge_custom'")->fetchField() + 1
+  ));
+
+  //use the function from the upgrade of the mcapi module.
+  module_load_install('mcapi');
+  create_transaction_description_field();
+  field_create_instance(cforge_transaction_category_instance());
+  //setup the notifications
+  mcapi_update_7006();
+  db_query("DELETE FROM {menu_links} WHERE link_path = 'transact/1stparty' AND menu_name = 'user_menu'");
+  _cforge_set_pending_message();
+
+  variable_set('mcapi_controller_delete_mode', MCAPI_CURRENCY_UNDO_ERASE);
+  variable_set('mcapi_mixed_transactions', 0);
+  variable_del('change_undo_mode', TRUE);//means the delete mode cannot be changed
+  global $language;
+  cache_clear_all('views_block_items'.$language->language, 'cache_views');
+
+  $theme_settings = variable_get('theme_sky_seldulac_settings', array());
+  $theme_settings['tab_element'] = '.tab-wrapper';
+  variable_set('theme_sky_seldulac_settings', $theme_settings);
+}
+
+
+function cforge_currencies_uninstall() {
+  $mlids = db_query("SELECT mlid FROM {menu_links} WHERE module = 'cforge_launch'")->fetchCol();
+  foreach ($mlids as $mlid) {
+    menu_delete_item($mlid);
+  }
+}
+
+/*
+ * implement cforge hook_cf_role_permissions
+ */
+function cforge_currencies_cf_role_permissions() {
+  return array(
+    DRUPAL_AUTHENTICATED_RID => array(
+      'access statement' => 'intertrading'
+    ),
+    RID_TRADER => array(
+      'intertrade' => 'intertrading',
+      'transact' => 'mcapi'
+    ),
+    RID_SYSTEM =>  array(
+      'transact' => 'mcapi'
+    ),
+  );
+}
+
+/*
+ * Intertrading setup
+ *
+ * each site needs one intertrading account which serves as a proxy for the whole outside.
+ * variable_set('intertrading_uid', db_result(db_query("SELECT uid FROM {users} WHERE mail = 'intersel@communityforge.net'")));
+ *
+ * variable_set('intertrading_server', 'clearingcentral.communityforge.net');
+ * variable_set('intertrading_currcode', 'cred_unit');
+ * and add the permissions
+ */
+
+/*
+ * tell the forms module which is the tabs element to hide on stage 2
+ */
+function cforge_currencies_update_7001() {
+  $theme_settings = variable_get('theme_sky_seldulac_settings', array());
+  if (empty($theme_settings)) return;
+  $theme_settings['tab_element'] = 'div.tab-wrapper';
+  variable_set('theme_sky_seldulac_settings', $theme_settings);
+  cache_clear_all('variables', 'cache_bootstrap');
+}
+
+/**
+ * Enable the balance history module which is now separated from mcapi_index_views
+ */
+function cforge_currencies_update_7002() {
+  module_enable(array('mcapi_balance_history'));
+}
+/**
+ * position crucial blocks
+ */
+function cforge_currencies_update_7003() {
+  //going by region: sidebar_second
+  $blocks[] = array(
+    'module' => 'mcapi_limits',
+    'delta' => 'balance_limits',
+    'region' => 'sidebar_second',
+    'weight' => -5,
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => "transact/*\noffers*\nwants*",
+    'currcodes' => array('credunit'),
+    'user_source' => 1,//view your own profile
+    'title' => t('Balance extents')
+  );
+  $blocks[] = array(
+    'module' => 'mcapi',
+    'delta' => 'balances',
+    'region' => 'sidebar_second',
+    'weight' => -5,
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => "user*", //this block has settings...
+    'currcodes' => array('credunit'),
+    'user_source' => 1,//view your own profile
+    'title' => t('My balances')
+  );
+  module_load_install('cforge');
+  foreach ($blocks as $values) {
+    _cf_set_block($values);
+  }
+}
+
+
+/**
+ * add the categories field to the transaction
+ */
+function cforge_currencies_update_7004() {
+  if (!field_read_instance('transaction', 'offers_wants_categories', 'transaction')) {
+    field_create_instance(cforge_transaction_category_instance());
+  }
+  //the default transaction form has been edited
+}
+/**
+ * update the transaction categories instance
+ */
+function cforge_currencies_update_7005() {
+  if (field_read_instance('transaction', 'offers_wants_categories', 'transaction')) {
+    field_update_instance(cforge_transaction_category_instance());
+  }
+}
+/**
+ * remove the balances block from the sidebar
+ */
+function cforge_currencies_update_7006() {
+  db_update('block')->fields(array('status' => 0, 'region' => ''))->condition('delta', 'balances')->execute();
+}
+/**
+ * set a sensible pending signature notification message template
+ */
+function cforge_currencies_update_7007() {
+  _cforge_set_pending_message();
+}
+
+function cforge_transaction_category_instance() {
+  return array(
+    'label' => t('Category'),
+    'widget' => array(
+      'type' => 'options_select',
+      'weight' => '7',
+      'settings' => array(),
+      'module' => 'options',
+    ),
+    'settings' => array(),
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'type' => 'taxonomy_term_reference_link',
+        'settings' => array(),
+        'module' => 'taxonomy',
+        'weight' => 1,
+      ),
+    ),
+    'required' => TRUE,
+    'description' => '',
+    'field_name' => 'offers_wants_categories',
+    'entity_type' => 'transaction',
+    'bundle' => 'transaction',
+  );
+}
+
+function _cforge_set_pending_message() {
+  if (variable_get('mcapi_sign_notify_template', '') == '') {
+    $mcapi_sign_notify_template = array(
+      'subject' =>  t('Your signature is required'),
+      'body' => implode("\n\n", array(
+        t('Hello @name,', array('@name' => '[user:profile_address:first_name]')),
+        t('@name requires you to confirm this transaction:', array('@name' => '[transaction:creator]')),
+        '[transaction:url]',
+        t('If this is incorrect, please try to resolve it with @name.'),
+        t('We hope that you had a positive exchange!')
+      ))
+    );
+    variable_set('mcapi_sign_notify_template', $mcapi_sign_notify_template);
+  }
+}

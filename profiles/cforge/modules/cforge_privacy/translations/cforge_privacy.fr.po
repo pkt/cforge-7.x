@@ -1,0 +1,61 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: POEditor.com\n"
+"Project-Id-Version: cforge_privacy\n"
+"Language: fr\n"
+
+#: cforge_privacy.module:8
+msgid "User profile field permissions"
+msgstr "Champ de sélection des droits pour le membre"
+
+#: cforge_privacy.module:9
+msgid "Determine which user profile data is visible to whom"
+msgstr "Détermine quelles données du membre sont visibles pour qui"
+
+#: cforge_privacy.module:12
+msgid "Individuals choose their own privacy level"
+msgstr "Les personnes choisissent leur propre niveau de vie privée"
+
+#: cforge_privacy.module:69
+msgid "Member @uid"
+msgstr "Membre @uid"
+
+#: cforge_privacy.module:87
+msgid "Default privacy level"
+msgstr "Niveau de vie privée par défaut"
+
+#: cforge_privacy.module:88
+msgid "The exact meaning of each option is not yet documented."
+msgstr "La définition exacte de chaque option n'est pas encore documentée."
+
+#: cforge_privacy.module:91
+msgid "Public: Anyone can see content and contact details."
+msgstr "Public: tout le monde peut voir le contenu et les détails du contact."
+
+#: cforge_privacy.module:92
+msgid "Normal: only members of the site can know who I am."
+msgstr "Normal: seuls les membres du site peuvent savoir qui je suis."
+
+#: cforge_privacy.module:93
+msgid "Private: Only committee members can see my details."
+msgstr "Privé: seuls les membres du comité peuvent voir mes détails."
+
+#: cforge_privacy.module:126
+msgid "One of public|normal|private"
+msgstr "Un seul de public|normal|privé"
+
+#: cforge_privacy.info:0
+msgid "Cforge privacy policies"
+msgstr "Politiques Cforge de vie privée"
+
+#: cforge_privacy.info:0
+msgid "Global or personal privacy settings"
+msgstr "Paramètres de vie privée globaux ou personnels"
+
+#: cforge_privacy.info:0
+msgid "Community Forge"
+msgstr "Community Forge"
+

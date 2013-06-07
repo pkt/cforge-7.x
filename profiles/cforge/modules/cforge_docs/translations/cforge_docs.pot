@@ -1,0 +1,169 @@
+# $Id$
+#
+# LANGUAGE translation of Drupal (general)
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from files:
+#  cforge_docs.views.inc: n/a
+#  cforge_docs.views_default.inc: n/a
+#  views_handler_field_cfdocs_access.inc: n/a
+#  cforge_docs.module: n/a
+#  cforge_docs.install: n/a
+#  cforge_docs.info: n/a
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2012-11-18 09:21+0100\n"
+"PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: cforge_docs.views.inc:8
+msgid "CF document access"
+msgstr ""
+
+#: cforge_docs.views.inc:9
+msgid "Whether the document is protected and the user can access it"
+msgstr ""
+
+#: cforge_docs.views_default.inc:56
+msgid "No documents have been uploaded."
+msgstr ""
+
+#: cforge_docs.views_default.inc:56
+msgid "Add a document"
+msgstr ""
+
+#: cforge_docs.views_default.inc:135
+msgid "Docs"
+msgstr ""
+
+#: cforge_docs.views_default.inc:140
+msgid "Documents"
+msgstr ""
+
+#: cforge_docs.views_default.inc:141
+msgid "Category"
+msgstr ""
+
+#: cforge_docs.views_default.inc:142
+msgid "Titre"
+msgstr ""
+
+#: cforge_docs.views_default.inc:143
+msgid "Created"
+msgstr ""
+
+#: views_handler_field_cfdocs_access.inc:40
+msgid "view"
+msgstr ""
+
+#: cforge_docs.module:11
+msgid "Add another document"
+msgstr ""
+
+#: cforge_docs.module:23
+msgid "Page with attached Document(s) which can be categorised."
+msgstr ""
+
+#: cforge_docs.module:25
+msgid "Document title"
+msgstr ""
+
+#: cforge_docs.module:56
+msgid "Edit documents"
+msgstr ""
+
+#: cforge_docs.module:57
+msgid "Edit nodes with file attachments"
+msgstr ""
+
+#: cforge_docs.module:60
+msgid "View private documents"
+msgstr ""
+
+#: cforge_docs.module:61;65
+msgid "Each document has a privacy setting"
+msgstr ""
+
+#: cforge_docs.module:64
+msgid "View non-private documents"
+msgstr ""
+
+#: cforge_docs.module:86
+msgid "Private"
+msgstr ""
+
+#: cforge_docs.module:87
+msgid "Tick to show the document only to members"
+msgstr ""
+
+#: cforge_docs.install:26
+msgid "Our LETS"
+msgstr ""
+
+#: cforge_docs.install:26
+msgid "Documents associated with this group"
+msgstr ""
+
+#: cforge_docs.install:27
+msgid "Media coverage"
+msgstr ""
+
+#: cforge_docs.install:27
+msgid "Press, media and internet exposure."
+msgstr ""
+
+#: cforge_docs.install:28
+msgid "Publicity materials"
+msgstr ""
+
+#: cforge_docs.install:28
+msgid "Leaflets, posters etc."
+msgstr ""
+
+#: cforge_docs.install:29
+msgid "Minutes"
+msgstr ""
+
+#: cforge_docs.install:29
+msgid "Create your meeting agenda, and after the meeting edit the agenda so it can be viewed as minutes"
+msgstr ""
+
+#: cforge_docs.install:30
+msgid "Misc"
+msgstr ""
+
+#: cforge_docs.install:30
+msgid "Anything else"
+msgstr ""
+
+#: cforge_docs.install:46
+msgid "Now go and make some doc categories at !link"
+msgstr ""
+
+#: cforge_docs.install:122
+msgid "Document category"
+msgstr ""
+
+#: cforge_docs.install:188
+msgid "Content or synopsis of attached"
+msgstr ""
+
+#: cforge_docs.info:0
+msgid "Cforge Docs"
+msgstr ""
+
+#: cforge_docs.info:0
+msgid "Store and categories uploaded files, with privacy option"
+msgstr ""
+
+#: cforge_docs.info:0
+msgid "Community Forge"
+msgstr ""
+

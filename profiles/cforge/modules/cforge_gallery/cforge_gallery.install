@@ -1,0 +1,273 @@
+<?php
+
+/*
+ * implements hook_install
+ */
+function cforge_gallery_install() {
+  variable_set('comment_image', 2);
+  _check_gallery_instance();
+  $term = (object)array(
+    'name' => t('The usual suspects'),
+    'vid' => taxonomy_vocabulary_machine_name_load('galleries')->vid
+  );
+  taxonomy_term_save($term);
+  _make_flupload_instance();
+
+  variable_set('node_options_image', array('status'));
+  variable_del('image_gallery_nav_vocabulary');
+
+  //cleanup from drupal 6 image contrib module so the nod-type can be declared by node_info
+  db_delete("node_type")->condition('type', 'image')->execute();
+
+  //in case we are upgrading from d7, we might need to re-attach the managed files to the gallery nodes
+
+}
+
+/*
+ * implements hook_uninstall
+ */
+function cforge_gallery_uninstall() {
+  variable_del('node_options_image');
+  field_delete_field('galleries');
+  field_purge_batch(1);
+  node_type_delete('image');
+  db_query("DELETE FROM {menu_links} WHERE module = 'cforge_gallery'");
+  taxonomy_vocabulary_delete(taxonomy_vocabulary_machine_name_load('galleries')->vid);
+}
+
+function _check_gallery_instance() {
+  $existing = taxonomy_vocabulary_machine_name_load('galleries');
+  $new_vocab = (object)array(
+    'name' => t('Gallery'),
+    'module' => 'cforge_gallery',
+    'machine_name' => 'galleries',
+    'vid' => $existing ? $existing->vid : NULL
+  );
+  taxonomy_vocabulary_save($new_vocab);
+
+  $field_name = 'galleries';
+  $field = current(_update_7000_field_read_fields(array('field_name' => $field_name)));//this means it ran already
+
+  if (empty($field)) {
+    $field = array(
+      'field_name' => $field_name,
+      'type' => 'taxonomy_term_reference',
+      'entity_types' => array(),
+      'module' => 'taxonomy',
+      'bundles' => array(
+        'node' => array('image')
+      ),
+      'settings' => array(
+        'allowed_values' => array(
+          array(
+            'vocabulary' => 'galleries',
+            'parent' => '0',
+          )
+        )
+      ),
+      'bundles' => array(
+        'node' => array()
+      ),
+      'columns' => array(
+        'tid' => array(
+          'type' => 'int',
+          'unsigned' => TRUE,
+          'not null' => FALSE,
+        )
+      ),
+      'indexes' => array(
+        'tid' => array(
+          'tid'
+        )
+      ),
+      'foreign keys' => array(
+        'tid' => array(
+          'table' => 'taxonomy_term_data',
+          'columns' => array(
+            'tid',
+          )
+        )
+      ),
+    );
+    _update_7000_field_create_field($field);
+  }
+  $existing = (array)field_info_instance('node', $field_name, 'image', array('include_deleted' => TRUE));
+  $instance = array(
+    'label' => t('Gallery'),
+    'description' => t('Which gallery to put this photo in?'),
+    'field_name' => $field_name,
+    'entity_type' => 'node',
+    'bundle' => 'image',
+    'required' => TRUE,
+    'settings' => array(),
+    'display' => array(
+      'default' => array(
+        'type' => 'taxonomy_term_reference_link',
+        'label' => 'above',
+        'settings' => array(),
+        'module' => 'taxonomy',
+      ),
+      'teaser' => array(
+        'type' => 'hidden',
+        'label' => 'hidden',
+        'settings' => array(),
+        'module' => 'taxonomy',
+      ),
+    ),
+    'widget' => array(
+      'type' => 'options_select',
+      'module' => 'options'
+    )
+  )+ $existing;
+
+  _update_7000_field_create_instance($field, $instance);
+}
+
+function _make_flupload_instance() {
+  $field_name = 'image';
+  $field = field_info_field($field_name);
+  if (!$field) {
+    $field = array(
+      'settings' => array(
+        'uri_scheme' => 'public',
+        'default_image' => 0,
+        'required' => TRUE,
+        'file_directory' => 'images',
+        'file_extensions' => 'png gif jpg jpeg',
+        'max_filesize' => '800k',
+        'max_resolution' => '',
+        'min_resolution' => '',
+      ),
+      'entity_types' => array(),
+      'foreign keys' => array(
+        'fid' => array(
+          'table' => 'file_managed',
+          'columns' => array(
+            'fid' => 'fid',
+          ),
+        ),
+      ),
+      'indexes' => array(
+        'fid' => array(
+          'fid',
+        ),
+      ),
+      'field_name' => $field_name,
+      'type' => 'image',
+      'module' => 'image',
+      'active' => '1',
+      'locked' => '0',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'columns' => array(
+        'fid' => array(
+          'description' => 'The {file_managed}.fid being referenced in this field.',
+          'type' => 'int',
+          'not null' => FALSE,
+          'unsigned' => TRUE,
+        ),
+        'alt' => array(
+          'description' => "Alternative image text, for the image's 'alt' attribute.",
+          'type' => 'varchar',
+          'length' => 512,
+          'not null' => FALSE,
+        ),
+        'title' => array(
+          'description' => "Image title text, for the image's 'title' attribute.",
+          'type' => 'varchar',
+          'length' => 1024,
+          'not null' => FALSE,
+        ),
+        'width' => array(
+          'description' => 'The width of the image in pixels.',
+          'type' => 'int',
+          'unsigned' => TRUE,
+        ),
+        'height' => array(
+          'description' => 'The height of the image in pixels.',
+          'type' => 'int',
+          'unsigned' => TRUE,
+        ),
+      ),
+      'bundles' => array(
+        'node' => array(
+          'image',
+        ),
+      ),
+    );
+    $field = field_create_field($field);
+  }
+  $instance = array(
+    'label' => 'Image',
+    'description' => 'Select an image to upload.',
+    'widget' => array(
+      'weight' => -1,
+      'type' => 'image_image',
+      'module' => 'image',
+      'active' => 1,
+      'settings' => array(
+        'progress_indicator' => 'throbber',
+        'preview_image_style' => 'thumbnail',
+      ),
+    ),
+    'settings' => array(
+      'file_directory' => '',
+      'file_extensions' => 'png gif jpg jpeg',
+      'max_filesize' => '2MB',
+      'max_resolution' => '1024x768',
+      'min_resolution' => '400x300',
+      'alt_field' => 0,
+      'title_field' => 0,
+      'default_image' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'display' => array(
+      'default' => array(
+        'type' => 'image',
+        'label' => 'hidden',
+        'settings' => array(
+          'image_style' => 'large',
+          'image_link' => 'file',
+        ),
+        'module' => 'image',
+        'weight' => -5,
+      ),
+      'teaser' => array(
+        'type' => 'image',
+        'label' => 'hidden',
+        'settings' => array(
+          'image_style' => 'medium',
+          'image_link' => 'content'
+        ),
+        'weight' => -5,
+      ),
+    ),
+    'required' => 1,
+    'field_name' => $field_name,
+    'entity_type' => 'node',
+    'bundle' => 'image',
+    'deleted' => '0',
+  );
+  $existing = field_info_instance('node', $field_name, 'image');
+  if ($existing) {
+    field_update_instance($instance + $existing);
+  }
+  else {
+    _update_7000_field_create_instance($field, $instance);
+  }
+}
+
+function cforge_gallery_cf_role_permissions() {
+  //changed my mind about this
+  return;
+  return array(
+    RID_COMMITTEE => array(
+      'edit terms in '. taxonomy_vocabulary_machine_name_load('galleries')->vid => 'taxonomy'
+    )
+  );
+}
+
+//temp fixing a typo
+function cforge_gallery_update_7001() {
+  db_query("UPDATE {taxonomy_vocabulary} set module = 'cforge_gallery' WHERE machine_name = 'galleries'");
+}

@@ -1,0 +1,145 @@
+<?php
+
+
+function cforge_events_install() {
+  $field_name = 'event_date';
+  $field = array(
+    'translatable' => '0',
+    'entity_types' => array(),
+    'settings' => array(
+      'granularity' => array(
+        'month' => 'month',
+        'day' => 'day',
+        'hour' => 'hour',
+        'minute' => 'minute',
+        'year' => 'year',
+        'second' => 0,
+      ),
+      'tz_handling' => 'site',
+      'timezone_db' => 'UTC',
+      'cache_enabled' => 0,
+      'cache_count' => '4',
+      'todate' => '',
+    ),
+    'foreign keys' => array(),
+    'indexes' => array(),
+    'field_name' => $field_name,
+    'type' => 'datestamp',
+    'module' => 'date',
+    'active' => '1',
+    'locked' => '0',
+    'cardinality' => '1',
+    'deleted' => '0',
+    'columns' => array(
+      'value' => array(
+        'type' => 'int',
+        'not null' => FALSE,
+        'sortable' => TRUE,
+        'views' => TRUE,
+      ),
+    ),
+    'bundles' => array(
+      'node' => array(),
+    ),
+  );
+  if (!field_info_field($field_name)) {
+    field_create_field($field);
+  }
+  $instance = array(
+    'label' => 'Date',
+    'widget' => array(
+      'weight' => '-3',
+      'type' => 'date_popup',
+      'module' => 'date',
+      'active' => 1,
+      'settings' => array(
+        'input_format' => 'Y-m-d H:i:s',
+        'input_format_custom' => '',
+        'year_range' => '-0:+1',
+        'increment' => '15',
+        'label_position' => 'above',
+        'text_parts' => array(),
+        'display_all_day' => 0,
+      ),
+    ),
+    'settings' => array(
+      'default_value' => 'now',
+      'default_value_code' => '',
+      'default_value2' => 'same',
+      'default_value_code2' => '',
+      'user_register_form' => FALSE,
+    ),
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'type' => 'date_default',
+        'settings' => array(
+          'format_type' => 'long',
+          'multiple_number' => '',
+          'multiple_from' => '',
+          'multiple_to' => '',
+          'fromto' => 'both',
+        ),
+        'module' => 'date',
+        'weight' => 2,
+      ),
+      'teaser' => array(
+        'type' => 'hidden',
+        'label' => 'above',
+        'settings' => array(),
+        'weight' => 0,
+      ),
+    ),
+    'required' => 1,
+    'description' => '',
+    'field_name' => $field_name,
+    'entity_type' => 'node',
+    'bundle' => 'event',
+    'deleted' => '0',
+  );
+  if (!field_info_instance('node', $field_name, 'event')) {
+    field_create_instance($instance);
+  }
+
+  node_types_rebuild();
+  cforge_add_body_field('node', 'event', t('Details'));
+
+  variable_set('node_options_event', array('status'));
+  global $language;
+  cache_clear_all('views_block_items'.$language->language, 'cache_views');
+
+  if (in_array('content_type_event', db_query("SHOW TABLES")->fetchCol())) cforge_events_upgrade();
+}
+
+
+function cforge_events_upgrade() {
+  //copy the dates over from the old table
+  $dates = db_select('content_type_event', 'd')->fields('d', array('nid', 'vid', 'field_datetime_value'))->execute();
+  foreach ($dates as $date) {
+    $fields = array(
+      'entity_type' => 'node',
+      'bundle' => 'event',
+      'entity_id' => $date->nid,
+      'revision_id' => $date->vid,
+      'language' => LANGUAGE_NONE,
+      'delta' => 0,
+      'event_date_value' => strtotime($date->field_datetime_value)
+    );
+    db_insert('field_data_event_date')->fields($fields)->execute();
+    db_insert('field_revision_event_date')->fields($fields)->execute();
+  }
+  db_drop_table('content_type_event');
+}
+
+function cforge_events_uninstall() {
+  field_delete_field('event_date');
+  field_purge_batch(1);
+  node_type_delete('event');
+  variable_del('node_options_event');
+}
+
+function cforge_events_7001()  {
+  db_query("UPDATE {block} SET pages = :pages WHERE module = 'views' AND delta = 'events-block_upcoming'",
+    array(':pages', "news\nnode*")
+  );
+}

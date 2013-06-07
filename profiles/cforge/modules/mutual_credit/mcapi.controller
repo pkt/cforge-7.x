@@ -1,0 +1,363 @@
+<?php
+// $Id:
+
+/*
+ * This file is included using the function mcapi_controller();
+ * Each function supports the choice of database connections.
+ * the class should be named thus:
+ * MODULENAME_EntityController
+ * This controller test writes the transaction during validation
+ */
+
+class mcapiEntityController extends EntityAPIController {
+
+  /*
+   * We need to define a set of $conditions and a syntax for retrieving transactions
+   * Like our own transaction query language
+   * This will not be based on the db field names, and must support operators
+   * $conditions = array(
+   *   'created' => array(
+   *     'val' => 11982827367,
+   *     'op' => '>'
+   *   ),
+   *   'state' => array(
+   *     'val' => 1,
+   *     'op' => '<>'
+   *   )
+   * )
+   */
+
+  //conditions here are the same as in the node entity controller, which is to say, they assume they know what table they're reading to
+  public function load($xids = array(), $conditions = array()) {
+    $entities = array();
+    $passed_ids = !empty($xids) ? array_flip($xids) : FALSE;
+
+    //get from static cache where available
+    if ($this->cache) {
+      $entities += $this->cacheGet($xids, $conditions);
+      // If any entities were loaded, remove them from the ids still to load.
+      if ($passed_ids) {
+        $xids = array_keys(array_diff_key($passed_ids, $entities));
+      }
+    }
+    $queried_entities = array();
+    if (array_key_exists('quantity', $conditions) || array_key_exists('currcode', $conditions)) {
+      $query1 = db_select('field_data_worth', 'w')
+        ->fields('w', array('entity_id'))
+        ->condition('entity_type', 'transaction');
+      if (array_key_exists('quantity', $conditions)) {
+        $query1->condition('worth_quantity', $conditions['quantity']);
+      }
+      if (array_key_exists('currcode', $conditions)) {
+        $query1->condition('worth_currcode', $conditions['currcode']);
+      }
+      unset($conditions['quantity'], $conditions['currcode']);
+      $xids = $query1->execute()->fetchCol('entity_id');
+    }
+
+    if ($xids === FALSE || $xids || ($conditions && !$passed_ids)) {
+      //db_set_active(variable_get('mcapi_db_read', 'default'));
+      $query2 = db_select('mcapi_transactions');
+      //db_set_active();
+      $query2->fields('mcapi_transactions', $this->entityInfo['schema_fields_sql']['base table']);
+      // Build the query.
+      if ($xids) {
+        $query2->condition("mcapi_transactions.xid", $xids);
+      }
+      foreach ($conditions as $field => $value) {
+        $query2->condition('mcapi_transactions.' . $field, $value);
+      }
+      $queried_entities += $query2->execute()->fetchAllAssoc('xid');
+    }
+    if (!empty($queried_entities)) {
+      //extract the serialized data into 'extra' property
+      //there isn't acutally a use for the extra property at the moment.
+      foreach ($queried_entities as $entity) {
+        $entity->extra = unserialize($entity->data);
+        unset($entity->data);
+      }
+      $this->attachLoad($queried_entities);
+      $entities += $queried_entities;
+    }
+    if ($this->cache) {
+      if (!empty($queried_entities)) {
+        $this->cacheSet($queried_entities);
+      }
+    }
+    ksort($entities);//this ensures that the primary transaction in a cluster is first
+    return $entities;
+  }
+
+
+  /*
+   * creates a transaction-shaped object using the passed values
+   * the transaction would fail its own validation without being populated though
+   * PRIOR to writing in the database
+   * that means it does nothing with the xid and the serial number
+   *   'values' can contain any of
+   *   'payer' - user ID
+   *   'payee' - user ID
+   *   'creator' - User ID
+   *   'created' - unixtime
+   *   'type' - string defined in hook_mcapi_info_types
+   *   'extra' -
+   *   'state' - constant defined in hook_mcapi_info_states
+   *   'worth' - fieldAPI array begining with LANGUAGE_NONE
+   *     OR
+   *   'quantity' (AND currcode) numeric value (AND currency identifier)
+   *   'description' OR $description_field_name string describing purpose of transaction
+   *
+   */
+  public function create(array $values = array(), $for_me = FALSE) {
+    $transaction = new stdClass;
+    $default_props = array(
+      'payer' => 0,
+      'payee' => 0,
+      'creator' => $GLOBALS['user']->uid,
+      'created' => REQUEST_TIME,
+      'type' => 'default',
+      'extra' => array(),
+      'state' => TRANSACTION_STATE_FINISHED
+    );
+    foreach ($default_props as $key => $val) {
+      $transaction->$key = array_key_exists($key, $values) && !empty($values[$key]) ? $values[$key] : $val;
+      unset($values[$key]);
+    }
+    if (isset($values['worth'])) {
+      $items = isset($values['worth'][LANGUAGE_NONE]) ? $values['worth'][LANGUAGE_NONE] : $values['worth'];
+      foreach ($items as $delta => $item) {
+        $transaction->worth[LANGUAGE_NONE][] = array('currcode' => $item['currcode'], 'quantity' => $item['quantity']);
+      }
+      unset($values['worth']);
+    }
+    //another format which might be used
+    elseif(isset($values['worths'])) {
+      foreach ($values['worths'] as $currcode => $quantity) {
+        $transaction->worth[LANGUAGE_NONE][] = array('currcode' => $currcode, 'quantity' => $quantity);
+      }
+      unset($values['worths']);
+    }
+    elseif(isset($values['quantity']) && isset($values['quantity'])) {
+      $currencies = &drupal_static('currencies');
+      $transaction->worth[LANGUAGE_NONE][0]['quantity'] = $values['quantity'];
+      $transaction->worth[LANGUAGE_NONE][0]['currcode'] = $values['currcode'] ? $values['currcode'] : key($currencies);
+      unset($values['quantity'], $values['currcode']);
+    }
+    else {//if worths is not indicated, create a value for each currency the user is permitted to use
+      //check that the creator is actually permitted to use this currency
+      if ($for_me) $currencies =  currencies_load($GLOBALS['user']);
+      else $currencies = drupal_static('currencies');
+      foreach (array_keys($currencies) as $currcode) {
+        $transaction->worth[LANGUAGE_NONE][] = array(
+          'quantity' => 0,
+          'currcode' => $currcode
+        );
+      }
+    }
+    //probably the following fieldapi fields should be handled someotherhow, but this works
+    //and is particularly convenient for when transactions are created without awareness of the field API.
+    //
+    //allow the description to come in with various names
+    if ($desc_fieldname = variable_get('transaction_description_field')) {
+      //assumes that the description field is not called 'description'
+      if (isset($values['description'])) {
+        $transaction->{$desc_fieldname} = array(LANGUAGE_NONE => array(0 => array('value' => $values['description'])));
+        unset($values['description']);
+      }
+      elseif (isset($values[$desc_fieldname])) {
+        if (isset($values[$desc_fieldname][LANGUAGE_NONE])) $values[$desc_fieldname] = $values[$desc_fieldname][LANGUAGE_NONE];
+        $transaction->{$desc_fieldname} = array(
+          LANGUAGE_NONE => $values[$desc_fieldname]
+        );
+        unset($values[$desc_fieldname]);
+      }
+    }
+    //finally any other fields...
+    foreach($values as $fieldname => $value) {
+      if (empty($value)) continue;
+      //special presetting for taxonomy fields
+      $field = field_info_field($fieldname);
+      if ($field['type'] == 'taxonomy_term_reference') {
+        if (is_string($value)) {//the incoming value is a string of comma separated tags
+          if ($value == "_none") continue;
+          foreach(drupal_explode_tags($value) as $term_name) {
+            $term = current(taxonomy_get_term_by_name($term_name));
+            $transaction->{$fieldname}[LANGUAGE_NONE][] = array('tid' => $term->tid);
+          }
+        }
+        elseif (is_array($value)) {//must be a fieldAPI thing
+          $transaction->{$fieldname} = $value;
+        }
+        else throw new Exception("Don't know how to add terms in this format: ".print_r($value, 1));
+      }
+      else {
+        $transaction->{$fieldname}[LANGUAGE_NONE][]['value'] = $value;
+      }
+    }
+    $transaction->dependents = array();
+    return $transaction;
+  }
+
+  public function save($transaction){} //we have no use for this
+  /*
+   * put a new cluster of transactions in the database
+   * all will be given the SAME serial number, which is what makes them a cluster
+   * if $really is TRUE is returns the serial number
+   */
+  public function insert_cluster(array $transactions, $really = FALSE) {
+    //I never worked out how to properly lock the serial numbers and ensure they were sequential.
+    //this could make a mess on heavily used multithreaded server
+    $serial = $this->next_serial(current($transactions));
+
+    $db_transaction = db_transaction();
+    foreach ($transactions as $transaction) {
+      //$transaction->temp = isset($transaction->xid) ? $transaction->xid : 0;
+      //creator is set unambiguously here in the controller, to be sure its not tampered with
+      if (!property_exists($transaction, 'created')) {
+        //originally this was hardcoded here, but that meant we couldn't import transaction histories.
+        $transaction->created = REQUEST_TIME;
+      }
+      //after 2 years there's still no use for this field
+      $transaction->data = (isset($transaction->extra)) ? $transaction->extra : array();
+      if (!empty($transaction->serial)) {
+        throw new Exception ('Cannot insert transactions which already have a serial numbers: '.$transaction->serial);
+      }
+      else $transaction->serial = $serial;
+      try{
+        $this->insert_one($transaction, $really);
+      }
+      catch (Exception $e) {
+        $db_transaction->rollback();
+        throw $e;
+      }
+      //because the serial number mustn't be set until its actually written
+      if (!$really) unset($transaction->serial);
+    }
+    if (!$really) {
+      $db_transaction->rollback();
+    }
+    else return $serial;
+  }
+
+  //writes one line to the transactions table. Serial number must be provided already, using $this->next_serial()
+  //undoes the db_transaction if $really is FALSE
+  //this can be called from outside if necessary
+  public function insert_one ($transaction, $really) {
+    //foreach (array_filter(variable_get('mcapi_db_write', array('default'))) as $connection) {db_set_active($connection);
+    if(drupal_write_record('mcapi_transactions', $transaction) != SAVED_NEW) {
+      throw new Exception(
+        t('Failed to insert into table @tablename of database @database',
+        array('@tablename' => 'mcapi_transactions', '@database' => $connection)
+      ));
+    }
+  }
+
+
+  /*
+   * change the state of a transaction and its dependents
+   * This does not count as updating it, which is subject to different permissions
+   */
+  public function state(array $serials, $new_state) {
+    if (empty($serials)) return;
+    db_update('mcapi_transactions')
+      ->fields(array('state' => $new_state))
+      ->condition('serial', $serials)
+      ->execute();
+    $this->resetCache();
+  }
+
+  /*
+   * get some stats by adding up the transactions for a given user
+   * this is currently used for the limits module and for the views handler per-row
+   * caching running balances is dangerous because they would all need recalculating any time a transaction changed state
+   */
+  public function sums($uid, $currcode, $conditions) {
+    //this COALESCE is only tested for mysql.
+    //when we join the tables like this, half of all values will be NULL, and NULL values do not add
+    //so these NULL values need to be selected as 0 before adding
+    //there may well be a more elegant way
+
+    $query = "SELECT
+      COUNT(w1.worth_quantity) as count,
+      COALESCE(SUM(COALESCE(w2.worth_quantity, 0)), 0) as gross_in,
+      COALESCE(SUM(COALESCE(w1.worth_quantity, 0)), 0) as gross_out,
+      COALESCE(SUM(COALESCE(w2.worth_quantity, 0)) - SUM(COALESCE(w1.worth_quantity, 0)), 0) as balance,
+      COALESCE(SUM(COALESCE(w2.worth_quantity, 0)) + SUM(COALESCE(w1.worth_quantity, 0)), 0) as volume
+      FROM {mcapi_transactions} t
+      LEFT JOIN {field_data_worth} w1 ON t.xid = w1.entity_id AND w1.worth_currcode = '$currcode' AND t.payer = $uid
+      LEFT JOIN {field_data_worth} w2 ON t.xid = w2.entity_id AND w2.worth_currcode = '$currcode' AND t.payee = $uid
+      WHERE (t.payer = $uid OR t.payee = $uid)";
+    if ($result = db_query($query . mcapi_parse_conditions($conditions))->fetchAssoc()) {
+      return $result;
+    }
+    return array('count' => 0, 'gross_in' => 0, 'gross_out' => 0, 'balance' => 0, 'volume' => 0);
+  }
+
+  /*
+   * alternative to using views
+   * Get a list of transactions for a user, between unixtimes
+   * arguments, in any order can be
+   * from // unixtime
+   * to //unixtime
+   * states array, defaults to array(0) which is completed transactions only
+   * no pager is provided in this function
+   * views is much better
+   * this hasn't been used yet
+   */
+  public function get_period($uid, $variables) {
+    $variables += array(
+      'from' => 0,
+      'to' => REQUEST_TIME + 1,
+      'states' => array(TRANSACTION_STATE_FINISHED),
+      'currcode' => NULL
+    );
+    extract($variables);
+    //db_set_active(variable_get('mcapi_db_read', 'default'));
+    $query = db_select('mcapi_transactions', 'x')
+      ->fields('x', array('xid'))
+      ->condition(db_or()
+      ->condition('payer', $uid)
+      ->condition('payee', $uid)
+    )
+    ->condition('state', $states)
+    ->condition('created', $from, '>')
+    ->condition('created', $to,  '<')
+    ->orderby('created');
+    //db_set_active();
+    if ($currcode) {
+      $query->condition('currcode', $currcode);
+    }
+    return $this->load($query->execute()->fetchCol());
+  }
+
+  //this function is not 100% robust against creating simultaneous transactions
+  public function next_serial() {
+    return db_query("SELECT MAX(serial) FROM {mcapi_transactions}")->fetchField() + 1;
+  }
+
+  public function delete($serials) {
+    db_delete('mcapi_transactions')->condition('serial', $serials)->execute();
+  }
+}
+
+function mcapi_parse_conditions($conditions) {
+  if (empty($conditions)) return '';
+  $where = array();
+  foreach ($conditions as $condition) {
+    if (is_array($condition)) {
+      $condition[] = '=';
+      list($field, $value, $operator) = $condition;
+      if (empty($operator)) $operator = ' = ';
+      if (is_array($value)) {
+        $value = '('.implode(', ', $value) .')';
+        $operator = ' IN ';
+      }
+      $where[] = " ( t.$field $operator $value ) ";
+    }
+    else {//the condition is already provided as a string
+      $where[] = " $condition ";
+    }
+  }
+  return ' AND '. implode(' AND ', $where);
+}
+

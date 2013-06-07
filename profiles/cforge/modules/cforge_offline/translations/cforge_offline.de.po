@@ -1,0 +1,170 @@
+# $Id$
+#
+# LANGUAGE translation of Drupal (general)
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from files:
+#  offline_contact.tpl.php: n/a
+#  print-table.tpl.php: n/a
+#  cforge_offline.views.inc: n/a
+#  cforge_offline.views_default.inc: n/a
+#  views_plugin_display_print_table.inc: n/a
+#  cforge_offline.module: n/a
+#  cforge_offline.install: n/a
+#  cforge_offline.info: n/a
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2012-11-06 11:42+0100\n"
+"PO-Revision-Date: 2012-11-17 20:12+0100\n"
+"Last-Translator: Marlies Remy <marliesremy@buewin.ch>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"X-Generator: Poedit 1.5.4\n"
+
+#: offline_contact.tpl.php:18
+msgid "Phone: @phone"
+msgstr "Telefon: @phone"
+
+#: print-table.tpl.php:24
+msgid "Printed on @date"
+msgstr "Gedruckt am: @date"
+
+#: cforge_offline.views.inc:12
+msgid "An html table sent direct to the browser"
+msgstr ""
+
+#: cforge_offline.views_default.inc:111
+msgid "Family name"
+msgstr "Familienname"
+
+#: views_plugin_display_print_table.inc:65
+msgid "Print-page settings"
+msgstr "Seiteneinstellung für Druck"
+
+#: views_plugin_display_print_table.inc:70
+msgid "Multiple displays"
+msgstr "Mehrere Anzeigen"
+
+#: views_plugin_display_print_table.inc:79
+msgid "None"
+msgstr "Keine"
+
+#: views_plugin_display_print_table.inc:84;102;185
+msgid "Attach to"
+msgstr "anhängen"
+
+#: views_plugin_display_print_table.inc:89;118;176
+msgid "Position"
+msgstr "Position"
+
+#: views_plugin_display_print_table.inc:111
+msgid "The feed icon will be available only to the selected displays."
+msgstr "Das Feedsymbol steht nur für die ausgewählte Anzeige zur Verfügung."
+
+#: views_plugin_display_print_table.inc:121;179
+msgid "Attach before or after the parent display?"
+msgstr ""
+
+#: views_plugin_display_print_table.inc:127
+msgid ""
+"This view will be displayed by visiting this path on your site. It is "
+"recommended that the path be something like \"path/%/%/feed\" or \"path/%/%/"
+"rss.xml\", putting one % in the path for each argument you have defined in "
+"the view."
+msgstr ""
+
+#: views_plugin_display_print_table.inc:140
+msgid "Inherit contextual filters"
+msgstr "Kontextfilter übernehmen"
+
+#: views_plugin_display_print_table.inc:143;152;161
+msgid "Inherit"
+msgstr "Übernehmen"
+
+#: views_plugin_display_print_table.inc:144
+msgid ""
+"Should this display inherit its contextual filter values from the parent "
+"display to which it is attached?"
+msgstr ""
+
+#: views_plugin_display_print_table.inc:149
+msgid "Inherit exposed filters"
+msgstr ""
+
+#: views_plugin_display_print_table.inc:153
+msgid ""
+"Should this display inherit its exposed filter values from the parent "
+"display to which it is attached?"
+msgstr ""
+
+#: views_plugin_display_print_table.inc:158
+msgid "Inherit pager"
+msgstr ""
+
+#: views_plugin_display_print_table.inc:162
+msgid ""
+"Should this display inherit its paging values from the parent display to "
+"which it is attached?"
+msgstr ""
+
+#: views_plugin_display_print_table.inc:167
+msgid "Render pager"
+msgstr ""
+
+#: views_plugin_display_print_table.inc:170
+msgid "Render"
+msgstr ""
+
+#: views_plugin_display_print_table.inc:171
+msgid ""
+"Should this display render the pager values? This is only meaningful if "
+"inheriting a pager."
+msgstr ""
+
+#: views_plugin_display_print_table.inc:194
+msgid "Select which display or displays this should attach to."
+msgstr "Auswahl welche Anzeige oder Anzeigen angefügt werden sollen."
+
+#: views_plugin_display_print_table.inc:220
+msgid "Before"
+msgstr "Bevor"
+
+#: views_plugin_display_print_table.inc:221
+msgid "After"
+msgstr "Nach"
+
+#: views_plugin_display_print_table.inc:222
+msgid "Both"
+msgstr "Beide"
+
+#: views_plugin_display_print_table.inc:250
+msgid "Printer-friendly version"
+msgstr "Druckerfreundliche Version"
+
+#: cforge_offline.module:34
+msgid "Contact card"
+msgstr "Visitenkarte"
+
+#: cforge_offline.install:7
+msgid "Postal membership"
+msgstr "Post Mitglieder"
+
+#: cforge_offline.install:8
+msgid "This member prefers to receive updates by post"
+msgstr "Dieses Mitglied bevorzugt Updates per Briefpost."
+
+#: cforge_offline.info:0
+msgid "Cforge offline"
+msgstr "Cforge offline"
+
+#: cforge_offline.info:0
+msgid "support for offline users"
+msgstr "Unterstützung für Offlinebenutzer"
+
+#: cforge_offline.info:0
+msgid "Community Forge"
+msgstr "Community Forge"

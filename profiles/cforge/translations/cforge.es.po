@@ -1,0 +1,239 @@
+# $Id$
+#
+# LANGUAGE translation of Drupal (installer)
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from file: default.profile,v 1.22 2007/12/17 12:43:34 goba
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2012-01-15 13:09+0100\n"
+"PO-Revision-Date: 2012-02-29 08:45-0600\n"
+"Last-Translator: ttnk <ttnk@ttnk.org>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#: cforge.profile:31
+msgid "Full community accounting site similar to demo.communityforge.net"
+msgstr "Comunidad completa de intercambio similar a demo.communityforge.net"
+
+#: cforge.profile:46
+msgid "Cforge options"
+msgstr "Opciones de Cforge"
+
+#: cforge.profile:138
+msgid "Cforge installation options"
+msgstr "Opciones de instalación de Cforge"
+
+#: cforge.profile:164
+msgid "Username"
+msgstr "Usuario"
+
+#: cforge.profile:164
+msgid "Unique number"
+msgstr "Número único"
+
+#: cforge.profile:169
+msgid "Use automatic categorisation"
+msgstr "Usar categorización automática"
+
+#: cforge.profile:174
+msgid "Enable data import tools"
+msgstr "Permitir herramientas para importar datos"
+
+#: cforge.profile:175
+msgid "If your SEL has more than, say 25 members, you may want to import your data via csv."
+msgstr "Si tu SEL tiene mas de, digamos 25 miembros, tal vez quieras importer los datos via csv"
+
+#: cforge.profile:180
+msgid "Postal address"
+msgstr "Dirección postal"
+
+#: cforge.profile:186
+msgid "Preset currency to hours"
+msgstr "Moneda establecida a horas"
+
+#: cforge.profile:194
+msgid "Marketplace vocabulary"
+msgstr "Vocabulario del mercado"
+
+#: cforge.profile:195
+msgid "Optionally import terms into your main vocabulary"
+msgstr "Opcionalmente importa terminos en tu vocabulario principal"
+
+#: cforge.profile:201
+msgid "Create Intersel account"
+msgstr "Crear cuenta Intersel"
+
+#: cforge.profile:206
+msgid "Create Route des SEL account"
+msgstr "Crear rute de cuenta SEL"
+
+#: cforge.profile:212
+msgid "local administrator"
+msgstr "administrador local"
+
+#: cforge.profile:213
+msgid "Creates a administrator user with insufficient permission to break the site"
+msgstr "Crea un usuar"
+
+#: cforge.profile:217
+msgid "First name"
+msgstr "Nombre"
+
+#: cforge.profile:219;226
+msgid "Spaces are allowed; punctuation is not allowed except for periods, hyphens, and underscores."
+msgstr "Espacios son permitidos; signos de puntuacion no son permitidos excepto pro los puntos, comas y guion bajo"
+
+#: cforge.profile:224
+msgid "Family name"
+msgstr "Apellido"
+
+#: cforge.profile:232
+msgid "E-mail address"
+msgstr "Correo electrónico"
+
+#: cforge.profile:234
+msgid "All e-mails from the system will be sent to this address. The e-mail address is not made public and will only be used if you wish to receive a new password or wish to receive certain news or notifications by e-mail."
+msgstr "Todos los correos enviados del sistema será a esta dirección. El correo no se hará publico y solo sera utilizado si tu deseas recibir una nueva contraseña o si deseas recibir noticias o notificaciones por correo"
+
+#: cforge.profile:319
+msgid "I am asking"
+msgstr "Solicito"
+
+#: cforge.profile:319
+msgid "I am giving"
+msgstr "Ofrezco"
+
+#: cforge.profile:332
+msgid "Notification from !site"
+msgstr "Notificación de !site"
+
+#: cforge.profile:376
+msgid "Allows you to: enter a to-do task; list the tasks for members to commit to them; remind the committed member on his list of contributions; assign a recognition point when the task is accomplished."
+msgstr "Te permite: agregar una lista por hacer; enlista las tareas para los miembros para que se comprometan a ellas; recuerda a los miembros comprometidos e la lista de contribuciones; asigna un punto de reconocimiento cuanto la tarea se ha completado"
+
+#: cforge.profile:442
+msgid "Governance"
+msgstr "Forma de gobierno"
+
+#: cforge.profile:444
+msgid "A newsletter for the decision makers"
+msgstr "Un boletin para los que toman decisiones"
+
+#: cforge.profile:469
+msgid "Step by step guide to setting up your site"
+msgstr "Guía paso a paso para arrancar tu sitio"
+
+
+#: cforge.profile:565
+msgid "New password for !site"
+msgstr "Password nuevo para !site"
+
+#: cforge.profile:645
+msgid "Page"
+msgstr "Pagina"
+
+#: cforge.profile:647
+msgid "If you wish to add a menu item, please create a page. This is useful for adding pages such as 'our charter' that you'd like to display to visitors, or members."
+msgstr "Si quieres crear un link en el menu, por favor genera una pagina. Esto es util para agregar pagicas como 'nuestra funcion' que tu querras mostrar a visitantes o miembros."
+
+#: cforge.profile:654
+msgid "Article"
+msgstr "Articulo"
+
+#: cforge.profile:656
+msgid "Create and post articles that inform your members and animate your association. By default, the info appears on the 'Info' page and provides members can add comments."
+msgstr "Crea y publica articulos que informen a tus miembros y animen la asociacion.  Por default, la informacion aparede en la pagina 'info' y permite a los miembros agregar comentarios."
+
+#: cforge.profile:666
+msgid "Newsletter"
+msgstr "Boletin"
+
+#: cforge.profile:751
+msgid "An image which appears in a 'gallery'. When you upload an image you choose on the form which gallery it belongs to. Create new galleries via the manage menu."
+msgstr "Una imagen que aparece en 'gallery'.  Cuando subes una imagen tu escoges en la forma a la galeria que pertenece. Crea nuevas galerias en el menu de administracion"
+
+#: cforge.profile:759
+msgid "LETS life"
+msgstr "Vida LETS"
+
+#: cforge.profile:778
+msgid "Community Forge has taken your site offline briefly for maintenance. Thank you for your patience."
+msgstr "Community Forge ha puesto tu sitio fuera de linea por mantenimiento. Gracias por tu paciencia."
+
+#: cforge.profile:780
+msgid "Your slogan here"
+msgstr "Tu slogan aqui"
+
+#: cforge.profile:781
+msgid "Visitor"
+msgstr "Visitante"
+
+#: cforge.profile:815
+msgid "This is to prevent robots creating accounts"
+msgstr "Esto es para evitar que robots creen cuentas"
+
+#: cforge.profile:837
+msgid "Information request"
+msgstr "Solicitud de informacion"
+
+#: cforge.profile:838
+msgid "Membership"
+msgstr "Membresia"
+
+#: cforge.profile:839
+msgid "Activities"
+msgstr "Actividades"
+
+#: cforge.profile:840
+msgid "Accounting"
+msgstr "Contabilidad"
+
+#: cforge.profile:841
+msgid "Website (tech)"
+msgstr "Sitio web (tech)"
+
+#: cforge.profile:842
+msgid "Website (content)"
+msgstr "Sitio web (contenido)"
+
+#: cforge.profile:843
+msgid "Mediation"
+msgstr "Mediacion"
+
+#: cforge.profile:844
+msgid "Suggest how to improve this site"
+msgstr "Sugerir como mejorar este sitio"
+
+#: cforge.profile:845
+msgid "Contact the builder of this site"
+msgstr "Contactar con el constructor del sitio"
+
+
+msgid "A site administrator at [site:name] has created an account for you. You may now log in to [site:login-url] using the following username and password:"
+msgstr ""
+
+msgid "Username: [user:name]"
+msgstr ""
+
+msgid "You may log in now by clicking on this link or copying and pasting it in your browser:"
+msgstr ""
+
+msgid "This is a one-time login, so it can be used only once."
+msgstr ""
+
+msgid "After logging in, you will be redirected to [user:edit-url] so you can change your password."
+msgstr ""
+
+msgid "'Thank you for registering at [site:name]. Your application for an account is currently pending approval. Once it has been approved, you will receive another e-mail containing information about how to log in, set your password, and other details."
+msgstr ""
+
+msgid "Account details for [user:name] at [site:name] (approved)"
+msgstr ""
+
+msgid "Your account at [site:name] has been activated."
+msgstr ""

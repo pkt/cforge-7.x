@@ -1,0 +1,2634 @@
+<?php
+
+require_once('cforge.profile');
+
+/**
+ * implements hook_install_tasks
+ */
+function cforge_install_tasks($install_state) {
+  $tasks = array(
+    //swopping these nerequestxt two around for an experiment...
+    'cforge_setup_basic' => array(),
+    'cforge_setup_types_fields' => array(
+      'display_name' => st('Create content types')
+    ),
+    'cforge_update_7005' => array(),
+    'cforge_choose_frontend_form' => array(
+      'display_name' => st('Choose front-end'),
+      'type' => 'form'
+    ),
+    'cforge_setup_frontend' => array(
+      //'display_name' => st('Setup front-end')
+    ),
+    'cforge_reset_menu_links' => array(
+      'display_name' => st('Reset menu links')
+    ),
+  );
+  return $tasks;
+}
+
+function cforge_install_tasks_alter(&$tasks, $install_state) {
+  $task = array_pop($tasks);
+  $tasks['install_finished_cf'] = array();
+}
+
+//copy of the function from install.fore.inc
+function install_finished_cf(&$install_state) {
+  cforge_load_frontend();
+  //profile_fields don't need resettingsfunction install_finished(&$install_state) {
+  drupal_set_title(st('@drupal installation complete', array('@drupal' => drupal_install_profile_distribution_name())), PASS_THROUGH);
+  $messages = drupal_set_message();
+  $output = '<p>' . st('Congratulations, you installed @drupal!', array('@drupal' => drupal_install_profile_distribution_name())) . '</p>';
+  $output .= '<p>' . (isset($messages['error']) ? st('Review the messages above before visiting <a href="@url">your new site</a>.', array('@url' => url(''))) : st('<a href="@url">Visit your new site</a>.', array('@url' => url('')))) . '</p>';
+
+  // Flush all caches to ensure that any full bootstraps during the installer
+  // do not leave stale cached data, and that any content types or other items
+  // registered by the installation profile are registered correctly.
+  drupal_flush_all_caches();
+
+  // Remember the profile which was used.
+  variable_set('install_profile', drupal_get_profile());
+
+  // Installation profiles are always loaded last
+  db_update('system')
+    ->fields(array('weight' => 1000))
+    ->condition('type', 'module')
+    ->condition('name', drupal_get_profile())
+    ->execute();
+
+  // Cache a fully-built schema.
+  drupal_get_schema(NULL, TRUE);
+
+  // Run cron to populate update status tables (if available) so that users
+  // will be warned if they've installed an out of date Drupal version.
+  // Will also trigger indexing of profile-supplied content or feeds.
+  drupal_cron_run();
+
+  //added by matslats
+  cforge_reset_profile_fields();
+  cforge_reset_blocks();
+  cforge_reset_permissions();
+  //menu_links and translations are done elsewhere
+
+  //put default data into user 1 fields
+  $edit['profile_address'][LANGUAGE_NONE][0]['dependent_locality'] = 'Internet';
+  $edit['profile_address'][LANGUAGE_NONE][0]['first_name'] = variable_get('site_name');
+  $edit['name'] = variable_get('site_name');
+  $edit['profile_address'][LANGUAGE_NONE][0]['country'] = _cf_get_country();
+  user_save(user_load(1), $edit);
+  return $output;
+}
+
+/*
+ * implements hook_FORM_install_configure_form_ALTER using system module
+ * cforge profile isn't loaded up into the hook registry yet
+ * surprising, coz in 6 it worked because there was no hook registry
+ */
+function system_form_install_configure_form_alter(&$form) {
+  $form['site_information']['site_name']['#default_value'] = $_SERVER['SERVER_NAME'];
+  $form['admin_account']['#description'] = st('The username is comprised of the first name and family name');
+  $form['admin_account']['account']['name']['#type'] = 'hidden';
+  $form['admin_account']['account']['name']['#value'] = 'placeholder name';
+  if (strpos($_SERVER["HTTP_HOST"], 'ommunityforge.net')) {
+    $form['admin_account']['account']['mail']['#default_value'] = 'tim@communityforge.net';
+    $form['server_settings']['date_default_timezone']['#default_value'] = 'CET';
+  }
+  $form['country'] = array(
+    '#title' => t('Country'),
+    '#description' => t('Used for the address field'),
+    '#type' => 'select',
+    '#options' => _country_get_predefined_list(),
+  );
+  $form['#submit'][] = 'cforge_install_hold_country';
+}
+
+function cforge_install_hold_country($form, $form_state) {
+  variable_set('cforge_install_hold_country', $form_state['values']['country']);
+}
+
+function cforge_setup_basic() {
+  global $language;
+  cf_setup_wrappers();
+  //set the first day of the week to sunday for english lanaguage.
+  variable_set('first_day',  in_array($language->language, array('en')) ? 0 : 1);
+  //grant roles to the number 1 account
+  user_save(user_load(1), array('roles' => array(RID_SYSTEM => RID_SYSTEM)));
+
+  module_enable(array('contact'));//this should certainly have been installed already, as a cforge profile dependency
+  //contact settings
+  db_insert('contact')->fields(array(
+    'category' => t('Information request'),
+    'recipients' =>  variable_get('site_mail', ''),
+    'reply' => '',
+    'weight' => 1,
+    'selected' => 1
+  ))->execute();
+  variable_set('filter_fallback_format', 'filtered_html');
+  db_update('system')->fields(array('weight' => 1001))->condition('name', 'cforge_%', 'LIKE')->execute();
+}
+
+function cforge_setup_types_fields() {
+  //create node types
+  $types = array(
+    array(
+      'type' => 'page',
+      'name' => st('Web page'),
+      'base' => 'node_content',
+      'description' => st("Permanent content, accessible through one of the three menus."),
+      'custom' => FALSE,
+      'locked' => TRUE,
+    ),
+    array(
+      'type' => 'story',
+      'name' => st('News'),
+      'base' => 'node_content',
+      'description' => st("Transient content that appears on the news page, and allows comments from members."),
+      'custom' => FALSE,
+      'locked' => TRUE,
+    ),
+  );
+  foreach ($types as $type) {
+    $type = node_type_set_defaults($type);
+    node_type_save($type);
+    cforge_add_body_field('node', $type->type, t('Body'));
+  }
+//create the upload field
+  $upload = array(
+    'translatable' => '0',
+    'settings' => array(
+      'display_field' => 1,
+      'display_default' => 1,
+      'uri_scheme' => 'public',
+      'default_file' => 0,
+    ),
+    'entity_types' => array(),
+    'indexes' => array(
+      'fid' => array(
+        'fid',
+      ),
+    ),
+    'field_name' => 'upload',
+    'type' => 'file',
+    'module' => 'file',
+    'active' => '1',
+    'locked' => '0',
+    'cardinality' => '-1',
+    'deleted' => '0',
+    'columns' => array(
+      'fid' => array(
+        'description' => 'The {file_managed}.fid being referenced in this field.',
+        'type' => 'int',
+        'not null' => FALSE,
+        'unsigned' => TRUE,
+      ),
+      'display' => array(
+        'description' => 'Flag to control whether this file should be displayed when viewing content.',
+        'type' => 'int',
+        'size' => 'tiny',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 1,
+      ),
+      'description' => array(
+        'description' => 'A description of the file.',
+        'type' => 'text',
+        'not null' => FALSE,
+      )
+    ),
+    'bundles' => array(
+      'node' => array(),
+    )
+  );
+  if (!field_read_field('upload')) field_create_field($upload);
+
+  //create roles
+  //we don't use the drupal API for this because it doesn't allow for creation of roles with predetermined rids
+  //use REPLACE because its good practice while developing an installation profile!
+  db_query("REPLACE INTO {role} (rid, name)
+      VALUES (:trader, 'trader'), (:committee, 'committee'), (:system, 'system');",
+    array(':trader' => RID_TRADER, ':committee' => RID_COMMITTEE, ':system' => RID_SYSTEM)
+  );
+
+  //better install these modules sooner I think
+  $modules[] = 'offers_wants';
+  $modules[] = 'mcapi_signatures';
+  $modules[] = 'community_tasks';//this is not 'required' but will install if present
+  $modules[] = 'image';//because we need hook_permission to be registered for the next round of enabling
+  $modules[] = 'file';
+  module_enable($modules, TRUE);
+
+  db_truncate('role_permission');
+}
+
+function cforge_add_body_field($entity, $bundle, $label = 'Body') {
+  // Add or remove the body field, as needed.
+  $field = field_info_field('body');
+  if (empty($field)) {
+    $field = array(
+      'field_name' => 'body',
+      'translatable' => TRUE,
+      'type' => 'text_with_summary',
+      'entity_types' => array('node', 'transaction', 'comment'),
+    );
+    $field = field_create_field($field);
+  }
+  $instance = field_info_instance('node', 'body', $bundle);
+  if (empty($instance)) {
+    $instance = array(
+      'field_name' => 'body',
+      'entity_type' => 'node',
+      'bundle' => $bundle,
+      'label' => $label,
+      'widget' => array('type' => 'text_textarea'),
+      'settings' => array(
+        'display_summary' => FALSE,
+        'text_processing' => TRUE //this needs to be put into an update if it works
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'type' => 'text_default',
+        ),
+        'teaser' => array(
+          'label' => 'hidden',
+          'type' => 'text_summary',
+        ),
+      ),
+    );
+    $instance = field_create_instance($instance);
+  }
+  return $instance;
+}
+
+/*
+ * for each of the old profile field types, we create a new field here, if its not there already
+ */
+function cforge_setup_profile_field($row, $fieldname) {
+  $row = (object)$row;
+  if (field_read_instance('user', $fieldname, 'user', array('include_inactive' => TRUE))) return TRUE;
+  switch ($row->type) {
+    case 'textarea':
+      _matslats_make_profilefield_text($fieldname, 'text_long');
+      _matslats_make_profile_instance('text', $fieldname, 'text_textarea', 'text_default', $row);
+      return TRUE;
+    case 'textfield':
+      _matslats_make_profilefield_text($fieldname, 'text');
+      _matslats_make_profile_instance('text', $fieldname, 'text_textfield', 'text_default', $row);
+      return TRUE;
+    case 'checkbox':
+      _matslats_make_profilefield_boolean($fieldname);
+      _matslats_make_profile_instance('options', $fieldname, 'options_onoff', 'list_default', $row);
+      return TRUE;
+    case 'selection':
+      _matslats_make_profilefield_list($fieldname, $row->options);
+      _matslats_make_profile_instance('options', $fieldname, 'options_select', 'list_default', $row);
+      return TRUE;
+    default:
+      drupal_Set_message ("profile fieldtype not supported. Unable to update: ".print_r($row, 1), 'warning');
+      return FALSE;
+  }
+}
+
+function _matslats_make_profilefield_list($fieldname, $options) {
+  $field_def = array(
+    'entity_types' => array(),
+    'settings' => array(
+      'allowed_values' => drupal_map_assoc(explode("\n", str_replace("\r", '', $options)))
+    ),
+    'field_name' => $fieldname,
+    'type' => 'list_text',
+    'module' => 'list',
+    'active' => '1',
+    'locked' => '0',
+    'cardinality' => '1',
+    'columns' => array(
+      'value' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => false,
+      ),
+    ),
+    'bundles' => array(
+      'user' => array(
+        0 => 'user',
+      ),
+    ),
+  );
+  field_create_field($field_def);
+}
+
+function _matslats_make_profilefield_text($field_name, $type) {
+  $field_def = array(
+    'entity_types' => array(),
+    'translatable' => '0',
+    'field_name' => $field_name,
+    'type' => $type,
+    'cardinality' => $field_name == 'profile_phones' ? 2 : 1,
+    'module' => 'text',
+    'columns' => array(
+      'value' => array(
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => FALSE,
+      ),
+      'summary' => array(
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => FALSE,
+      ),
+      'format' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+      ),
+    ),
+    'bundles' => array(
+      'user' => array(
+        0 => 'user',
+      ),
+    ),
+  );
+  field_create_field($field_def);
+}
+function _matslats_make_profilefield_boolean($field_name) {
+  if (field_read_field($field_name)) return;
+  $field_def = array(
+    'translatable' => '0',
+    'entity_types' => array(),
+    'settings' => array(
+      'allowed_values' => array(
+        0 => '0',
+        1 => '1',
+      )
+    ),
+    'field_name' => $field_name,
+    'type' => 'list_boolean',
+    'module' => 'list',
+    'active' => '1',
+    'columns' => array(
+      'value' =>  array(
+        'type' => 'int',
+        'not null' => false,
+      ),
+    ),
+    'bundles' => array(
+      'user' => array(
+        0 => 'user',
+      ),
+    ),
+  );
+  field_create_field($field_def);
+}
+function _matslats_make_profile_instance($module, $field_name, $widget_type, $display_default_type, $data) {
+  if (field_read_instance('user', $field_name, 'user', array('include_inactive' => TRUE))) return;
+  $instance = array(
+    'label' => $data->title,
+    'field_name' => $field_name,
+    'entity_type' => 'user',
+    'bundle' => 'user',
+    'description' => $data->explanation,
+    'widget' => array(
+      'weight' => $data->weight,
+      'type' => $widget_type,
+      'module' => $module,
+      'active' => 1,
+      'settings' =>array(
+        'display_label' => TRUE, //this applies to checkboxes only
+      )
+    ),
+    'settings' => array(
+      'user_register_form' => $data->register,
+      'text_processing' => 0,//keep it simple
+    ),
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'type' => $display_default_type,
+        'settings' => array(),
+        'module' => 'text',
+        'weight' => $data->weight,
+      )
+    ),
+    'required' => $data->required,
+  );
+  if (property_exists($data, 'size')) {
+    $instance['widget']['settings']['size'] = $data->size;
+  }
+  field_create_instance($instance);
+}
+
+
+
+function cforge_choose_frontend_form() {
+  $form['frontend'] = array(
+    '#type' => 'radios',
+    '#title' => t('Choose a Cforge front-end'),
+    '#options' => array(
+      'default' => 'Default'
+    )
+  );
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Submit')
+  );
+  return $form;
+}
+
+function cforge_choose_frontend_form_submit($form, $form_state) {
+  //this has to work even in Aegir if the form stage doesn't happen
+  variable_set('cforge_frontend', $form_state['values']['frontend']);
+}
+
+
+/*
+ * This function expects the following functions in the .front file
+ * the .front file should have the following functions
+ * cforge_frontend_modules()
+ * cforge_frontend_theme()
+ * cforge_frontend_default_nodes()
+ * cforge_frontend_frontpage()
+ * cforge_frontend_menus();
+ * this is a separate stage in the install process so that aegir doesn't need the form submitted
+ */
+function cforge_setup_frontend() {
+  cforge_load_frontend();
+  configure_captcha();
+  drupal_load_updates();//loads all the .install files
+
+  cforge_reset_translations();
+  module_enable(cforge_frontend_modules());
+  foreach (cforge_frontend_default_nodes() as $node) {
+    node_save((object)$node);
+  }
+  drupal_path_alias_whitelist_rebuild();
+  cforge_set_mail_templates();
+
+  variable_set('site_frontpage', cforge_frontend_frontpage());
+
+  $theme = cforge_frontend_theme();
+  variable_set('theme_default', $theme);
+  theme_enable(array('sky_seldulac'));
+
+  //saves the custom menus
+  cforge_frontend_menus();//in the frontend file
+
+  cache_clear_all(NULL, 'cache_bootstrap');
+
+  $rids = array_keys(user_roles());
+  foreach (cforge_retrieve_permissions($rids) as $rid => $permissions) {
+    user_role_grant_permissions($rid, array_keys($permissions));
+  }
+  //registry_rebuild();
+  //menu_rebuild();//ready for the big reset
+}
+
+
+function cforge_backup_restore_setup() {
+  //backup_restore settings
+  $nodata = array('cache', 'cache_block', 'cache_filter',  'cache_form', 'cache_hierarchical_select',
+    'cache_menu', 'cache_page', 'cache_update', 'cache_views', 'cache_views_data', 'captcha_points', 'captcha_sessions',
+    'flood',  'search_dataset', 'search_index', 'search_node_links', 'search_total', 'semaphore', 'sessions'
+  );
+  $filters = array(
+    'compression' => 'zip',
+    'notify_success_enable' => 0,
+    'notify_success_email' => 'admin@matslats.net',
+    'notify_failure_enable' => 0,
+    'notify_failure_email' => 'admin@matslats.net',
+    'utils_site_offline' => 0,
+    'utils_site_offline_message' => t('Community Forge has taken your site offline briefly for maintenance. Thank you for your patience.'),
+    'exclude_tables' => array(),
+    'nodata_tables' => drupal_map_assoc($nodata),
+    'utils_lock_tables' => 1
+  );
+  db_query(
+      "UPDATE backup_migrate_profiles
+      SET name = 'Cforge_backup', filename = 'cforge', append_timestamp = 1, timestamp_format = 'Y-m-d\\TH-i-s', filters = :filters
+      WHERE profile_id = 'default'",
+    array(':filters' => serialize($filters))
+  );
+}
+/**
+ * Implements hook_update_dependencies().
+ */
+function cforge_update_dependencies() {
+  $dependencies = array(
+    'user' => array(
+      7000 => array(
+        'cforge' => 6999
+      )
+    ),
+    'token' => array(
+      7000 => array(
+        'cforge' => 6999
+      )
+    ),
+    'cforge' =>array(
+      7000 => array(
+        'offers_wants' => 7001,
+        'filter' => 7000, //renames the filter_formats table
+        'system' => 7001,
+      ),
+      7001 => array(//alter the upgraded vocab fields
+        //'mcapi' => 7009, //
+        'taxonomy' => 7004//upgrade the vocab fields
+      ),
+      7002 => array(
+        'block' => 7002
+      ),
+      7003 => array(//sort out the images
+        'node' => 7006,//sort out node types before upgrading image field
+        'system' => 7063, //where the upload field is created,
+        'user' => 7012, //when the profile pics are converted to the file managed table
+      ),
+      7016 => array(
+        'menu' => 7001
+      )
+    ),
+    'system' => array(
+      7001 => array(
+        'cforge' => 6999,
+      )
+    ),
+    'block' => array(
+      7002 => array(//renames the blocks table
+        'cforge' => 6999//deletes the 'manage' block
+      )
+    ),
+    'date' => array(
+      7000 => array(
+        'system' => 7020
+      )
+    ),
+    'views' => array(
+      7000 => array(
+        'system' => 7020
+      )
+    ),
+    'user' => array(
+      7002 => array(
+        'profile' => 7001,
+        'filter' => 7010,
+        'cforge' => 6999
+      ),
+    )
+  );
+  return $dependencies;
+}
+
+
+//this ensures that the installation profile exists in the system table.
+//there's no hook_function it can live in that will run before dependencies
+function cforge_requirements($phase) {
+  if ($phase != 'update') return;
+  if (db_query("SELECT name FROM {system} WHERE name = 'system' AND schema_version > 6999")->fetchField()) return;
+  drupal_set_message('inserting cforge into system table');
+  db_merge('system')->key(array('filename' => 'profiles/cforge/cforge.profile'))->fields(array(
+    'name' => 'cforge',
+    'type' => 'module',
+    'owner' => '',
+    'status' => 1,
+    'bootstrap' => 0,
+    'weight' => 1000,
+    'info' => serialize(array())
+  ))->execute();
+
+}
+
+
+/**
+ * preliminaries - requiring no dependencies
+ */
+function cforge_update_6999() {
+  drupal_set_message('disabling some modules in preparation for upgrade. they will be reenabled later');
+  db_query("UPDATE {system} SET status  = 0 WHERE name in ('mcapi', 'calendar', 'ctools', 'views', 'views_ui', 'l10n_update', 'date_views', 'devel')");
+  db_query("UPDATE {system} SET status  = 0 WHERE name LIKE 'hs_%'");
+  //unfortunately the upgrade process leaves customised d6 menu links untouched
+  //rather than reset everything, we're going to delete piecemeal
+  db_delete('menu_links')->condition('menu_name', 'manage')->execute();
+  db_delete('menu_custom')->condition('menu_name', 'manage')->execute();
+  db_query("DELETE FROM {menu_links} WHERE customized = 1 AND link_path LIKE '%build%'");
+  db_query("DELETE FROM {menu_links} WHERE customized = 1 AND link_path LIKE '%settings%'");
+  db_query("DELETE FROM {menu_links} WHERE customized = 1 AND link_path LIKE 'node/add%'");
+  db_query("DELETE FROM {menu_links} WHERE customized = 1 AND link_path LIKE 'admin/report%'");
+
+  //we'll rebuild all the menu links from scratch using a different mechanism
+  db_query("DELETE FROM {menu_links} WHERE module = 'cforge_custom'");
+
+  //the following are legacies or they may have been moved around and will be replaced by defaults
+  $link_paths = array(
+    'admin/content/simplenews',
+    'admin/cforge',
+    'news/recent',
+    'admin/config/ow',
+    'admin/content',
+    'admin/content/node',
+    'exchange/1stparty','exchange/3rdparty',
+    'user/statement', 'user/directory', 'user/balance_sheet', 'user/balances', 'invite',//these are seldulac relics
+    'logout',//this didn't work on SdL
+    'user/register',
+    'user',
+  );
+  db_delete('menu_links')->condition('link_path', $link_paths)->execute();
+
+  db_query("UPDATE {node} SET type = 'story' WHERE type = 'simplenews'");
+
+  //this variable affects whether the upload instance is created on each node type
+  db_query("DELETE FROM {variable} WHERE name LIKE 'upload_%'");
+  variable_set('upload_document', TRUE);
+  variable_set('upload_story', TRUE);
+
+  db_query("DELETE FROM {variable} WHERE name LIKE 'comment_%'");
+  _cf_make_bundle_commentable('story');
+  _cf_make_bundle_commentable('image');
+  _cf_make_bundle_commentable('proposition');
+  _cf_make_bundle_commentable('event');
+  //ensure these bundles aren't commented
+  _cf_make_bundle_commentable('community', FALSE);
+  _cf_make_bundle_commentable('page', FALSE);
+  _cf_make_bundle_commentable('document', FALSE);
+
+  //delete duplicate permissions. This was rather badly done in d6
+  $pids = db_select('permission', 'p')
+    ->fields('p', array('rid', 'pid'))
+    ->orderby('pid', 'ASC')
+    ->execute()->fetchAllKeyed(0);
+  db_delete('permission')->condition('pid', $pids, 'NOT IN')->execute();
+
+  //date is a pernicious and flakey muodule does not upgrade well.
+  db_delete('system')->condition('name', array('date', 'cforge_custom'))->execute();
+  db_delete('blocks')->condition('module', 'cforge_custom')->execute();
+  db_delete('blocks')->condition('delta', 'manage')->execute();
+  db_delete('blocks')->condition('theme', array('cforge_subtheme', 'sky'))->execute();
+  module_enable(array('ctools', 'date_views', 'path', 'search', 'token'));
+  drupal_uninstall_modules(array('l10n_update'));
+}
+
+
+/**
+ * should run after vocabs table is updated
+ */
+function cforge_update_7000() {
+  cf_setup_wrappers();
+  cforge_reset_profile_fields();
+
+  //tidies up a glitch in the fieldAPI upgrade
+  db_query("DELETE from {field_config_instance} where bundle = ''");
+
+  drupal_path_alias_whitelist_rebuild();
+  //the folder holding the money-go-round.gif has been renamed, so we'll find and replace the path on the home page
+  $home = db_query("SELECT source from {url_alias} WHERE alias = 'home'")->fetchField();
+  if ($home) {
+    $node = node_load(substr($home, 5));
+    $body = &$node->body[LANGUAGE_NONE][0]['value'];
+    $summary = &$node->body[LANGUAGE_NONE][0]['summary'];
+    //don't worry about the non-french sites
+    $body = str_replace('content/fr/money-go-round.gif', 'money-go-round.gif', $body);
+    $summary = str_replace('content/fr/money-go-round.gif', 'money-go-round.gif', $summary);
+    node_save($node);
+  }
+
+  //ensure the body field has the right settings as the default upgrade is cumbersome
+  //$field = current(_update_7000_field_read_fields(array('field_name' => 'body')));
+  foreach (field_read_instances(array('field_name' => 'body')) as $instance) {
+    $instance['settings']['display_summary'] = FALSE;
+    field_update_instance($instance);
+  }
+    //alter the cludgy upgraded fieldnames for the image gallery and docs vocabulary
+  _cf_rename_upgraded_vocab_field(
+    db_query("SELECT vid FROM {taxonomy_vocabulary} WHERE module = 'image_gallery'")->fetchField(),//should always be 3, from cforge_custom
+    'galleries',
+    'cforge_gallery'
+  );
+  module_enable(array('cforge_offline'));
+  _field_info_collate_types(TRUE);
+}
+
+
+
+/**
+ * update profile fields, since the d6 profile module maintainers seem to have failed to do the honourable thing
+ * and migrate contents.
+ */
+function cforge_update_7001() {
+
+  $addressfields = array('profile_locality', 'profile_firstname', 'profile_familyname', 'profile_address');
+  $query = db_select('profile_value', 'v');
+  $query->join('profile_field', 'f', 'f.fid = v.fid');
+  $query->fields('f', array('fid', 'title', 'name', 'explanation', 'type', 'weight', 'required', 'register'));
+  $query->fields('v', array('uid', 'value'));
+  $result = $query->condition('name', $addressfields)->execute()->fetchAll();
+  $aliases = array(
+    'profile_locality' => 'profile_address_dependent_locality',
+    'profile_firstname' => 'profile_address_first_name',
+    'profile_familyname' => 'profile_address_last_name',
+    'profile_address' => 'profile_address_thoroughfare',
+  );
+  foreach ($result as $val) {
+    $col = $aliases[$val->name];
+    $values[$val->uid][$col] = $val->value;
+  }
+  //do the above but with the address field,
+  $field_names = array_merge(array('entity_type', 'bundle', 'entity_id', 'revision_id', 'language', 'delta'), array_values($aliases));
+  sort($field_names);
+  db_truncate('field_data_profile_address')->execute();
+  db_truncate('field_revision_profile_address')->execute();
+  $q1 = db_insert('field_data_profile_address')->fields($field_names);
+  $q2 = db_insert('field_revision_profile_address')->fields($field_names);
+
+  foreach ($values as $uid => $set) {
+    $set['entity_id'] = $uid;
+    $set['entity_type'] = 'user';
+    $set['revision_id'] = $uid;
+    $set['bundle'] = 'user';
+    $set['language'] = LANGUAGE_NONE;
+    $set['delta'] = 0;
+    ksort($set);
+
+    $values = array_combine($field_names, $set);
+    $q1->values($values);
+    $q2->values($values);
+  }
+  $q1->execute();
+  $q2->execute();
+
+  $exclude = $addressfields + array('profile_phone2' => 'profile_phone2');
+  //now do the rest of the profile fields
+  $profile_fields = db_select('profile_field', 'pf')
+    ->fields('pf', array('fid', 'title', 'name', 'explanation', 'type', 'weight', 'required', 'register'))
+    ->condition('name', $exclude, 'NOT IN')
+    ->orderby('weight', 'ASC')
+    ->execute()->fetchAll();
+
+  foreach ($profile_fields as $row) {
+    if (!cforge_setup_profile_field($row, $row->name)) continue;
+    //populate the field
+    //shame we can't set the text format but NULL still works
+    $values = db_query(
+      "SELECT 'user' as entity_type, 'user' as bundle, uid as entity_id, uid as revision_id, 'und' as language, 0 as delta, value
+      FROM {profile_value}
+      WHERE fid = $row->fid"
+    )->fetchAllAssoc('entity_id', PDO::FETCH_ASSOC);
+    //ensure booleans have value 0 instead of NULL
+    if ($row->type == 'checkbox') {
+      foreach ($values as $key => $value) {
+        $values[$key]['value'] = $value['value'] ? 1 : 0;
+      }
+    }
+    //ensure the data is migrated into the right field API tables
+    switch($row->name) {
+      case 'profile_notes':
+        $table_suffix = 'manage_notes';
+        $col = 'manage_notes_value';
+        break;
+      case 'profile_phone1':
+        $table_suffix = 'profile_phones';
+        $col = 'profile_phones_value';
+        break;
+      case 'profile_responsibility':
+        $table_suffix = 'manage_responsibility';
+        $col = 'manage_responsibility_value';
+        break;
+      case 'profile_postal':
+        $table_suffix = 'account_offline';
+        $col = 'account_offline_value';
+        continue;
+      default:
+        $table_suffix = $row->name;
+        $col = $row->name;
+    }
+
+    //these fields, for the field_data_$fieldname table, assume that the field has only one column, named after the field
+    //however text fields have another column storing the format, which we'll try to get away with leaving null
+    $field_names = array('entity_type', 'bundle', 'entity_id', 'revision_id', 'language', 'delta', $col);
+    db_truncate('field_data_'. $table_suffix)->execute();
+    db_truncate('field_revision_'. $table_suffix)->execute();
+    $q1 = db_insert('field_data_'. $table_suffix)->fields($field_names);
+    $q2 = db_insert('field_revision_'. $table_suffix)->fields($field_names);
+    foreach ($values as $set) {
+      $q1->values(array_values($set));
+      $q2->values(array_values($set));
+    }
+    $q1->execute();
+    $q2->execute();
+  }
+
+  //populate the second phone number
+  $phones2 = db_query(
+    "SELECT 'user' as entity_type,
+      'user' as bundle,
+      uid as entity_id,
+      uid as revision_id,
+      'und' as language,
+      1 as delta,
+      value as profile_phone1_value,
+      'plain_text' as profile_phone1_format
+    FROM {profile_value} v LEFT JOIN {profile_field} f ON f.fid = v.fid
+    WHERE f.name = 'profile_phone2'"
+  )->fetchAllAssoc('entity_id', PDO::FETCH_ASSOC);
+  foreach ($phones2 as $row) {
+    if (empty($row->profile_phone1_value)) continue;
+    drupal_write_record('field_data_profile_phones', $row);
+    drupal_write_record('field_revision_profile_phones', $row);
+  }
+  drupal_set_message('check that phone1 and phone2 migrated into the same profile field');
+  //preparation for next.
+  module_enable(array('views_data_export', 'advanced_help', 'ckeditor', 'date'));
+}
+
+/**
+ * other misc updates and featurish modules
+ */
+function cforge_update_7002() {
+  variable_set('anonymous', t("Visitor"));
+  variable_set('site_offline_message', t("Community Forge has taken your site offline briefly for maintenance. Thank you for your patience."));
+  variable_set('site_slogan', t("Your slogan here"));
+  //drop the address currently stored in site_mission
+  variable_set('user_register', "2");
+  variable_set('user_failed_login_ip_limit', 10);
+  variable_set('cache', 1);
+
+  foreach (db_select('filter_format', 'ff')->fields('ff', array('name', 'format'))->execute()->fetchAllKeyed(0) as $name => $format) {
+    if (is_numeric($format)) {
+      cf_rename_filter_format($name, $format);
+    }
+  }
+  variable_set('menu_main_links_source', 'main-menu');
+  //this is getting disabled somehow
+  theme_enable(array('sky_seldulac'));
+
+  $modules = array(
+    'cforge_currencies',
+    'cforge_events',
+    'cforge_yell',
+    'cforge_docs',
+    'cforge_offline',
+    'cforge_gallery',
+  );
+  module_enable($modules);
+}
+
+
+/**
+ * migrate images (hat-tip image_legacy module alpha1)
+ */
+function cforge_update_7003() {
+  //moves images from {files} table to {files_managed} and {file_usage}
+  _cforge_update_d6_image_files();
+  $oldimagefiles = db_query(
+    "SELECT * FROM {image} i
+    LEFT JOIN {file_managed} f ON i.fid = f.fid
+    WHERE i.image_size = '_original'"
+  )->fetchAllAssoc('nid');
+  foreach (node_load_multiple(NULL, array('type' => 'image')) as $nid => $node) {
+    if (!isset($oldimagefiles[$nid]->fid)) continue;
+    $node->image[LANGUAGE_NONE][0] = array(
+      'fid' => $oldimagefiles[$nid]->fid,
+      'alt' => $node->title,
+      'title' => $node->title,
+    );
+    node_save($node);
+  }
+  //pretty horrid bug where the field_id of instances of the imagefield is wrong)
+  $image_field_id = db_select('field_config', 'f')
+    ->fields('f', array('id'))
+    ->condition('field_name', 'image')
+    ->execute()
+    ->fetchField();
+  db_update('field_config_instance')
+  ->fields(array('field_id' => $image_field_id))
+  ->condition('field_name', 'image')
+  ->execute();
+  //just to be sure, because it doesn't seem to work
+
+  db_query("UPDATE {file_managed} SET uri = REPLACE (uri, '". variable_get('file_directory_path') ."', 'public:/')");
+}
+
+/**
+ * cleanup from d6
+ */
+function cforge_update_7004() {
+  if (db_select('field_config')->condition('field_name', 'taxonomyextra')->countQuery()->execute()->fetchField()) {
+    db_truncate('field_data_taxonomyextra')->execute();
+    _update_7000_field_delete_field('taxonomyextra');
+  }
+  $view = views_get_view('recent_news');
+  if ($view) views_delete_view($view);
+  //I think this is a relic
+  require_once('includes/locale.inc');
+  module_disable(array('profile'));
+  //drupal_uninstall_modules(array('profile'));// because the data migration isn't working at the moment
+
+  db_drop_table('access');
+  db_drop_table('content_node_field');
+  db_drop_table('content_node_instance');
+  db_drop_table('content_node_field_instance');
+  db_drop_table('cache_content');
+  db_drop_table('d6_upgrade_filter');
+  db_drop_table('files');
+  db_drop_table('image');
+  db_drop_table('imagecache_action');
+  db_drop_table('imagecache_preset');
+  db_drop_table('image_attach');
+  db_drop_table('simplenews_mail_spool');
+  db_drop_table('simplenews_newsletters');
+  db_drop_table('simplenews_snid_tid');
+  db_drop_table('simplenews_subscriptions');
+  db_drop_table('simplenews_content_types');
+  db_drop_table('simplenews_vid');
+  db_drop_table('tb_added_list');
+  db_drop_table('tb_customized');
+  db_drop_table('user_import');
+  db_drop_table('user_import_errors');
+  db_drop_table('zipcodes');//not sure how this got into macasel or what module its from
+  db_drop_table('taxonomy_term_relation');
+  db_drop_table('views_object_cache');
+
+  db_query("DELETE FROM {variable} WHERE name LIKE '%simplenews%'");
+  db_query("DELETE FROM {variable} WHERE name LIKE 'taxonomy_xml_%'");
+	variable_del('cforge_report');
+
+  db_query("DELETE FROM {field_config_instance} WHERE bundle IN ('comment_node_simplenews')");
+
+
+  //the old simplenews vocab not needed any more
+  if ($vocab = taxonomy_vocabulary_load(2)) {//2 was a constant in d6
+    taxonomy_vocabulary_delete(2);
+  }
+  db_delete('node_type')->condition('type', 'simplenews')->execute();
+
+  //ensure that accounts with the system role do not also have the trader role
+  //so delete the trader role on those accounts
+  $uids = db_query("SELECT uid FROM {users_roles} WHERE rid = :rid", array(':rid' => RID_SYSTEM))->fetchCol();
+  db_delete("users_roles")
+    ->condition('uid', $uids)
+    ->condition('rid', RID_TRADER)
+    ->execute();
+
+  //now all the content types are installed, we can disable the comment subjects
+  foreach (node_type_get_types() as $type) {
+    variable_set('comment_subject_field_' . $type->type, 0);
+  }
+  drupal_set_message('Disabled subject field on all comments');
+
+  $node = (object)array(
+    'type' => 'story',
+    'uid' => '1',
+    'status' => '1',
+    'comment' => '0',
+    'sticky' => '0',
+    'format' => 'full_html',
+    'language' => language_default('language') == 'en' ? LANGUAGE_NONE : language_default('language'),
+    'title' => t('Major upgrade'),
+    'body' => array(
+      'und' => array(
+        0 => array(
+          'value' => '<a href="http://matslats.net/sites/matslats.net/files/matslats_logo.jpg"><img src = "http://matslats.net/sites/matslats.net/files/matslats_logo.jpg" width = "150" align = "right" /></a>
+<p>You may have noticed a few slight improvements to site. Every 2 or 3 years, a new
+version of the software framework which this site is built on, Drupal, is released,
+and every site built with it, must be upgraded. This is a lot of work, but in the long
+run it keeps costs down, page-load times down, and makes it easy for volunteer developers
+to contribute.</p>
+<p>Over the last 18 months, our volunteer developer Matthew has been upgrading
+the Community Accounting module which makes LETS possible in Drupal, and then
+he upgraded and migrated over 50 active web sites and another 100 dormant ones hosted by Community Forge</p>
+<p>There are few improvements on the surface as well.</p>
+<dl>
+<dt>Local Admin</dt>
+  <dd>Please add your coordinates on the \'Information\' page</dd>
+  <dd>Admin can no longer set a proposition expiry period</dd>
+  <dd>You have more control over balance limits on the currency edit page.</dd>
+  <dd>You can enable/disable some modules yourself</dd>
+  <dd>You can set the visibility of the user profile fields on admin/config/cforge</dd>
+  <dd><a href="intertrade-setup">Intertrading</a> is allowed, if your accounts are in order</dd>
+  <dd>You are invited to enter your system coordinates for when we make a map!</dd>
+  <dd>The mysql dump works differently</dd>
+  <dd>There are now 3 currency types, and you should choose which your currency is</dd>
+<dt>Accountant</dt>
+  <dd>Transactions can no longer be edited.</dd>
+  <dd>Role expiry is temporarily removed, but a new module is coming, to manage subscriptions and expenses in the national currency</dd>
+<dt>Committee</dt>
+  <dd>Manage menu is now in user menu</dd>
+  <dd>Newsletters are merged with stories. Use \'Story\' and the \'send to everyone\' button.</dd>
+  <dd>At the bottom of the story edit page you can choose whether to include it in the news stream or hide it</dd>
+  <dd>New users are granted the trader role by default</dd>
+  <dd>N.B Committee members can delete this article if it is not wanted</dd>
+<dt>Members</dt>
+  <dd>proposition expiry date is days from now, not date itself</dd>
+  <dd>there is a new rss feed on the /news page</dd>
+  <dd>The central account has the same name as the site (used to be called admin)</dd>
+  <dd>The transaction form now requests that you enter a category.</dd>
+<dt>user 1</dt>
+  <dd>Custom views may have broken fields</dd>
+  <dd>Can now nominate other members who can manage their accounts</dd>
+</dl>
+<p>Note that the date field for existing events was not upgradable.</p>',
+          'format' => 'editor_full_html'
+        )
+      ),
+      'fr' => array(
+        0 => array(
+          'value' => '<a href="http://matslats.net/sites/matslats.net/files/matslats_logo.jpg"><img src = "http://matslats.net/sites/matslats.net/files/matslats_logo.jpg" width = "150" align = "right" /></a>
+<p>Vous avez sans doute remarqué quelques améliorations sur votre site. Tous les deux ou trois ans, une nouvelle version de la structure logicielle, drupal, sur laquelle ce site est construit est publiée et tous les sites construits de cette manière doivent être mis à jour. Ceci représente beaucoup de travail mais sur le long terme, cela permet de diminuer les couts, les temps de chargement des pages, et facilite l’implication de développeurs bénévoles.</p>
+<p>Les 18 derniers mois, votre développeur bénévole, Matthew, a mis à jour le module de comptabilité pour les communautés, le module qui permet aux SEL d’utiliser drupal et ensuite il a mis à jour et il a migré plus de 50 sites actifs et 100 sites dormants, tous hébergés par Community Forge</p>
+<p>Il y a aussi quelques améliorations dans l’interface.</p>
+<dl>
+<dt>Pour le rôle d’administrateur local (Local Admin)</dt>
+  <dd>S’il vous plaît, ajoutez les coordonnées de votre site sur la page  \'Information\' </dd>
+  <dd>Vous êtes invités à introduire les coordonnées géographiques de votre communauté qui nous serviront quand nous ferons une carte!</dd>
+  <dd>L’administrateur ne peut plus permettre ou non d’ajouter une date d’expiration dans les paramètres des annonces, ce champs se trouve d’office dans le formulaire d’encodage des annonces</dd>
+  <dd>Vous pouvez gérer la limite des soldes avec plus de paramétrages, dans la page de configuration de la devise.</dd>
+  <dd>Vous pouvez activer/désactiver des modules vous-mêmes</dd>
+  <dd>Vous pouvez définir qui peut voir quelle information du profile des membres sur la page admin/config/cforge</dd>
+  <dd><a href="intertrade-setup">L’inter-échange</a> est possible, si vos comptes sont bien gérés</dd>
+  <dd>La sauvegarde de la base de données (SQL dump) fonctionne différemment</dd>
+<dt>Pour le rôle de comptable (Accountant)</dt>
+  <dd>Les échanges ne peuvent plus être modifiés.</dd>
+  <dd>Il y a maintenant 3 sortes de devise, et vous dois choisir</dd>
+  <dd>La possibilité d’ajouter une date d’expiration aux adhésions a été temporairement retirée, mais un nouveau module arrive, pour gérer les adhésions et les dépenses dans la monnaie nationale</dd>
+<dt>Pour le rôle de comité (Committee)</dt>
+  <dd>Le menu “Gérer” se trouve maintenant dans le menu de l’utilisateur</dd>
+  <dd>Les lettres d’information (newsletters) ont fusionné avec les articles (anciennement infos). Aller dans \'Article\' et utiliser le bouton \'envoyer et diffuser\'.</dd>
+  <dd>Dans le bas de la page d’édition de l’article (anciennement  info), vous pouvez décider si vous voulez publier cet article sur la page des infos ou non</dd>
+  <dd>N.B Les membres avec le rôle comité peuvent supprimer cet article.</dd>
+  <dd>Les nouveaux membres reçoivent le rôle de trader par défaut</dd>
+  <dt>Pour les membres (rôle trader)</dt>
+  <dd>L’expiration des annonces se choisit par le nombre de jours pendant lesquels l’annonce est active, non plus par l’introduction d’une date d’expiration</dd>
+  <dd>Il y a un nouveau flux rss sur la page des infos</dd>
+  <dd>Le compte central (anciennement appelé admin) a maintenant le même nom que le site</dd>
+  <dd>Le formulaire d’échange requiert désormais de choisir une catégorie lors de l’introduction d’un échange.</dd>
+<dt>Pour le user 1</dt>
+  <dd>Les vues qui ont été personnalisées pourraient avoir des champs manquants</dd>
+</dl>
+<p>Notez que le champs date (date de fin) pour les évènements existants n’a pas pu être mis à jour.</p>',
+          'format' => 'editor_full_html'
+        )
+      )
+    ),
+    'path' => array(
+      'alias' => 'upgrade_drupal7',
+    ),
+  );
+  node_save($node);
+  drupal_set_message('Saved news story about update');
+}
+
+/**
+ * This very important update function is used as part of the installation
+ * Everything in here needs to be done on both old and new sites
+ */
+function cforge_update_7005() {
+  //get all the modules specific to this profile and set the weights
+  $modules = _system_rebuild_module_data();
+  foreach ($modules as $module => $info) {
+    if (substr($module, 0, 7) == 'cforge_') $cfmodules[] = $module;
+  }
+  //the system sets the weight of the installation profile to 1000 as if it was supposed to be the last, last thing to run!
+  db_update('system')->fields(array('weight' => 1001))->condition('name', $cfmodules)->execute();
+
+  module_enable(array('cforge_hosted'));//this module is for sites hosted by cforge only
+  if (variable_get('user1')) {
+    cforge_hosted_disable(FALSE);
+    variable_del('user1');
+  }
+
+  $formats = db_select('filter_format', 'ff')->fields('ff', array('name', 'format'))->execute()->fetchAllKeyed(0);
+  foreach ($formats as $name => $format) {
+    if (is_numeric($format)) cf_rename_filter_format($name, $format);
+  }
+
+  configure_ckeditor();
+
+  //tell all the node types what menus they can go in and what default flags are checked
+  variable_set('menu_options_page', array('main-menu', 'secondary-menu', 'visitors'));
+  foreach (array_keys(_update_7000_node_get_types()) as $type) {
+    variable_set('node_options_'.$type, array('status'));
+    if ($type == 'page') continue;
+    variable_set('menu_options_'. $type, array());
+  }
+
+  variable_set('mimemail_sitestyle', 0);
+  variable_set('mimemail_format', 'filtered_html');
+  variable_set('configurable_timezones', '0');
+
+  variable_set('preprocess_css', TRUE);
+  variable_set('preprocess_js', TRUE);
+
+  variable_set('user_pictures', "1");
+  variable_set('user_picture_dimensions', '1280x1024');
+  variable_set('user_picture_file_size', '1024');
+  variable_set('user_picture_default', 'profiles/cforge/anonymous.jpg');
+  variable_set('user_picture_style', 'thumbnail');
+
+  variable_set('cron_safe_threshhold', 0);
+
+
+  //upload settings
+  variable_set('upload_uploadsize_default', 5);
+  variable_set('upload_usersize_default', 25);
+
+  //some defaults...before language variables installed
+  //TODO have a look at this instead: function locale_date_format_save($langcode, $type, $format)
+  variable_set('date_format_short', t("j M"));
+  variable_set('date_format_medium', t("j-m-Y"));
+  variable_set('date_format_long', t("j M (l) G:i"));
+
+  variable_set('user_cancel_method', 'user_cancel_block');
+  variable_set('user_register', 0);
+  variable_set('admin_theme', 'seven');
+
+  variable_set('cforge_mail_footer', t('Mail generated by @site', array('@site' => variable_get('site_name'))) ."\n".
+    '<a href="[user:url]">'. t('Visit your account page').'</a>');
+
+  variable_set('cf_profile_permissions', array(
+    'profile_phones' => 1,
+    'profile_address' => 2,
+  ));
+  cf_setup_rss();
+}
+
+function configure_ckeditor() {
+  //there's no api for saving these settings, so this gets rather messy
+  //these are merged into the filter_format table using the 'format' property
+  $filtered_html_format =  (object)array(
+    'format' => 'filtered_html',
+    'name' => 'Filtered HTML',
+    'weight' => 0,
+    'filters' => array(
+      // URL filter.
+      'filter_url' => array(
+        'weight' => 0,
+        'status' => 1,
+      ),
+      // HTML filter.
+      'filter_html' => array(
+        'weight' => 1,
+        'status' => 1,
+      ),
+      // Line break filter.
+      'filter_autop' => array(
+        'weight' => 2,
+        'status' => 1,
+      ),
+      // HTML corrector filter.
+      'filter_htmlcorrector' => array(
+        'weight' => 10,
+        'status' => 1,
+      ),
+    ),
+  );
+  filter_format_save($filtered_html_format);
+
+  $full_html_format = (object)array(
+    'format' => 'full_html',
+    'name' => 'Full HTML',
+    'weight' => 1,
+    'filters' => array(
+      // URL filter.
+      'filter_url' => array(
+        'weight' => 0,
+        'status' => 1,
+      ),
+      // Line break filter.
+      'filter_autop' => array(
+        'weight' => 1,
+        'status' => 1,
+      ),
+      // HTML corrector filter.
+      'filter_htmlcorrector' => array(
+        'weight' => 10,
+        'status' => 1,
+      ),
+    ),
+  );
+  filter_format_save($full_html_format);
+
+  //rename the formats as installed by the ckeditor module
+  db_query("UPDATE {ckeditor_input_format} SET format ='editor_filtered_html', name = 'Basic' WHERE name = 'Full'");
+  db_query("UPDATE {ckeditor_input_format} SET format ='editor_full_html' WHERE name = 'Advanced'");
+  //tell ckeditor where the library is.
+  //drush make puts it by default in profiles/cforge/libraries which isn't one of the ready defaults!
+
+  $global_settings = array(
+    'ckeditor_path' => '%l/ckeditor',//this is where the makefile puts it
+    'ckeditor_local_path' => '',
+    'ckeditor_plugins_path' => '%l/plugins',//%l means sites/all/libraries
+    'ckeditor_plugins_local_path' => '',
+    'ckfinder_path' => '%l/ckfinder',
+    'ckeditor_allow_download_private_files' => 0,
+    'private_dir' => '',
+    'toolbar_wizard' => 't',
+    'loadPlugins' => array(),
+  );
+  db_update('ckeditor_settings')
+    ->fields(array('settings' => serialize($global_settings)))
+    ->condition('name', 'CKEditor Global Profile')
+    ->execute();
+
+  $basic_settings = array(
+    'ss' => '2',
+    'default' => 't',
+    'show_toggle' => 't',
+    'skin' => 'kama',
+    'uicolor' => 'default',
+    'uicolor_textarea' => '<p>Click the <strong>UI Color Picker</strong> button to set your color preferences.</p>',
+    'uicolor_user' => 'default',
+    'toolbar' => '[[\'Bold\',\'Italic\',\'-\',\'NumberedList\',\'BulletedList\',\'-\',\'Link\',\'Unlink\',\'Image\']]',
+    'expand' => 't',
+    'width' => '100%',
+    'lang' => 'en',
+    'auto_lang' => 't',
+    'language_direction' => 'default',
+    'enter_mode' => 'p',
+    'shift_enter_mode' => 'br',
+    'font_format' => 'p;div;pre;address;h1;h2;h3;h4;h5;h6',
+    'custom_formatting' => 'f',
+    'formatting' => array(
+      'custom_formatting_options' => array(
+        'indent' => 'indent',
+        'breakBeforeOpen' => 'breakBeforeOpen',
+        'breakAfterOpen' => 'breakAfterOpen',
+        'breakAfterClose' => 'breakAfterClose',
+        'breakBeforeClose' => 0,
+        'pre_indent' => 0,
+      ),
+    ),
+    'css_mode' => 'none',
+    'css_path' => '',
+    'css_style' => 'theme',
+    'styles_path' => '',
+    'filebrowser' => 'none',
+    'filebrowser_image' => '',
+    'filebrowser_flash' => '',
+    'UserFilesPath' => '%b%f/',
+    'UserFilesAbsolutePath' => '%d%b%f/',
+    'ckeditor_load_method' => 'ckeditor.js',
+    'ckeditor_load_time_out' => '0',
+    'forcePasteAsPlainText' => 'f',
+    'html_entities' => 't',
+    'scayt_autoStartup' => 'f',
+    'theme_config_js' => 'f',
+    'js_conf' => '',
+    'loadPlugins' => array(),
+  );
+  db_query("UPDATE {ckeditor_settings} SET name = 'Basic' WHERE name = 'Full'");
+  db_query("UPDATE {ckeditor_settings} SET settings = :settings WHERE name = 'Basic'",
+    array(':settings' => serialize($basic_settings))
+  );
+  //put the new filter formats at the top, so they appear as defaults
+  db_query("REPLACE INTO {filter_format} (format, name, cache, status, weight) VALUES
+    ('editor_filtered_html', 'Editor filtered HTML', 1, 1, -10),
+    ('editor_full_html', 'Editor full HTML', 1, 1, -9);");
+  db_query("UPDATE {filter_format} SET weight = -8 WHERE format = 'filtered_html'");
+  db_query("UPDATE {filter_format} SET weight = -7 WHERE format = 'full_html'");
+  db_query("UPDATE {filter_format} SET weight = -6 WHERE format = 'plain_text'");
+
+}
+
+function cf_rename_filter_format($filter_name, $old_format) {
+  $new_format = strtolower(str_replace(' ', '_', $filter_name));
+
+  db_update('block_custom')
+    ->fields(array('format' => $new_format))
+    ->condition('format', $old_format)
+    ->execute();
+  db_update('role_permission')
+    ->fields(array('permission' => "use text format $new_format"))
+    ->condition('permission', "use text format $old_format")
+    ->execute();
+
+  //get a list of the fields generated by the text module
+  module_load_install('field');
+  foreach (_update_7000_field_read_fields(array('module' => 'text')) as $fid => $info) {
+    $data_table = 'field_data_'.$info['field_name'];
+    $revision_table = 'field_revision_'.$info['field_name'];
+    $column_name = $info['field_name'] .'_format';
+    db_update($data_table)
+      ->fields(array($column_name => $new_format))
+      ->condition($column_name, $old_format)
+      ->execute();
+    db_update($revision_table)
+      ->fields(array($column_name => $new_format))
+      ->condition($column_name, $old_format)
+      ->execute();
+  }
+  drupal_set_message("Changing machine name of filter '$filter_name' from '$old_format' to '$new_format'");
+  db_update('filter_format')
+    ->fields(array('format' => $new_format))
+    ->condition('format', $old_format)
+    ->execute();
+  filter_formats_reset();
+}
+
+//vocabs names were created using vocab ids, but this function renames them as if they were created in d7
+function _cf_rename_upgraded_vocab_field($vid, $field_name, $module) {
+  $vocab = taxonomy_vocabulary_load($vid);
+  if (empty($vocab)) {
+    drupal_set_message("Failed to load vocab $vid for module $module");
+    return;
+  }
+  if (substr($vocab->machine_name, 0, 11) != 'vocabulary_' || $vocab->machine_name == $field_name) {
+    return;
+  }
+  $old_field = 'taxonomy_'.$vocab->machine_name;
+  $vocab->machine_name = $field_name;
+  $vocab->module = $module;
+  taxonomy_vocabulary_save($vocab);
+
+  $data_table = 'field_data_'.$field_name;
+  $revision_table = 'field_revision_'.$field_name;
+  $old_column = $old_field ."_tid";
+  $new_column = $field_name ."_tid";
+
+  db_query("UPDATE {taxonomy_vocabulary} SET module = '$module', machine_name = '$field_name' WHERE vid = $vid");
+  db_query("UPDATE {field_config} SET field_name = '$field_name' where field_name = '$old_field'");
+  db_query("UPDATE {field_config_instance} SET field_name = '$field_name' where field_name = '$old_field'");
+  db_rename_table('field_data_'.$old_field, $data_table);
+  db_rename_table('field_revision_'.$old_field, $revision_table);
+  db_query("ALTER TABLE {$data_table} CHANGE $old_column $new_column int(10) unsigned DEFAULT NULL");
+  db_query("ALTER TABLE {$revision_table} CHANGE $old_column $new_column int(10) unsigned DEFAULT NULL");
+}
+
+function cf_setup_rss() {
+  module_enable(array('aggregator'));
+  $edit = array(
+    'title' => t('Community Forge news'),
+    'url' => 'http://communityforge.net/news/feed/fr',
+    'refresh' => 32400,
+    'block' => 5,
+    'fid' => db_query("SELECT fid FROM {aggregator_feed} WHERE title = :title", array(':title' => t('Community Forge news')))->fetchField()
+  );
+  aggregator_save_feed($edit);
+}
+
+
+
+function _cforge_update_d6_image_files() {
+  $files_dir = conf_path() . '/files';
+  //this will cover the profile pics which are converted in user_update_7012
+  db_query("UPDATE file_managed SET uri = REPLACE(uri, '$files_dir', 'public://')");
+
+  $rows = db_query("SELECT * FROM files f JOIN image i ON f.fid = i.fid left join node n on n.nid = i.nid and n.type = 'image'")->fetchAllAssoc('fid');
+  // Get all files for this image node.
+//  $files = db_query("SELECT * FROM {files} f JOIN {image} i ON f.fid = i.fid WHERE i.nid = $nid")->fetchAllAssoc('fid');
+  // Convert entries in {files} to ones in {managed_file}.
+  foreach ($rows as $oldfid => $file) {
+    if ($file->filename == '_original') {
+      // Insert the file into the {file_managed} table.
+      $key = array('uri' => 'public:/' . str_replace(variable_get('file_public_path', $files_dir), '', $file->filepath));
+      $fields = array(
+        'uid' => $file->uid,
+        'filename' => basename($file->filepath),
+        'filemime' => $file->filemime,
+        'filesize' => $file->filesize,
+        'status' => $file->status,
+        'timestamp' => $file->timestamp,
+      );
+      unset($file->filepath);
+      //merges into the file_usage table
+      file_usage_add($file, 'image', 'node', $file->nid);
+      //create a new row in the file_managed table
+      db_merge('file_managed')->key($key)->fields($fields)->execute();
+      //get the new $fid
+      $new_fid = db_query("SELECT fid FROM {file_managed} WHERE uri = :uri", array('uri' => $key['uri']))->fetchField();
+      // and update {image} with the new file ID.
+      db_update('image')->fields(array('fid' => $new_fid))->condition('nid', $file->nid)->execute();
+    }
+    else {
+      file_unmanaged_delete($file->filepath);
+    }
+  }
+
+  drupal_set_message('updated d6 image files');
+  //update file_managed set uri = replace(uri, 'public:///', 'public://')
+}
+
+
+function _cf_make_bundle_commentable($type, $val = TRUE) {
+  if ($val) {
+    variable_set('comment_'.$type, 2);
+    variable_set('comment_anonymous_'.$type, 0);
+    variable_set('comment_default_mode_'.$type, 1);
+    variable_set('comment_default_per_page_'.$type, 50);
+    variable_set('comment_form_location_'.$type, 1);
+    variable_set('comment_preview_'.$type, 0);
+    variable_set('comment_subject_field_'.$type, 0);
+  }
+  else {
+    variable_set('comment_'.$type, 0);
+    variable_del('comment_anonymous_'.$type);
+    variable_del('comment_default_mode_'.$type);
+    variable_del('comment_default_per_page_'.$type);
+    variable_del('comment_form_location_'.$type);
+    variable_del('comment_preview_'.$type);
+    variable_del('comment_subject_field_'.$type);
+  }
+}
+
+
+/**
+ * ensure all users have their contact flag enabled
+ * set filter permissions
+ */
+function cforge_update_7006() {
+  variable_get('contact_default_status', 1);
+
+  foreach (db_select('users', 'u')
+    ->fields('u', array('uid', 'data'))
+    ->condition('uid', '1', '>')
+    ->execute()->fetchAllKeyed(0) as $uid => $data) {
+    $data = unserialize($data);
+    unset($data['profile_firstname'], $data['profile_familyname'], $data['mc_limits'], $data['form_build_id'], $data['mimemail_textonly']);
+    $data['contact'] = TRUE;
+    db_update('users')->fields(array('data' => serialize($data)))->condition('uid', $uid)->execute();
+  }
+
+  filter_formats_reset();
+  $perms =  array('use text format filtered_html');
+  user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, $perms);
+  $perms[] = 'use text format editor_filtered_html';
+  user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, $perms);
+  $perms[] = 'use text format editor_full_html';
+  user_role_grant_permissions(RID_COMMITTEE, $perms);
+}
+/**
+ * convert filters in blocks, reset translations and reset default mails
+ */
+function cforge_update_7008() {
+  db_update('block_custom')->fields(array('format' => 'full_html'))->execute();
+}
+
+/**
+ * Enable rich text mail
+ */
+function cforge_update_7010() {
+  cforge_set_mail_templates();
+}
+/**
+ * fix a duplication of secondary menu blocks
+ */
+function cforge_update_7011() {
+  db_delete('block')->condition('module', 'menu')->condition('delta', 'secondary-menu')->execute();
+  db_update('block')->fields(array('module' => 'menu'))->condition('delta', 'secondary-menu');
+
+  //move these two new blocks out of the region where they were placed by default,
+  db_update('block')->fields(array('status' => 0, 'region' => ''))->condition('delta', array('navigation', 'management'))->execute();
+}
+
+/**
+ * restrict the node menu items to the three manipulable menus
+ */
+function cforge_update_7012() {
+  //only pages can go into menus, and only into the three visible menus
+  foreach (node_type_get_names() as $name => $title) {
+    $varname = 'menu_options_'. $name;
+    $menus = $name == 'page' ?  array('main-menu', 'secondary-menu', 'visitors') : array();
+    variable_set($varname, $menus);
+  }
+}
+
+/**
+ * set user profile text fields to user processed text i.e. with filters.
+ */
+function cforge_update_7014() {
+  $fields = field_read_fields(array('type' => array('text_long', 'text_with_summary')));
+  foreach (field_read_instances(array('field_name' => array_keys($fields))) as $instance) {
+    $instance['settings']['text_processing'] = TRUE;
+    field_update_instance($instance);
+  }
+}
+
+
+/**
+ * field adjustments which only notice in multilingual sites
+ * populate the navigation bar using blocks instead of logic in template.php
+ */
+function cforge_update_7016() {
+  //ensure all the user fields are NOT translatable
+  $fields = db_select('field_config_instance', 'i')->fields('i', array('field_name'))->condition('entity_type', 'user')->execute()->fetchCol();
+  foreach ($fields as $field_name) {
+    $field = field_read_field($field_name);
+    $field['translatable'] = 0;
+    field_update_field($field);
+  }
+
+  foreach (cforge_retrieve_permissions(array_keys(user_roles())) as $rid => $permissions) {
+    foreach ($permissions as $perm => $module) {
+      _update_7000_user_role_grant_permissions($rid, array($perm), $module);
+    }
+    drupal_set_message('reset permissions for role '.$rid);
+  }
+
+  drupal_set_message('Resaved permissions. Customised permissions will have to be reviewed.');
+  cforge_reset_blocks();
+}
+
+/*
+ * all updates after this point will have be careful of the theme & menu, because of the likeabee fork
+ */
+
+/**
+ * moving the money-go-round and anonymous image files
+ * placing the contact menu links
+ * changing weights of profile fields
+ */
+function cforge_update_7017() {
+  //the folder holding the money-go-round.gif has been renamed, so we'll find and replace the path on the home page
+  $home = db_query("SELECT source from {url_alias} WHERE alias = 'home'")->fetchField();
+  if ($home) {
+    $node = node_load(substr($home, 5));
+    $body = &$node->body[LANGUAGE_NONE][0]['value'];
+    $body = str_replace('cforge/default_content/fr/money-go-round.gif', 'cforge/money-go-round.gif', $body);
+    node_save($node);
+  }
+  variable_set('user_picture_default', 'profiles/cforge/anonymous.jpg');
+  variable_set('maintenance_mode', 0);
+  db_update('menu_links')
+    ->fields(array('menu_name' => 'secondary-menu'))
+    ->condition('link_path', 'contact')
+    ->execute();
+}
+/**
+ * update all translations using the l10n_update module
+ * reset the menu system except for customized links
+ */
+function cforge_update_7018() {
+  db_delete('block')->condition('module', 'comment')->condition('delta', 'recent')->execute();
+  variable_set('file_default_scheme', 'public');
+  variable_set('date_format_short', t("j M"));
+  variable_set('date_format_medium', t("j-m-Y"));
+  variable_set('date_format_long', t("j M (l) G:i"));
+  views_delete_view(views_get_view('community_tasks'));
+
+  db_delete('menu_links')
+    ->condition('menu_name', array('main-menu', 'user-menu', 'secondary-menu'))
+    ->condition('customized', 0)
+    ->execute();
+  mcapi_init();
+  cforge_reset_menu_links();
+
+  module_enable(array('cforge_broadcast'));
+
+  if (!module_exists('locale')) return;
+  module_enable(array('l10n_client'));
+
+  variable_set('l10n_client_use_server', '4');
+  variable_set('l10n_update_check_disabled', "0");
+  variable_set('l10n_update_check_frequency', "1");
+  variable_set('l10n_update_check_mode', "3");
+  variable_set('l10n_update_download_store', "sites/all/translations");
+  variable_set('l10n_update_import_mode', "0");
+}
+/**
+ * install the address field
+ * reset 'member_list' and 'postal_members' views, which use the address field
+ */
+function cforge_update_7019() {
+  //need to rename this field before migrating the data out and deleting it, because it's replacement will have the same name
+  cforge_fieldapi_rename_field('profile_address', 'old_address');
+
+  module_enable(array('addressfield'));
+  if (!module_exists('addressfield')) {
+    throw new Exception (t(
+      'Module !module must be present',
+      array('!module' => l('Address field', 'http://drupal.org/project/addressfield', array('absolute' => TRUE)))
+    ));
+  }
+
+  cforge_reset_profile_fields('profile_address');
+
+  //now migrate the data into the field
+  $uids = db_query("SELECT uid FROM {users} WHERE uid > 0")->fetchCol();
+  $mapping = array(
+    'first_name' => 'profile_firstname',
+    'last_name'=> 'profile_familyname',
+    'thoroughfare' => 'old_address',
+    'locality' => 'profile_locality', //actually this is wrong but is corrected next time
+    'dependent_locality' => 'profile_locality'
+  );
+  $country = _cf_get_country();
+  foreach (user_load_multiple($uids) as $account) {
+    $edit = array();
+    //populate the $new address field with the old values, using the map
+    foreach ($mapping as $newcolname => $oldfieldname) {
+      if (isset($account->{$oldfieldname}[LANGUAGE_NONE][0]['value'])) {
+        $val = str_replace("\n", ', ', $account->{$oldfieldname}[LANGUAGE_NONE][0]['value']);
+        $edit['profile_address'][LANGUAGE_NONE][0][$newcolname] = substr($val, 0, 255);
+      }
+    }
+    if (!$edit)continue;
+    $edit['profile_address'][LANGUAGE_NONE][0]['country'] = $country;
+    user_save($account, $edit);
+  }
+  foreach (array('member_list', 'postal_members') as $view_name) {
+    $view = views_get_view($view_name);
+    drupal_set_message(t('View @name was reverted', array('@name' => $view->name)));
+    views_delete_view($view);
+  }
+  return "Guessed the country as ".$edit['profile_address'][LANGUAGE_NONE][0]['country'];
+}
+
+/**
+ * corrections to 7019
+ */
+function cforge_update_7020() {
+  $country = _cf_get_country();
+  cforge_fieldapi_rename_field('name_address', 'profile_address');
+  $instance = field_read_instance('user', 'profile_address', 'user');
+  $instance['widget']['settings']['format_handlers']['address-hide-country'] = 'address-hide-country';
+  $instance['widget']['settings']['format_handlers']['neighbourhood'] = 'neighbourhood';
+  $instance['widget']['settings']['available_countries'] = array($country => $country);
+  $instance['widget']['weight'] = -20;
+  $instance['default_value'][0]['country'] = $country;
+  field_update_instance($instance);
+  db_query("UPDATE {field_data_profile_address} SET profile_address_country = 'GB' WHERE profile_address_country = 'UK'");
+  db_query('UPDATE {field_data_profile_address} SET profile_address_dependent_locality = profile_address_locality');
+  db_query('UPDATE {field_data_profile_address} SET profile_address_locality = NULL');
+  db_query("UPDATE {field_data_profile_address} SET profile_address_thoroughfare = :address WHERE entity_id = 1",
+    array(':address' => variable_get('site_mission'))
+  );
+  variable_del('site_mission', '');
+  //this can go back in 7019, once it is tested
+  //provisionally delete the fields (finalised on cron)
+  foreach (array('profile_firstname', 'profile_familyname',  'profile_locality', 'old_address') as $oldfieldname) {
+    field_delete_field($oldfieldname);
+  }
+  db_query("update {taxonomy_term_data} set format = 'plain_text'");
+  variable_set('filter_fallback_format', 'filtered_html');
+  //to make the file visible to potx, it has to match cforge.*
+  $uchoo = variable_get('user_chooser_format', '[user:name]');
+  $uchoo = str_replace('[user:profile_firstname]', '[user:firstname]',  $uchoo);
+  $uchoo = str_replace('[user:profile_familyname]', '[user:lastname]',  $uchoo);
+  variable_set('user_chooser_format', $uchoo);
+}
+
+/**
+ * rename some fields so they go in the right user_category.
+ * resize the phone field.
+ * create the new member notes field.
+ * ensure cforge module weights
+ */
+function cforge_update_7021() {
+  db_query("UPDATE {system} set weight = 1001 WHERE name LIKE 'cforge_%'");
+  cforge_fieldapi_rename_field('profile_notes', 'manage_notes');
+  cforge_fieldapi_rename_field('profile_responsibility', 'manage_responsibility');
+  cforge_fieldapi_rename_field('profile_phone1', 'profile_phones');
+  cforge_reset_profile_fields('profile_notes');
+  cforge_reset_profile_fields('profile_phones');
+}
+
+/**
+ * tweaks
+ */
+function cforge_update_7022() {
+  db_delete('system')->condition('name', 'cforge_custom')->execute();
+  cforge_reset_translations();
+  cforge_set_mail_templates();//this must happen after translations are imported
+
+  $instance = field_info_instance('user', 'profile_address', 'user');
+  $instance['default_value'][0]['element_key'] = 'user|user|profile_address|und|0';
+
+  drupal_set_message(print_r($instance));
+
+  field_update_instance($instance);
+  cforge_reset('menu_links', 'user-menu');
+}
+
+/**
+ * ensure ckeditor setting and mailsystem settings
+ */
+function cforge_update_7023() {
+  variable_set('file_default_scheme', 'public');
+  configure_ckeditor();
+
+  db_update('ckeditor_settings')
+    ->fields(array('settings' => serialize($settings)))
+    ->condition('name', 'CKEditor Global Profile')
+    ->execute();
+
+  variable_set('mail_system', array('default-system' => 'MimeMailSystem'));
+}
+
+/**
+ * replace tokens in mail templates.
+ * refresh captcha configuration.
+ */
+function cforge_update_7024() {
+  $templates = db_query("SELECT name, value FROM {variable} WHERE value LIKE ('%user:profile_firstname%')")->fetchAllKeyed(0);
+  foreach ($templates as $name => $value) {
+    $value = str_replace('user:profile_firstname', 'user:first_name', unserialize($value));
+    db_query("UPDATE {variable} SET value = :value WHERE name = '$name'", array(':value' => serialize($value)));
+  }
+  $templates = db_query("SELECT name, value FROM {variable} WHERE value LIKE ('%user:profile_address%')")->fetchAllKeyed(0);
+  foreach ($templates as $name => $value) {
+    $value = str_replace('user:profile_address', 'user:', unserialize($value));
+    db_query("UPDATE {variable} SET value = :value WHERE name = '$name'", array(':value' => serialize($value)));
+  }
+  cache_clear_all('*', 'cache_token', TRUE);
+  db_query("update {block} SET pages = REPLACE (pages, '\\n', '
+')");
+  configure_captcha();
+  if (language_default('language') != 'en') module_enable(array('l10n_update'));
+}
+/**
+ * remove the accountant role, because Community Accounting 3 doesn't allow editing.
+ * retire orphaned actions
+ */
+function ___cforge_update_7025() {
+  actions_delete('user_block_ip_action');
+  actions_delete('simplenews_cron_action');
+  user_role_delete(5);
+  module_enable(array('cforge_privacy'));
+  variable_set('cron_safe_threshhold', 0);
+  //still testing these
+  //field_delete_field('profile_phone1');
+  //field_delete_field('profile_responsibility');
+  db_query("DELETE FROM {variable} WHERE name LIKE 'taxonomy_xml%'");
+}
+
+
+function cforge_set_mail_templates() {
+  module_enable(array('mailsystem', 'mimemail'));
+  variable_set('mimemail_sitestyle', 0);
+  variable_set('mimemail_format', 'filtered_html');
+  variable_set('mailsystem_default_system', array('default-system' => 'MimeMailSystem', 'mimemail' => 'MimeMailSystem'));
+  //for when the administrator creates an account
+  variable_set('user_mail_register_admin_created_subject', t("Your new account at [site:name]"));
+  variable_set('user_mail_register_admin_created_body', implode("\n\n", array(
+    t("Hi @name,", array('@name' => '[user:first_name]')),
+    t('A site administrator at @site has created an account for you as:', array('@site' => '[site:name]')),
+    t("Username:") .' [user:name]',
+    t("You may log in now by clicking on this link or copying and pasting it in your browser:"),
+    "[user:one-time-login-url]\n".
+    t('After logging in, you will be redirected to change your password.'),
+    t('This is a one-time login, so it can be used only once.'),
+  )));
+
+  //for when the user creates an account
+  variable_set('user_mail_register_pending_approval_subject', t("Account details for [user:name] at [site:name] (pending admin approval)"));
+  variable_set('user_mail_register_pending_approval_body', implode("\n\n", array(
+    t("Hi @name,", array('@name' => '[user:first_name]')),
+    t('Thank you for registering at @site. Your application for an account is currently pending approval. Once it has been approved, you will receive another e-mail containing information about how to log in, set your password, and other details.',  array('@site' => '[site:name]'))
+  )));
+
+  //for when an account is unblocked.
+  variable_set('user_mail_status_activated_subject', t("Account details for [user:name] at [site:name] (approved)"));
+  variable_set('user_mail_status_activated_body', implode("\n\n", array(
+    t("Hi @name,", array('@name' => '[user:first_name]')),
+    t('Your account at @site has been activated.', array('@site' => '[site:name]')),
+    t("You may log in now by clicking on this link or copying and pasting it in your browser:"),
+    "[user:one-time-login-url]\n".
+    t('After logging in, you will be redirected to [user:edit-url] so you can change your password.'),
+    t('This is a one-time login, so it can be used only once.')
+  )));
+}
+
+
+/*
+ * drush and setup callback
+ * delete all customised links and recreate the ones from the frontend
+ */
+function cforge_reset_menu_links($menu = '', $hard = FALSE) {
+  variable_set('menu_rebuild_needed', FALSE);
+  cforge_load_frontend();
+  module_enable(array('menu'));
+  drupal_load_updates();//loads all the .install files
+  $menus = is_string($menu) ? array($menu) : array('main-menu', 'secondary-menu', 'user-menu', 'setup');//not visitors
+
+  $mlids = $new_links = array();
+  foreach (cf_frontend_menu() as $menuname => $menu_items) {
+    if (!in_array($menuname, $menus)) {
+      drupal_set_message('Skipping contents of menu '. $menuname);
+      continue; //that's for the setup menu in the cforge_hosted module
+    }
+    $weight = 0;
+    foreach(array_filter($menu_items) as $link_path) {
+      //there should be one and only one existing menu item
+      $existing_item = menu_get_item($link_path);
+      if (empty($existing_item)) {
+        drupal_set_message("menu item '$link_path' does not exist");
+        continue;
+      }
+      $title = $existing_item['title'];
+      if (empty($title) ) {
+        $args = unserialize($existing_item['title_arguments']);
+        if (!is_array($args)) {
+          drupal_set_message("menu item $link_path' has neither title nor title arguments and will be omitted: <pre>".print_r($existing_item, 1).'</pre>');
+          continue;
+        }
+        $title = call_user_func_array($existing_item['title_callback'], $args);
+      }
+      $new_menu_link = array(
+        'link_path' => $link_path,
+        'link_title' => $title,
+        'menu_name' => $menuname,
+        'module' => 'cforge'
+      );
+      $new_menu_link['weight'] = $weight;
+      $new_menu_link['options'] = array('alter' => TRUE);
+      if ($ml = db_query("SELECT mlid, module FROM {menu_links} WHERE link_path = '$link_path' AND menu_name = '$menuname' AND module = 'system' AND hidden = 0")->fetch()) {
+        $new_menu_link['mlid'] = $ml->mlid;
+        $mlids[] = $ml->mlid;
+        $new_menu_link['module'] = 'system';
+      }
+      if (empty($new_menu_link['link_title'])) {
+        drupal_set_message("No link title for  <pre>".print_r($existing_item, 1).'</pre>');
+        continue;
+      }
+      $new_links[] = $new_menu_link;
+      $weight++;
+    }
+  }
+  $del_query = db_delete('menu_links')->condition('menu_name', $menus);
+  if (!$hard) {
+    $del_query->condition('customized', 0);
+  }
+  if ($mlids) {
+    $del_query->condition('mlid', $mlids, 'NOT IN');
+  }
+  $del_query->execute();
+  foreach ($new_links as $new_menu_link) {
+    menu_link_save($new_menu_link);
+  }
+  menu_rebuild();
+}
+
+
+/*
+ * drush and setup callback
+ */
+function cforge_reset_blocks($module = '', $hard = FALSE) {
+  cforge_load_frontend();
+  _block_rehash('sky_seldulac');
+  module_enable(array('block'));
+  $modules = empty($module) ? module_list() : array($module);
+  $theme = variable_get('theme_default');
+  if ($hard) {
+    //tell Drupal that no blocks have been customised, so they can all return to defaults
+    db_update("block")->fields(array('custom'=> 0, 'region' => -1))->condition('theme', $theme)->execute();
+  }
+  //get the block placements
+  foreach (cforge_block_positions() as $region => $blocks) {//get the block region and weight from frontend
+    $i = 0;
+    foreach ($blocks as $delta => $module) {
+      if (in_array($module, $modules)) {
+        db_update('block')
+          ->fields(array('weight' => $i++, 'status' => 1, 'region' => $region))
+          ->condition('module', $module)
+          ->condition('delta', $delta)
+          ->condition('theme', $theme)
+          ->execute();
+        drupal_set_message("Put block $delta from module $module into region $region for theme $theme");
+      }
+    }
+  }
+}
+
+
+/*
+ * drush and setup callback
+ */
+function cforge_reset_permissions($rid = NULL, $hard = FALSE) {
+  drupal_load_updates();//loads all the .install files
+  $rids = empty($rid) ? array_keys(user_roles()) : array($rid);
+  if ($hard) {
+    db_delete('role_permission')->condition('rid', $rids)->execute();
+  }
+  foreach (cforge_retrieve_permissions($rids) as $rid => $permissions) {
+    $perms = array_keys($permissions);
+    user_role_grant_permissions($rid, $perms);
+    drupal_set_message("Role $rid has been granted: ".implode(', ', $perms));
+  }
+}
+
+function cforge_retrieve_permissions(array $rids) {
+  $all_permissions = array(
+    DRUPAL_ANONYMOUS_RID => array(
+      'access content' => 'node',
+      'access site-wide contact form' => 'contact',
+      'access news feeds' => 'aggregator'
+    ),
+    DRUPAL_AUTHENTICATED_RID => array(
+      'access comments' => 'comment',
+      'access content' => 'node',
+      'access site-wide contact form' => 'contact',
+      'access user contact forms' => 'contact',
+      'search content' => 'search',
+      'use advanced search' => 'search',
+      'view own unpublished content' => 'node',
+      'access news feeds' => 'aggregator',
+      'use text format editor_filtered_html' => 'filter',
+      'use text format mcapiform_string_format' => 'filter',//assumed mcapi_forms is installed
+      'use text format plain_text' => 'filter'
+    ),
+    RID_TRADER => array(
+      'access user profiles' => 'user',
+      'edit own comments' => 'comment',
+      'post comments' => 'comment',
+      'skip comment approval' => 'comment',
+      'view advanced help index' => 'advanced_help',
+      'view advanced help popup' => 'advanced_help',
+      'view advanced help topic' => 'advanced_help',
+    ),
+    RID_COMMITTEE => array(
+      'administer users' => 'user',
+      'administer comments' => 'comment',
+      'administer nodes' => 'node',
+      'bypass node access' => 'node',
+      'access content overview' => 'node',
+      'create url aliases' => 'path',
+      'skip comment approval' => 'comment',
+      'access backup and migrate' => 'backup_migrate',
+      'administer menu' => 'menu',
+      'use text format editor_full_html' => 'filter',
+      'use text format full_html' => 'filter'
+    )
+  );
+  if (module_exists('community_tasks')) {
+    $all_permissions[DRUPAL_AUTHENTICATED_RID]['view tasks'] = 'community_tasks';
+    $all_permissions[RID_TRADER]['commit to tasks'] = 'community_tasks';
+    $all_permissions[RID_COMMITTEE]['edit tasks'] = 'community_tasks';
+  }
+  foreach (module_list() as $module) {
+    $function = $module.'_cf_role_permissions';
+    if (!function_exists($function)) continue;
+    $byrole = $function();
+    if (empty($byrole)) continue;
+    foreach ($byrole as $rid => $perms) {
+      if (empty($all_permissions[$rid]))$all_permissions[$rid] = array();
+      foreach ($perms as $perm => $mod) {
+        $all_permissions[$rid][$perm] = $mod;
+      }
+    }
+  }
+  return array_intersect_key($all_permissions, array_flip($rids));
+}
+
+
+/*
+ * this resets only the cforge core fields
+ */
+function cforge_reset_profile_fields($fieldname = NULL) {
+  drupal_load_updates();
+  _field_info_collate_types(TRUE);
+  $fields = array();
+  $instances = array();
+  foreach (module_list() as $module) {
+    $function = $module .'_cf_profile_fields';
+    if (function_exists($function)) {
+      list($fields_info, $instances_info) = $function();
+      $fields = array_merge($fields, $fields_info);
+      $instances = array_merge($instances, $instances_info);
+    }
+  }
+  foreach ($fields as $new_field) {
+    if ($fieldname && $new_field['field_name'] != $fieldname) continue;
+
+    if ($old_field = field_info_field($new_field['field_name'])) {
+      field_update_field($new_field);
+    }
+    else field_create_field($new_field);
+  }
+  foreach ($instances as $new_instance) {
+    if ($fieldname && $new_instance['field_name'] != $fieldname) continue;
+    if ($old_instance = field_info_instance('user', $new_instance['field_name'], 'user')) {
+      field_update_instance($new_instance);
+    }
+    else field_create_instance($new_instance);
+  }
+  field_cache_clear();
+}
+
+/*
+ * imports translations either from this installation profile, or from the stated module
+ * works when installed modules don't have a version number
+ */
+function cforge_reset_translations($mask = '', $hard = FALSE) {
+  if (!module_exists('locale')) {
+    drupal_set_message('Cannot import translations into english-only sites');
+    return;
+  }
+//  module_enable(array('l10n_update'));
+  if (!module_exists('l10n_update')) {
+    drupal_set_message('l10n_update module is not present');
+    return;
+  }
+
+  module_load_include('admin.inc', 'l10n_update');
+  l10n_update_build_projects();
+  // Get available translation updates and update file history.
+  if ($available = l10n_update_available_releases(TRUE)) {
+    l10n_update_flag_history($available);
+    $updates = l10n_update_build_updates(l10n_update_get_history(), $available);
+    $form_state['values'] = array(
+      'mode' => 2,
+      'updates' => $updates,
+      'languages' => array_keys(l10n_update_language_list('name')),
+      'op' => t('Update translations')
+    );
+    drupal_form_submit('l10n_update_admin_import_form', $form_state, l10n_update_get_projects(), $updates);
+  }
+
+  $languages = language_list('enabled');
+  unset($languages[1]['en']);
+  if (!count($languages[1])) return;
+  $language_list = join('|', array_keys($languages[1]));
+
+  if (empty($mask)) {
+    $files = array_merge(
+      file_scan_directory('profiles/cforge', '/(^|\.)(' . $language_list . ')\.po$/'),
+      file_scan_directory('sites/all/modules', '/(^|\.)(' . $language_list . ')\.po$/')
+    );
+  }
+  else {
+    //TODO get the $mask working in here
+    $files = file_scan_directory('profiles/cforge', "/(^|\.)($language_list)\.po$/");
+  }
+
+  foreach ($files as $module_file) {
+    foreach(file_scan_directory(dirname($module_file->uri) . '/translations', '/(^|\.)(' . $language_list . ')\.po$/', array('recurse' => FALSE)) as $file) {
+      _locale_import_read_po(
+        'db-store',
+        $file,
+        $hard ? LOCALE_IMPORT_OVERWRITE: LOCALE_IMPORT_KEEP,
+        $language_list,
+        'default'
+      );
+      drupal_set_message('Imported strings from '.$file->uri);
+    }
+  }
+}
+
+
+function cforge_reset($type, $arg = '', $hard = 0) {
+  require_once DRUPAL_ROOT . '/includes/install.inc';
+  $function = 'cforge_reset_'.$type;
+  if (!function_exists($function)) {
+    drupal_set_message($function.'() not found');
+  }
+  $function($arg, $hard);
+  return "$type were reset";
+}
+
+function cf_setup_wrappers() {
+  $files_dir = conf_path() . '/files';
+  variable_set('file_public_path', $files_dir);
+  $private_path = conf_path().'/private';
+  file_prepare_directory($private_path, FILE_CREATE_DIRECTORY);
+  variable_set('file_private_path', $private_path);
+  variable_set('file_default_scheme', 'private');
+  drupal_static_reset('file_get_stream_wrappers');
+  //file_get_stream_wrappers();//this will register the above so they can be used.
+  drupal_set_message(t('The following directories should be writable by the web server:') ." $files_dir; $private_path");
+}
+
+function _cf_get_country() {
+  if ($country_code = variable_get('cforge_install_hold_country')) return $country_code;
+  $countries = _cf_get_countries_for_lang();
+  //attempt to determine the actual country by looking at the domain name
+  $key = array_search(strtoupper(substr($_SERVER['HTTP_HOST'], -2)), $countries);
+  //will take the first country if it can't be deduced from the domain name
+  return $countries[intval($key)];
+}
+function _cf_get_countries_for_lang($lang = NULL) {
+  if (!$lang) $lang = language_default('language');
+  $mapping = array(
+    'fr' => array('FR', 'CH', 'BE'),
+    'es' => array('ES', 'MX', 'CO'),
+    'el' => array('GR'),
+    'en' => array('GB', 'US'),
+    'en-tb' => array('GB'),
+    'pt-pt' => array('PT')
+  );
+  $countries = $mapping[$lang];
+  if (empty($countries)) {
+    throw new Exception (t('Cannot determine your country from language @lan. Add to the $mapping in file cforge.install function cforge_update_7019', array('@lan' => $lang)));
+  }
+  return $countries;
+}
+
+/*
+ * completely rename a field
+ */
+function cforge_fieldapi_rename_field($oldname, $newname) {
+  if (field_info_field($newname)) {
+    drupal_set_message("Not updating field $oldname to $newname. $newname already exists."); return;
+  }
+  drupal_flush_all_caches();
+  $schema = drupal_get_schema();
+  if (!array_key_exists('field_data_'.$oldname, $schema)) {
+    debug("Schema doesn't have table ".'field_data_'.$oldname);
+    return;
+  }
+  $schema_fields = $schema['field_data_'.$oldname]['fields'];
+
+  $field = field_read_field($oldname);
+  if (!$field) {
+    drupal_set_message("Not updating field $oldname to $newname. $oldname doesn't exist"); return;
+  }
+  //time to get serious
+  foreach (array_keys($field['columns']) as $col_name) {
+    $old_column = $oldname .'_'.$col_name;
+    $new_column = $newname .'_'.$col_name;
+    if (!array_key_exists($old_column, $schema_fields)){drupal_set_message("Column $old_column doesn't exist in schema");return;}
+    db_change_field('field_data_'.$oldname, $old_column, $new_column, $schema_fields[$old_column]);
+    db_change_field('field_revision_'.$oldname, $old_column, $new_column, $schema_fields[$old_column]);
+  }
+  $field['field_name'] = $newname;
+  //can't use field_update field because it identifies the field to update using the field_name
+  drupal_write_record('field_config', $field, array('id'));
+
+  $instances = field_read_instances(array('field_name' => $oldname));
+  foreach ($instances as $instance) {
+    $instance['field_name'] = $newname;
+    //can't use field_update isntance because it checks the instance to update using the field_name
+    _field_write_instance($instance, TRUE);
+  }
+  db_rename_table('field_data_'.$oldname, 'field_data_'.$newname);
+  db_rename_table('field_revision_'.$oldname, 'field_revision_'.$newname);
+
+  db_query("UPDATE {field_config} SET field_name = '$newname' WHERE field_name = '$oldname'");
+  db_query("UPDATE {field_config_instance} SET field_name = '$newname' WHERE field_name = '$oldname'");
+
+  field_cache_clear();
+  menu_rebuild();
+  cache_clear_all('schema', 'cache', TRUE);
+}
+
+
+/*
+ * implements hook_cf_profile_fields
+ */
+function cforge_cf_profile_fields() {
+  $fields = array();
+  $instances = array();
+  list($fields[], $instances[]) = cforge_address_field();
+  list($fields[], $instances[]) = cforge_phones_field();
+  list($fields[], $instances[]) = cforge_responsibility_field();
+  list($fields[], $instances[]) = cforge_notes_field('profile_notes');
+  list($fields[], $instances[]) = cforge_notes_field('manage_notes');
+  return array($fields, $instances);
+}
+
+
+function cforge_address_field() {
+  module_enable(array('addressfield'));
+
+  $field = array(
+    'translatable' => '0',
+    'entity_types' => array(),
+    'settings' => array(),
+    'foreign keys' => array(),
+    'indexes' => array(),
+    'field_name' => 'profile_address',
+    'type' => 'addressfield',
+    'module' => 'addressfield',
+    'active' => '1',
+    'locked' => '0',
+    'cardinality' => '1',
+    'columns' => array(
+      'country' => array(
+        'description' => 'Two letter ISO country code of this address.',
+        'type' => 'varchar',
+        'length' => 2,
+        'not null' => false,
+        'default' => '',
+      ),
+      'administrative_area' => array(
+        'description' => 'The administrative area of this address. (i.e. State/Province)',
+        'type' => 'varchar',
+        'length' => 255,
+        'default' => '',
+        'not null' => false,
+      ),
+      'sub_administrative_area' => array(
+        'description' => 'The sub administrative area of this address.',
+        'type' => 'varchar',
+        'length' => 255,
+        'default' => '',
+        'not null' => false,
+      ),
+      'locality' => array(
+        'description' => 'The locality of this address. (i.e. City)',
+        'type' => 'varchar',
+        'length' => 255,
+        'default' => '',
+        'not null' => false,
+      ),
+      'dependent_locality' => array(
+        'description' => 'The dependent locality of this address.',
+        'type' => 'varchar',
+        'length' => 255,
+        'default' => '',
+        'not null' => false,
+      ),
+      'postal_code' => array(
+        'description' => 'The postal code of this address.',
+        'type' => 'varchar',
+        'length' => 255,
+        'default' => '',
+        'not null' => false,
+      ),
+      'thoroughfare' => array(
+        'description' => 'The thoroughfare of this address. (i.e. Street address)',
+        'type' => 'varchar',
+        'length' => 255,
+        'default' => '',
+        'not null' => false,
+      ),
+      'premise' => array(
+        'description' => 'The premise of this address. (i.e. Apartment / Suite number)',
+        'type' => 'varchar',
+        'length' => 255,
+        'default' => '',
+        'not null' => false,
+      ),
+      'sub_premise' => array(
+        'description' => 'The sub_premise of this address.',
+        'type' => 'varchar',
+        'length' => 255,
+        'default' => '',
+        'not null' => false,
+      ),
+      'organisation_name' => array(
+        'description' => 'Contents of a primary OrganisationName element in the xNL XML.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => false,
+        'default' => '',
+      ),
+      'name_line' => array(
+        'description' => 'Contents of a primary NameLine element in the xNL XML.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => false,
+        'default' => '',
+      ),
+      'first_name' => array(
+        'description' => 'Contents of the FirstName element of a primary PersonName element in the xNL XML.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => false,
+        'default' => '',
+      ),
+      'last_name' => array(
+        'description' => 'Contents of the LastName element of a primary PersonName element in the xNL XML.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => false,
+        'default' => '',
+      ),
+      'data' => array(
+        'description' => 'Additional data for this address.',
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+        'serialize' => true,
+      ),
+    ),
+  );
+
+  $instance = array(
+    'label' => t('Name & Address'),
+    'widget' => array(
+      'weight' => -1,
+      'type' => 'addressfield_standard',
+      'module' => 'addressfield',
+      'active' => 1,
+      'settings' => array(
+        'available_countries' => array(),
+        'format_handlers' => array(
+          'address' => 'address',
+          'address-hide-country' => 'address-hide-country',
+          'name-full' => 'name-full',
+          'neighbourhood' => 'neighbourhood',
+        ),
+      ),
+    ),
+    'settings' => array(
+      'user_register_form' => 1,
+    ),
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'type' => 'addressfield_default',
+        'settings' => array(
+          'use_widget_handlers' => 1,
+          'format_handlers' => array(
+            0 => 'address',
+          ),
+        ),
+        'module' => 'addressfield',
+        'weight' => 26,
+      ),
+    ),
+    'required' => 1,
+    'description' => '',
+    'default_value' => array(
+      0 => array(
+        'element_key' => 'user|user|profile_address|und|0',
+        'first_name' => '',
+        'last_name' => '',
+        'thoroughfare' => '',
+        //'premise' => '',
+        'dependent_locality' => '',
+        'administrative_area' => '',
+        'postal_code' => '',
+        'country' => _cf_get_country(),
+      ),
+    ),
+    'field_name' => 'profile_address',
+    'entity_type' => 'user',
+    'bundle' => 'user',
+  );
+  //deduce the country field, which is required in the address, from the languages I know about so far.
+  //the first country in each language is the default
+  foreach (_cf_get_countries_for_lang() as $country_code) {
+    $instance['widget']['settings']['available_countries'][$country_code] = $country_code;
+  }
+  return array($field, $instance);
+}
+
+
+function cforge_phones_field() {
+  $field = array(
+    'entity_types' => array(),
+    'translatable' => '0',
+    'settings' => array(
+      'max_length' => 255,
+    ),
+    'storage' => array(
+      'type' => 'field_sql_storage',
+      'settings' => array(),
+      'module' => 'field_sql_storage',
+      'active' => '1',
+    ),
+    'foreign keys' => array(
+      'format' => array(
+        'table' => 'filter_format',
+        'columns' => array(
+          'format' => 'format',
+        ),
+      ),
+    ),
+    'indexes' => array(
+      'format' => array(
+        0 => 'format',
+      ),
+    ),
+    'field_name' => 'profile_phones',
+    'type' => 'text',
+    'module' => 'text',
+    'active' => '1',
+    'cardinality' => '2',
+    'columns' => array(
+      'value' => array(
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => false,
+      ),
+      'format' => array(
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => false,
+      ),
+    ),
+  );
+  $instance = array(
+    'label' => t('Phone Numbers'),
+    'description' => '',
+    'cardinality' => 2,
+    'widget' => array(
+      'weight' => 1,
+      'type' => 'text_textfield',
+      'module' => 'text',
+      'active' => 1,
+      'settings' => array(
+        'display_label' => true,
+        'size' => 15,
+      ),
+    ),
+    'settings' => array(
+      'user_register_form' => 1,
+      'text_processing' => 0,
+    ),
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'type' => 'text_default',
+        'settings' => array(),
+        'module' => 'text',
+        'weight' => 1,
+      ),
+    ),
+    'required' => 0,
+    'field_name' => 'profile_phones',
+    'entity_type' => 'user',
+    'bundle' => 'user',
+  );
+  return array($field, $instance);
+}
+
+function cforge_responsibility_field() {
+  $field = array (
+    'entity_types' => array(),
+    'translatable' => '0',
+    'settings' => array(
+      'max_length' => 255,
+    ),
+    'storage' => array(
+      'type' => 'field_sql_storage',
+      'settings' => array(),
+      'module' => 'field_sql_storage',
+      'active' => '1',
+    ),
+    'foreign keys' => array(
+      'format' => array(
+        'table' => 'filter_format',
+        'columns' => array(
+          'format' => 'format',
+        ),
+      ),
+    ),
+    'indexes' => array(
+      'format' => array(
+        0 => 'format',
+      ),
+    ),
+    'field_name' => 'manage_responsibility',
+    'type' => 'text',
+    'module' => 'text',
+    'active' => '1',
+    'locked' => '0',
+    'cardinality' => '1',
+    'columns' => array(
+      'value' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => false,
+      ),
+      'format' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => false,
+      ),
+    ),
+  );
+
+  $instance = array (
+    'label' => 'Responsibility',
+    'description' => t('Job title, for committee members only'),
+    'cardinality' => 1,
+    'widget' => array(
+      'weight' => -3,
+      'type' => 'text_textfield',
+      'module' => 'text',
+      'active' => 1,
+      'settings' => array(
+        'display_label' => true,
+        'size' => 60,
+      ),
+    ),
+    'settings' => array(
+      'user_register_form' => 0,
+      'text_processing' => 0,
+    ),
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'type' => 'text_default',
+        'settings' => array(),
+        'module' => 'text',
+        'weight' => -3,
+      ),
+    ),
+    'required' => 0,
+    'field_name' => 'manage_responsibility',
+    'entity_type' => 'user',
+    'bundle' => 'user',
+  );
+  return array($field, $instance);
+}
+
+function cforge_notes_field($field_name) {
+  $field = array (
+    'entity_types' => array(),
+    'translatable' => '0',
+    'settings' => array(),
+    'storage' => array(
+      'type' => 'field_sql_storage',
+      'settings' => array(),
+      'module' => 'field_sql_storage',
+      'active' => '1',
+    ),
+    'foreign keys' => array(
+      'format' => array(
+        'table' => 'filter_format',
+        'columns' => array(
+          'format' => 'format',
+        ),
+      ),
+    ),
+    'indexes' => array(
+      'format' => array(
+        0 => 'format',
+      ),
+    ),
+    'field_name' => $field_name,
+    'type' => 'text_long',
+    'module' => 'text',
+    'active' => '1',
+    'locked' => '0',
+    'cardinality' => '1',
+    'columns' => array(
+      'value' => array(
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => false,
+      ),
+      'format' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => false,
+      ),
+    ),
+  );
+
+  $instance = array(
+    'label' => $field_name == 'manage_notes' ?
+      t('Notes (The user cannot see these)') :
+      t('What would you do if there was enough money?'),
+    'description' => '',
+    'cardinality' => 1,
+    'widget' => array(
+      'weight' => 20,
+      'type' => 'text_textarea',
+      'module' => 'text',
+      'active' => 1,
+      'settings' => array(
+        'display_label' => true,
+        'rows' => 5,
+      ),
+    ),
+    'settings' => array(
+      'user_register_form' => 0,
+      'text_processing' => 0,
+    ),
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'type' => 'text_default',
+        'settings' => array(
+        ),
+        'module' => 'text',
+        'weight' => 20,
+      ),
+    ),
+    'required' => 0,
+    'field_name' => $field_name,
+    'entity_type' => 'user',
+    'bundle' => 'user',
+  );
+  return array($field, $instance);
+}
+
+function configure_captcha() {
+  module_enable(array('captcha', 'image_captcha'));
+  variable_set('captcha_persistance', '1');
+  variable_set('captcha_description', t('This CAPTCHA field proves you are human and prevents robots creating accounts'));
+  db_truncate('captcha_points')->execute();
+  db_insert('captcha_points')->fields(array('form_id' => 'user_pass', 'captcha_type' => 'default'))->execute();
+  db_insert('captcha_points')->fields(array('form_id' => 'user_register_form', 'captcha_type' => 'default'))->execute();
+  //image capture
+
+  if (module_exists('image_captcha')) {
+    variable_set('captcha_default_challenge', 'image_captcha/Image');
+    variable_set('image_captcha_background_color', '#ffffff');
+    variable_set('image_captcha_bilinear_interpolation', 1);
+    variable_set('image_captcha_character_spacing', 1.2);
+    variable_set('image_captcha_code_length', 4);
+    variable_set('image_captcha_distortion_amplitude', 2);
+    variable_set('image_captcha_dot_noise', 0);
+    variable_set('image_captcha_file_format', 1);
+    variable_set('captcha_persistence', 3);
+    variable_set('image_captcha_font_size', 24);
+    variable_set('image_captcha_foreground_color', '#000000');
+    variable_set('image_captcha_foreground_color_randomness',  100);
+    variable_set('image_captcha_image_allowed_chars', 'aAbBCdEeFfGHhijKLMmNPQRrSTtWXYZ23456789');
+    variable_set('image_captcha_line_noise', 0);
+    variable_set('image_captcha_noise_level', 2);
+    variable_set('image_captcha_fonts', array('BUILTIN' => 'BUILTIN'));
+  }
+}
+
+//in case the upgrade doesn't work
+function _cf_refresh_usernames() {
+  foreach (user_load_multiple(NULL, array('name' => '')) as $account) {
+    user_save($account, (array)$account);
+  }
+}
+
+
+function cforge_load_frontend() {
+  module_load_include('frontend.inc', 'cforge', 'cforge.'. variable_get('cforge_frontend', 'default'));
+}

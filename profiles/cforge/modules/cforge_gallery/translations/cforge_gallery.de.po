@@ -1,0 +1,158 @@
+# $Id$
+#
+# LANGUAGE translation of Drupal (general)
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from files:
+#  cforge_gallery.view_default.inc: n/a
+#  cforge_gallery.module: n/a
+#  cforge_gallery.install: n/a
+#  cforge_gallery.info: n/a
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2012-11-06 11:42+0100\n"
+"PO-Revision-Date: 2012-11-17 18:06+0100\n"
+"Last-Translator: Marlies Remy <marliesremy@buewin.ch>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"X-Generator: Poedit 1.5.4\n"
+
+#: cforge_gallery.view_default.inc:104
+msgid "Defaults"
+msgstr "Standart"
+
+#: cforge_gallery.view_default.inc:105
+msgid "plus"
+msgstr "plus"
+
+#: cforge_gallery.view_default.inc:106
+msgid "Appliquer"
+msgstr "anweden"
+
+#: cforge_gallery.view_default.inc:107
+msgid "Réinitialiser"
+msgstr "zurücksetzen"
+
+#: cforge_gallery.view_default.inc:108
+msgid "Trier par"
+msgstr "sortieren nach"
+
+#: cforge_gallery.view_default.inc:109
+msgid "Asc"
+msgstr ""
+
+#: cforge_gallery.view_default.inc:110
+msgid "Desc"
+msgstr ""
+
+#: cforge_gallery.view_default.inc:111
+msgid "Éléments par page"
+msgstr "Elemente rpo Seite"
+
+#: cforge_gallery.view_default.inc:112
+msgid "- Tout -"
+msgstr "- Alle ­-"
+
+#: cforge_gallery.view_default.inc:113
+msgid "Décalage"
+msgstr "Verschiebeung"
+
+#: cforge_gallery.view_default.inc:114
+msgid "« premier"
+msgstr "<<erste"
+
+#: cforge_gallery.view_default.inc:115
+msgid "‹ précédent"
+msgstr "< vorherig"
+
+#: cforge_gallery.view_default.inc:116
+msgid "suivant ›"
+msgstr "nächste>"
+
+#: cforge_gallery.view_default.inc:117
+msgid "dernier »"
+msgstr "letzte>>"
+
+#: cforge_gallery.view_default.inc:118
+msgid "Tous / Toutes"
+msgstr "Alle"
+
+#: cforge_gallery.view_default.inc:119
+msgid "%1"
+msgstr "%1"
+
+#: cforge_gallery.view_default.inc:120
+msgid "Page"
+msgstr "Seite"
+
+#: cforge_gallery.module:9
+msgid "Add another image"
+msgstr "ein weiteres Bild anfügen"
+
+#: cforge_gallery.module:12
+msgid ""
+"Each 'term' is the name of an image gallery. Create and rename as many "
+"galleries as you want."
+msgstr ""
+"Jeder 'Term' ist der Name einer Bildergalerie. Erstelle und benenne beliebig "
+"viele Gallerien."
+
+#: cforge_gallery.module:24
+msgid "Image categorised into galleries"
+msgstr "Bilderkategorisierung in den Galerien"
+
+#: cforge_gallery.module:26
+msgid "Caption"
+msgstr "Beschriftung"
+
+#: cforge_gallery.module:66
+msgid "Random image"
+msgstr "Zufallsbild"
+
+#: cforge_gallery.module:118
+msgid "Gallery: @galleryname"
+msgstr "Galerie: @galleryname"
+
+#: cforge_gallery.module:119
+msgid "Home"
+msgstr "Home"
+
+#: cforge_gallery.module:134
+msgid "There is currently no content classified with this term."
+msgstr "Momentan ist kein Inhalt mit dieser Bezeichnung klassifiziert"
+
+#: cforge_gallery.module:37
+msgid "Galleries"
+msgstr "Galerien"
+
+#: cforge_gallery.install:10
+msgid "The usual suspects"
+msgstr "Die üblichen Vermutungen"
+
+#: cforge_gallery.install:18
+msgid "Manage galleries"
+msgstr "Verwalte Galerien"
+
+#: cforge_gallery.install:54;109
+msgid "Gallery"
+msgstr "Galerie"
+
+#: cforge_gallery.install:110
+msgid "Which gallery to put this photo in?"
+msgstr "In welche Galerie gehört dieses Foto?"
+
+#: cforge_gallery.info:0
+msgid "Cforge Gallery"
+msgstr "Cforge Galerie"
+
+#: cforge_gallery.info:0
+msgid "Upload photos into galleries"
+msgstr "Hochladen der Fotos in Galerien"
+
+#: cforge_gallery.info:0
+msgid "Community Forge"
+msgstr "Cpmmunity Forge"
