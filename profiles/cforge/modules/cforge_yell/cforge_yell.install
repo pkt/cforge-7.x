@@ -215,7 +215,7 @@ function _yell_vocabs_import($vid, $terms, $parent = 0) {
       'format' => 'plain_text'
     );
     if (!$terms['#children'] && module_exists('synonyms')) {
-      $term['synonyms'] = implode("\n", $terms[$name]);
+      $term->synonyms = implode("\n", $terms[$name]);
     }
     taxonomy_term_save((object)$term);
     if ($terms['#children']) {
