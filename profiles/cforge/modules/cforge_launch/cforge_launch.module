@@ -257,7 +257,7 @@ function cforge_launch_uif_help() {
  */
 function cforge_launch_uif_pre_create($account, $user_data, $form_state) {
   $fields = array();
-  if (array_key_exists('profile_phone1', $user_data) && !empty($user_data['phone1'])) {
+  if (array_key_exists('phone1', $user_data) && !empty($user_data['phone1'])) {
     $fields['profile_phones'][LANGUAGE_NONE][0]['value'] = $user_data['phone1'];
     $fields['profile_phones'][LANGUAGE_NONE][0]['format'] = 'plain_text';
     if (!empty($user_data['phone2'])) {
