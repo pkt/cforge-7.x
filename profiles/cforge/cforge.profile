@@ -41,6 +41,12 @@ function cf_vids($all = FALSE) {
       'title' => 'Darse de alta en la Central de Talentos',
     );
   }
+  if (in_array('el', $langs)) {
+    $blocks['nitin'] = array(
+      'url' => 'http://www.youtube.com/embed/dPN6SEaEfyE',
+      'title' => 'Παρουσίαση του CForge',
+    );
+  }
   if (in_array('en', $langs)) {
     $blocks['nitin'] = array(
       'url' => 'http://www.youtube.com/embed/YvegNqKcQ-g',
