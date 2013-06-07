@@ -1,0 +1,186 @@
+# $Id$
+# 
+# LANGUAGE translation of Drupal (general)
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from files:
+#  cforge_launch.module: n/a
+#  cforge_launch.info: n/a
+# 
+# Translators:
+# sonickydon <fiotakis@otenet.gr>, 2013
+msgid ""
+msgstr ""
+"Project-Id-Version: cforge\n"
+"POT-Creation-Date: 2012-11-06 11:42+0100\n"
+"PO-Revision-Date: 2013-05-05 12:59+0000\n"
+"Last-Translator: sonickydon <fiotakis@otenet.gr>\n"
+"Language-Team: Greek <dax-net-group@googlegroups.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: el\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: cforge_launch.module:29
+msgid ""
+"Hello [user:name],\n"
+"We have launched our new site!\n"
+"You can now add your offers and wants, and record your transactions on the website.\n"
+"Don't worry, it's easy and fun, and you can't break anything, so go ahead and have a go.\n"
+"Once you've logged in with the link below, please change your password. And while you're at it, check your personal details and save your profile page.\n"
+"Have a nice visit, we'll see you on the site.\n"
+"!site Team"
+msgstr "Χαίρεται [user:name],\nΞεκινήσαμε το νέο μας ιστότοπο!\nΤώρα μπορείτε να προσθέσετε τις προσφορές και τις ζητήσεις σας και να καταγράψετε τις συναλλαγές σας στο website.\nΜην ανησυχείτε, η διαδικασία είναι εύκολη, διασκεδαστική και δεν μπορείτε να χαλάσετε κάτι κατά λάθος, δοκιμάστε το λοιπόν.\nΑφού συνδεθείτε από τον παρακάτω δεσμό, σας παρακαλούμε να αλλάξετε τον κωδικό σας. Επίσης σας παρακαλούμε να ελέγξετε την ακρίβεια των προσωπικών σας πληροφοριών και να αποθηκεύσετε τη σελίδα του προφίλ σας.\nΚαλή συνέχεια, θα τα πούμε στον ιστότοπο.\nΗ ομάδα του !site"
+
+#: cforge_launch.module:40
+msgid "Welcome message"
+msgstr "Μήνυμα καλωσορίσματος"
+
+#: cforge_launch.module:41
+msgid "This text will be injected at the top of the !mail reminder"
+msgstr "Το κείμενο αυτό θα τοποθετηθεί στην κορυφή των υπενθυμίσεων του !mail"
+
+#: cforge_launch.module:41
+msgid "Password recovery email"
+msgstr "E-mail ανάκτησης κωδικού"
+
+#: cforge_launch.module:55
+msgid "Test mail"
+msgstr "Δοκιμή mail"
+
+#: cforge_launch.module:56
+msgid "Send a test mail to yourself. WARNING! This will log you out."
+msgstr "Αποστολή δοκιμαστικού mail στον εαυτό σας. ΠΡΟΣΟΧΗ! Αυτό θα οδηγήσει σε αποσύνδεση από το λογαριασμό σας."
+
+#: cforge_launch.module:59
+msgid "Send test mail"
+msgstr "Αποστολή δοκιμαστικού mail"
+
+#: cforge_launch.module:68
+msgid "LAUNCH NOW!"
+msgstr "ΕΚΚΙΝΗΣΗ ΤΩΡΑ!"
+
+#: cforge_launch.module:74
+msgid "Never launch"
+msgstr "Να μη γίνει ποτέ εκκίνηση"
+
+#: cforge_launch.module86;104
+msgid "Notified @mail"
+msgstr "Ειδοποιημένο @mail"
+
+#: cforge_launch.module:103
+msgid "Failed to mail @mail"
+msgstr "Αποτυχία αποστολής mail στο @mail"
+
+#: cforge_launch.module:110
+msgid "Site launch:"
+msgstr "Έναρξη ιστοσελίδας:"
+
+#: cforge_launch.module:129
+msgid ""
+"You have already used this one-time login link. It is not necessary to use "
+"this link to login anymore. You are already logged in."
+msgstr "Έχετε ήδη χρησιμοποιήσει αυτό το σύνδεσμο εισόδου μιας χρήσης. Δεν είναι απαραίτητο να χρησιμοποιήσετε αυτό το σύνδεσμο για να συνδεθείτε πια. Είστε ήδη συνδεδεμένος."
+
+#: cforge_launch.module:140
+msgid ""
+"You have tried to use a one-time login for an account which has been "
+"blocked."
+msgstr "Έχετε προσπαθήσει να χρησιμοποιήσετε τη σύνδεση μιας χρήσης για ένα λογαριασμό που έχει αποκλειστεί."
+
+#: cforge_launch.module:153
+msgid ""
+"You have just used your one-time login link. It is no longer necessary to "
+"use this link to login. Please change your password."
+msgstr "Έχετε χρησιμοποιήσει το σύνδεσμο εισόδου μιας χρήσης. Δεν χρειάζεται να χρησιμοποιείτε πια αυτό το σύνδεσμο για να συνδεθείτε. Παρακαλούμε να αλλάξετε τον κωδικό σας."
+
+#: cforge_launch.module:157
+msgid ""
+"<p>This is a one-time login for %user_name and will expire on "
+"%expiration_date.</p><p>Click on this button to login to the site and change"
+" your password.</p>"
+msgstr "<p>Αυτός είναι ένας σύνδεσμος εισόδου μιας χρήσης για  %user_name και θα λήξει στις %expiration_date.</p><p>Πατήστε εδώ για να συνδεθείτε στη σελίδα και να αλλάξετε τον κωδικό σας.</p>"
+
+#: cforge_launch.module:158
+msgid "This login can be used only once."
+msgstr "Αυτή η παραπομπή εισόδου μπορεί να χρησιμοποιηθεί μόνο μία φορά."
+
+#: cforge_launch.module:159
+msgid "Log in"
+msgstr "Σύνδεση"
+
+#: cforge_launch.module:165
+msgid ""
+"You have tried to use a one-time login link which has either been used or is"
+" no longer valid. Please request a new one using the form below."
+msgstr "Προσπαθήσατε να χρησιμοποιήσετε τη σύνδεση μιας χρήσης, που είτε έχει χρησιμοποιηθεί ή δεν είναι πλέον έγκυρη. Παρακαλείστε να ζητήσετε μια νέα χρησιμοποιώντας την παρακάτω φόρμα."
+
+#: cforge_launch.module:186
+msgid "First name (required)"
+msgstr "Όνομα (απαιτείται)"
+
+#: cforge_launch.module:187
+msgid "Family name (required)"
+msgstr "Επώνυμο (απαιτείται)"
+
+#: cforge_launch.module:188
+msgid "Phone numbers, separated by colons"
+msgstr "Αριθμοί τηλεφώνου, διαχωρίζονται με άνω και κάτω τελεία (:)"
+
+#: cforge_launch.module:189
+msgid "Locality, or area code"
+msgstr "Τοποθεσία ή ταχυδρομικός κώδικας"
+
+#: cforge_launch.module:190
+msgid "Responsibility"
+msgstr "Ευθύνη"
+
+#: cforge_launch.module:191
+msgid "Adress"
+msgstr "Διεύθυνση"
+
+#: cforge_launch.module:192
+msgid "Notes, visible only to committee"
+msgstr "Σημειώσεις, ορατό μόνο στην επιτροπή"
+
+#: cforge_launch.module:193
+msgid "Created date"
+msgstr "Ημερομηνία δημιουργίας"
+
+#: cforge_launch.module:196
+msgid "The following fields are available:"
+msgstr "Τα ακόλουθα πεδία είναι διαθέσιμα:"
+
+#: cforge_launch.module:248
+msgid "Fieldname '@field' is missing from the csv header."
+msgstr "Το πεδίο με όνομα '@field' δεν βρέθηκε στο csv header."
+
+#: cforge_launch.module:147
+msgid "user"
+msgstr "χρήστης"
+
+#: cforge_launch.module:147
+msgid "User %name used one-time login link at time %timestamp."
+msgstr "Ο χρήστης %name χρησιμοποίησε σύνδεσμο εισόδου μίας χρήσης, τη χρονική στιγμή %timestamp."
+
+#: cforge_launch.module:8
+msgid "Launch"
+msgstr "Εκκίνηση"
+
+#: cforge_launch.module:9
+msgid "Mail all users with new password"
+msgstr "Αποστολή mail σε όλους τους χρήστες με νέο κωδικό πρόσβασης (password)"
+
+#: cforge_launch.info:0
+msgid "Cforge launch"
+msgstr "Εκκίνηση Cforge"
+
+#: cforge_launch.info:0
+msgid ""
+"Import users, offers, wants & balances, then mail all users with new "
+"password. Transaction imports must be done someotherhow for the time being."
+msgstr "Εισάγετε χρήστες, προφορές, ζητήσεις & υπόλοιπα λογαριασμών, και αποστείλετε mail σε όλους τους χρήστες με νέους κωδικούς. Η εισαγωγή των συναλλαγών πρέπει να γίνει με άλλο τρόπο προς το παρόν.  "
+
+#: cforge_launch.info:0
+msgid "Community Forge"
+msgstr "Community Forge"

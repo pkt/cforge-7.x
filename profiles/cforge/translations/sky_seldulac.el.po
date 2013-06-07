@@ -1,0 +1,93 @@
+# $Id$
+# 
+# LANGUAGE translation of Drupal (general)
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from files:
+#  balances.tpl.php: n/a
+#  page.tpl.php: n/a
+#  statement.tpl.php: n/a
+#  template.php: n/a
+#  user-profile.tpl.php,v 1.2.2.1 2008/10/15 13:52:04 dries
+#  sky_seldulac.info: n/a
+# 
+# Translators:
+# dtrich0 <dtrich0@gmail.com>, 2013
+# pktoss <pktoss@gmail.com>, 2013
+msgid ""
+msgstr ""
+"Project-Id-Version: cforge\n"
+"POT-Creation-Date: 2012-02-21 18:22+0100\n"
+"PO-Revision-Date: 2013-05-30 15:00+0000\n"
+"Last-Translator: pktoss <pktoss@gmail.com>\n"
+"Language-Team: Greek <dax-net-group@googlegroups.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: el\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: balances.tpl.php:30
+msgid "Cleared balance"
+msgstr "Εκκαθαρισμένο υπόλοιπο"
+
+#: balances.tpl.php:34
+msgid "Pending Balance"
+msgstr "Εν αναμονή Υπόλοιπο"
+
+#: balances.tpl.php:38
+msgid "Total income"
+msgstr "Συνολικά έσοδα"
+
+#: balances.tpl.php:42
+msgid "Spending limit"
+msgstr "Όριο δαπάνης"
+
+#: statement.tpl.php:45
+msgid "Description"
+msgstr "Περιγραφή"
+
+#: statement.tpl.php:46
+msgid "With"
+msgstr "Με"
+
+#: statement.tpl.php:48
+msgid "Income"
+msgstr "Έσοδα"
+
+#: statement.tpl.php:49
+msgid "Expenditure"
+msgstr "Δαπάνη"
+
+#: statement.tpl.php:50
+msgid "Running Total"
+msgstr "Συνολικά τρέχοντα έξοδα"
+
+#: template.php:92
+msgid ""
+"Site designed and hosted for free by !cforge, a non-profit association "
+"registered in Geneva, Switzerland."
+msgstr "Η ιστοσελίδα σχεδιάστηκε και φιλοξενείται δωρεάν από το !cforge, μια μη κερδοσκοπική οργάνωση  που έχει συσταθεί στη Γενεύη της Ελβετίας."
+
+#: template.php:386
+msgid "Anonymous"
+msgstr "Ανώνυμος"
+
+#: template.php:403
+msgid "View member profile."
+msgstr "Εμφάνιση του προφίλ του μέλους"
+
+#: template.php:411
+msgid "Member @uid"
+msgstr "Μέλος @uid"
+
+#: user-profile.tpl.php:63
+msgid "Balance Limits"
+msgstr "Όρια υπολοίπου"
+
+#: user-profile.tpl.php:65
+msgid "Balance"
+msgstr "Υπόλοιπο"
+
+#: user-profile.tpl.php:71
+msgid "Balance history"
+msgstr "Ιστορικό υπολοίπου"

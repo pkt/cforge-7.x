@@ -1,0 +1,173 @@
+# $Id$
+# 
+# LANGUAGE translation of Drupal (general)
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from files:
+#  offline_contact.tpl.php: n/a
+#  print-table.tpl.php: n/a
+#  cforge_offline.views.inc: n/a
+#  cforge_offline.views_default.inc: n/a
+#  views_plugin_display_print_table.inc: n/a
+#  cforge_offline.module: n/a
+#  cforge_offline.install: n/a
+#  cforge_offline.info: n/a
+# 
+# Translators:
+# pktoss <pktoss@gmail.com>, 2013
+# sonickydon <fiotakis@otenet.gr>, 2013
+msgid ""
+msgstr ""
+"Project-Id-Version: cforge\n"
+"POT-Creation-Date: 2012-11-06 11:42+0100\n"
+"PO-Revision-Date: 2013-05-22 05:24+0000\n"
+"Last-Translator: pktoss <pktoss@gmail.com>\n"
+"Language-Team: Greek <dax-net-group@googlegroups.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: el\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: offline_contact.tpl.php:18
+msgid "Phone: @phone"
+msgstr "Τηλέφωνο: @phone"
+
+#: print-table.tpl.php:24
+msgid "Printed on @date"
+msgstr "Εκτυπώθηκε την @date"
+
+#: cforge_offline.views.inc:12
+msgid "An html table sent direct to the browser"
+msgstr "Ένας πίνακας html αποστέλλεται απευθείας στο πρόγραμμα περιήγησης"
+
+#: cforge_offline.views_default.inc:111
+msgid "Family name"
+msgstr "Επώνυμο"
+
+#: views_plugin_display_print_table.inc:65
+msgid "Print-page settings"
+msgstr "Ρυθμίσεις σελίδας εκτύπωσης"
+
+#: views_plugin_display_print_table.inc:70
+msgid "Multiple displays"
+msgstr "Πολλαπλές προβολές"
+
+#: views_plugin_display_print_table.inc:79
+msgid "None"
+msgstr "Κανένα"
+
+#: views_plugin_display_print_table.inc84;102;185
+msgid "Attach to"
+msgstr "Επισύναψη σε"
+
+#: views_plugin_display_print_table.inc89;118;176
+msgid "Position"
+msgstr "Θέση"
+
+#: views_plugin_display_print_table.inc:111
+msgid "The feed icon will be available only to the selected displays."
+msgstr "Το εικονίδιο ροής θα εμφανίζεται μόνο στις επιλεγμένες οθόνες."
+
+#: views_plugin_display_print_table.inc121;179
+msgid "Attach before or after the parent display?"
+msgstr "Επισύναψη πριν ή μετά τη γονική προβολή;"
+
+#: views_plugin_display_print_table.inc:127
+msgid ""
+"This view will be displayed by visiting this path on your site. It is "
+"recommended that the path be something like \"path/%/%/feed\" or "
+"\"path/%/%/rss.xml\", putting one % in the path for each argument you have "
+"defined in the view."
+msgstr ""
+
+#: views_plugin_display_print_table.inc:140
+msgid "Inherit contextual filters"
+msgstr "Τα σχετικά φίλτρα να κληρονομούνται "
+
+#: views_plugin_display_print_table.inc143;152;161
+msgid "Inherit"
+msgstr "Κληρονομικότητα"
+
+#: views_plugin_display_print_table.inc:144
+msgid ""
+"Should this display inherit its contextual filter values from the parent "
+"display to which it is attached?"
+msgstr "Να κληρονομηθούν οι τιμές για τα συναφή φίλτρα από τη γονική εμφάνιση στην οποία έχει επισυναφθεί η τρέχουσα;"
+
+#: views_plugin_display_print_table.inc:149
+msgid "Inherit exposed filters"
+msgstr "Κληρονομικότητα εκτεθειμένων φίλτρων"
+
+#: views_plugin_display_print_table.inc:153
+msgid ""
+"Should this display inherit its exposed filter values from the parent "
+"display to which it is attached?"
+msgstr "Να κληρονομηθούν οι τιμές των εκτεθειμένων φίλτρων από τη γονική εμφάνιση στην οποία έχει επισυναφθεί η τρέχουσα;"
+
+#: views_plugin_display_print_table.inc:158
+msgid "Inherit pager"
+msgstr "Κληρονόμησε τις ρυθμίσεις του σελιδοποιητή"
+
+#: views_plugin_display_print_table.inc:162
+msgid ""
+"Should this display inherit its paging values from the parent display to "
+"which it is attached?"
+msgstr "Να κληρονομηθούν οι παράμετροι σελιδοποίησης από τη γονική οθόνη;"
+
+#: views_plugin_display_print_table.inc:167
+msgid "Render pager"
+msgstr "Απεικόνιση σελιδοποιητή"
+
+#: views_plugin_display_print_table.inc:170
+msgid "Render"
+msgstr "Απεικόνιση"
+
+#: views_plugin_display_print_table.inc:171
+msgid ""
+"Should this display render the pager values? This is only meaningful if "
+"inheriting a pager."
+msgstr "Θα πρέπει αυτή η οθόνη να απεικονίσει τις τιμές του σελιδοποιητή; Αυτό έχει νόημα μόνο αν ο σελιδοποιητής έχει κληρονομηθεί."
+
+#: views_plugin_display_print_table.inc:194
+msgid "Select which display or displays this should attach to."
+msgstr "Επιλέξτε σε ποια εμφάνιση ή εμφανίσεις θα επισυναφθεί η τρέχουσα"
+
+#: views_plugin_display_print_table.inc:220
+msgid "Before"
+msgstr "Πριν"
+
+#: views_plugin_display_print_table.inc:221
+msgid "After"
+msgstr "Μετά"
+
+#: views_plugin_display_print_table.inc:222
+msgid "Both"
+msgstr "Και τα δύο"
+
+#: views_plugin_display_print_table.inc:250
+msgid "Printer-friendly version"
+msgstr "Εκτυπώσιμη μορφή"
+
+#: cforge_offline.module:34
+msgid "Contact card"
+msgstr "Κάρτα πληροφοριών επικοινωνίας"
+
+#: cforge_offline.install:7
+msgid "Postal membership"
+msgstr "Μέλος δι' αλληλογραφίας"
+
+#: cforge_offline.install:8
+msgid "This member prefers to receive updates by post"
+msgstr "Αυτό το μέλος προτιμάει τις ενημερώσεις δι' αλληλογραφίας"
+
+#: cforge_offline.info:0
+msgid "Cforge offline"
+msgstr "Cforge offline"
+
+#: cforge_offline.info:0
+msgid "support for offline users"
+msgstr "Υποστήριξη για χρήστες χωρίς σύνδεση στο διαδίκτυο"
+
+#: cforge_offline.info:0
+msgid "Community Forge"
+msgstr "Community Forge"

@@ -1,0 +1,100 @@
+# $Id$
+# 
+# LANGUAGE translation of Drupal (general)
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from files:
+#  cforge_events.views_default.inc: n/a
+#  cforge_events.module: n/a
+#  cforge_events.install: n/a
+#  cforge_events.info: n/a
+# 
+# Translators:
+# sonickydon <fiotakis@otenet.gr>, 2013
+msgid ""
+msgstr ""
+"Project-Id-Version: cforge\n"
+"POT-Creation-Date: 2012-11-06 11:41+0100\n"
+"PO-Revision-Date: 2013-05-05 13:04+0000\n"
+"Last-Translator: sonickydon <fiotakis@otenet.gr>\n"
+"Language-Team: Greek <dax-net-group@googlegroups.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: el\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: cforge_events.views_default.inc:237
+msgid "Master"
+msgstr "Μάστερ"
+
+#: cforge_events.views_default.inc:238
+msgid "more"
+msgstr "περισσότερα"
+
+#: cforge_events.views_default.inc:239
+msgid "Apply"
+msgstr "Εφαρμογή"
+
+#: cforge_events.views_default.inc:240
+msgid "Reset"
+msgstr "Επαναφορά"
+
+#: cforge_events.views_default.inc:241
+msgid "Sort by"
+msgstr "Ταξινόμηση κατά"
+
+#: cforge_events.views_default.inc:242
+msgid "Asc"
+msgstr "Αύξουσα"
+
+#: cforge_events.views_default.inc:243
+msgid "Desc"
+msgstr "Φθίνουσα "
+
+#: cforge_events.views_default.inc:244
+msgid "Year page"
+msgstr "Σελίδα έτους"
+
+#: cforge_events.views_default.inc:245
+msgid "Tous / Toutes"
+msgstr "Όλοι / Όλες"
+
+#: cforge_events.views_default.inc:246
+msgid "Month Block"
+msgstr "Μπλοκ μήνα"
+
+#: cforge_events.views_default.inc:247
+msgid "Upcoming"
+msgstr "Προσεχώς"
+
+#: cforge_events.views_default.inc:248
+msgid "Upcoming events block"
+msgstr "Μπλοκ προσεχών εκδηλώσεων"
+
+#: cforge_events.module:12
+msgid "Content type with date field"
+msgstr "Τύπος περιεχομένου με πεδίο ημερομηνίας"
+
+#: cforge_events.module:14
+msgid "Title"
+msgstr "Τίτλος"
+
+#: cforge_events.install:105
+msgid "Details"
+msgstr "Λεπτομέρειες"
+
+#: cforge_events.install:149
+msgid "Upcoming events"
+msgstr "Προσεχείς εκδηλώσεις"
+
+#: cforge_events.info:0
+msgid "Cforge Events"
+msgstr "Εκδηλώσεις Cforge"
+
+#: cforge_events.info:0
+msgid "Post events and view on calendar"
+msgstr "Δημοσίευση εκδηλώσεων και εμφάνιση στο ημερολόγιο"
+
+#: cforge_events.info:0
+msgid "Community Forge"
+msgstr "Community Forge"

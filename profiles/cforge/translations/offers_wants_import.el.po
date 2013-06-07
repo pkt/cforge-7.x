@@ -1,0 +1,75 @@
+# $Id$
+# 
+# LANGUAGE translation of Drupal (general)
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from files:
+#  mc_offer_want.module,v 1.9 2010/10/02 15:54:27 matslats
+#  offers_wants_import.info: n/a
+# 
+# Translators:
+# sonickydon <fiotakis@otenet.gr>, 2013
+msgid ""
+msgstr ""
+"Project-Id-Version: cforge\n"
+"POT-Creation-Date: 2012-01-18 10:04+0100\n"
+"PO-Revision-Date: 2013-05-19 17:17+0000\n"
+"Last-Translator: sonickydon <fiotakis@otenet.gr>\n"
+"Language-Team: Greek <dax-net-group@googlegroups.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: el\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: offers_wants_import.module:10
+msgid ""
+"Defines two contentTypes which are created and edited by each user and which"
+" are presented as a directory categorised using taxonomy."
+msgstr "Καθορίζει δυο τύπους περιεχομένου που δημιουργείται και επεξεργάζεται από κάθε χρήστη και που παρουσιάζεται με μορφή ταξινομημένου καταλόγου."
+
+#: offers_wants_import.module:89
+msgid ""
+"This page allows you to import users' @type for users already on the system."
+msgstr "Αυτή η σελίδα σας επιτρέπει να εισάγετε τον @type των χρηστών που υπάρχουν ήδη στο σύστημα."
+
+#: offers_wants_import.module:90
+msgid ""
+"There are other ways of doing this, but this is simple and maintained along "
+"with the rest of the marketplace module."
+msgstr "Αυτό μπορεί να γίνει και με διάφορους άλλους τρόπους αλλά τούτος είναι πιο απλός και συνδυάζεται με τη συνολική διαχείριση του αρθρώματος της αγοράς."
+
+#: offers_wants_import.module:92
+msgid ""
+"Use a spreadsheet tool to prepare a list of user ids, or names, and their "
+"@type in one line. "
+msgstr "Μπορείτε να χρησιμοποιήσετε κάποιο εργαλείο από λογιστικά φύλλα για να προετοιμάσετε μια λίστα με αναγνωριστικά (ID) ή ονόματα χρηστών και τον @type τους σε μια γραμμή."
+
+#: offers_wants_import.module:93
+msgid ""
+"For aesthetic reasons, there is a 128 character limit on each description. "
+msgstr "Για λόγους καλαισθησίας, κάθε περιγραφή περιορίζεται σε 128 χαρακτήρες."
+
+#: offers_wants_import.module:94
+msgid ""
+"Each line should look like this (you must include the header row): !code"
+msgstr "Κάθε γραμμή θα πρέπει να έχει αυτή τη μορφή (θα πρέπει να συμπεριλάβετε τη γραμμή κεφαλίδας): !code"
+
+#: offers_wants_import.module:95
+msgid "Try importing one or two first."
+msgstr "Δοκιμάστε να εισάγετε πρώτα ένα-δυο."
+
+#: offers_wants_import.module:104
+msgid "The description on line @rownum is more than 128 characters: @string"
+msgstr "Η περιγραφή στη γραμμή @rownum υπερβαίνει τους 128 χαρακτήρες: @string"
+
+#: offers_wants_import.info:0
+msgid "Offers/wants import"
+msgstr "Εισαγωγή προσφορών/ζητήσεων"
+
+#: offers_wants_import.info:0
+msgid "paste your comma separated values"
+msgstr "Επικολλήστε τις τιμές σας διαχωρισμένες με κόμματα."
+
+#: offers_wants_import.info:0
+msgid "Local communities"
+msgstr "Τοπικές κοινότητες"

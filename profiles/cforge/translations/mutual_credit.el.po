@@ -1,0 +1,3240 @@
+# $Id$
+# 
+# LANGUAGE translation of Drupal (general)
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from files:
+#  node-exchange.tpl.php,v 1.1.2.3 2010/12/06 13:19:46 hutch
+#  currencies.inc: n/a
+#  plugins/export_ui/mcapi_ui.class.php: n/a
+#  mcapi.inc,v 1.1.2.7 2010/12/22 19:30:29 matslats
+#  mcapi.tokens.inc: n/a
+#  extras/signatures/views/mcapi_signatures.views.inc: n/a
+#  views/mcapi.views.inc: n/a
+#  mcapi.info.inc: n/a
+#  extras/accountant_ui/accountant_ui.views_default.inc: n/a
+#  views/views_handler_filter_mcapi_states.inc: n/a
+#  extras/accountant_ui/accountant_ui.inc: n/a
+#  extras/signatures/mcapi_signatures.mcapiforms_default.inc: n/a
+#  extras/signatures/mcapi_signatures.module: n/a
+#  mcapi.rules.inc: n/a
+#  mcapi.module,v 1.1.2.6 2010/12/22 19:30:29 matslats
+#  mcapi.install,v 1.1.2.4 2010/12/15 22:04:03 matslats
+#  views/mcapi.views_default.inc: n/a
+#  views/mcapi_index_views.views.inc: n/a
+#  mcapi.mcapicurrencies_default.inc: n/a
+#  mcapi.info: n/a
+#  mc_sms.info,v 1.1.2.1 2010/12/06 13:19:46 hutch
+#  extras/forms/mcapi_forms.info: n/a
+#  extras/import/mcapi_import.info: n/a
+#  extras/intertrading/intertrading.info: n/a
+#  extras/limits/mcapi_limits.info: n/a
+#  extras/signatures/mcapi_signatures.info: n/a
+#  views/mcapi_index_views.info: n/a
+#  views/mcapi_index_views.views_default.inc: n/a
+#  extras/forms/mcapi_forms.tokens.inc: n/a
+#  extras/accountant_ui/accountant_ui.module: n/a
+#  views/views_handler_filter_mcapi_currency.inc: n/a
+#  extras/forms/mcapi_forms.mcapiforms_default.inc: n/a
+#  extras/intertrading/intertrading.module: n/a
+#  extras/forms/mcapi_forms.admin.inc: n/a
+#  extras/forms/plugins/export_ui/mcapi_forms_ui.class.php: n/a
+#  extras/forms/mcapi_forms.inc: n/a
+#  extras/forms/mcapi_forms.module: n/a
+#  extras/forms/plugins/export_ui/mcapi_forms_ui.inc: n/a
+#  extras/import/mcapi_import.module: n/a
+#  views/views_handler_field_mcapi_users_totals.inc: n/a
+#  extras/intertrading/intertrading.inc: n/a
+#  extras/intertrading/intertrading.install: n/a
+#  extras/limits/balance_limits.tpl.php: n/a
+#  extras/limits/trading_limits.tpl.php: n/a
+#  extras/limits/mcapi_limits.inc: n/a
+#  extras/sms/mcapi_sms.module: n/a
+#  extras/limits/mcapi_limits.module: n/a
+#  extras/limits/views/mcapi_limits.views.inc: n/a
+#  extras/signatures/pending_signatures.tpl.php: n/a
+#  extras/signatures/views/mcapi_signatures.views_default.inc: n/a
+#  extras/signatures/views/views_handler_field_mcapi_sign.inc: n/a
+#  extras/signatures/mcapi_signatures.install: n/a
+#  plugins/export_ui/mcapi_ui.inc: n/a
+#  balance_history.tpl.php,v 1.3 2010/12/08 11:43:18 matslats
+#  views/views_plugin_access_user_arg1.inc: n/a
+#  views/views_handler_field_transaction.inc: n/a
+#  views/views_handler_filter_mcapi_index_diff.inc: n/a
+#  views/views_plugin_row_transaction.inc: n/a
+# 
+# Translators:
+# dtrich0 <dtrich0@gmail.com>, 2013
+# Zorz <gkastanis.gr@gmail.com>, 2013
+# margrite13 <marg_naf@yahoo.gr>, 2013
+# pktoss <pktoss@gmail.com>, 2013
+# afroditefiliou <faphrodite@gmail.com>, 2013
+msgid ""
+msgstr ""
+"Project-Id-Version: cforge\n"
+"POT-Creation-Date: 2012-11-18 09:14+0100\n"
+"PO-Revision-Date: 2013-05-28 13:11+0000\n"
+"Last-Translator: Zorz <gkastanis.gr@gmail.com>\n"
+"Language-Team: Greek <dax-net-group@googlegroups.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: el\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: transaction.tpl.php:38
+msgid ""
+"On @recorded<br />!payer <strong>paid</strong> !payee</br />the sum of "
+"!worth"
+msgstr "Στις @recorded<br /> το μέλος !payer <strong>πλήρωσε</strong> το μέλος !payee</br /> το ποσόν !worth"
+
+#: transaction.tpl.php:51
+msgid "On @recorded, !payer gave !payee !worth"
+msgstr "Στις @recorded, το μέλος !payer έδωσε στο μέλος !payee !worth"
+
+#: transaction.tpl.php:54
+msgid "On @recorded, !payer will give !payee !worth"
+msgstr "Στις @recorded, το μέλος !payer θα δώσει στο μέλος !payee !worth"
+
+#: transaction.tpl.php:60
+msgid "Dependent transactions"
+msgstr "Εξαρτόμενες συναλλαγές"
+
+#: currencies.inc:7
+msgid "Name of currency"
+msgstr "Ονομασία νομίσματος"
+
+#: currencies.inc:8
+msgid "Use the plural"
+msgstr "Χρησιμοποίησε πληθυντικό"
+
+#: currencies.inc:17
+msgid "Appearance"
+msgstr "Εμφάνιση"
+
+#: currencies.inc:22 plugins/export_ui/mcapi_ui.class.php:89
+msgid "Display format"
+msgstr "Μορφή απεικόνισης"
+
+#: currencies.inc:23
+msgid ""
+"Write an expression to control the display of the currency using html, css "
+"and the following tokens:"
+msgstr "Γράψτε μια έκφραση για να καθορίσετε την εμφάνιση του νομίσματος χρησιμοποιώντας html, css και τα ακόλουθα σύμβολα:"
+
+#: currencies.inc:24
+msgid "For example, !a shows as !b"
+msgstr "Για παράδειγμα, το !a φαίνεται ώς !b"
+
+#: currencies.inc:32
+msgid "Subdivisions"
+msgstr "Υποδιαιρέσεις"
+
+#: currencies.inc:35
+msgid "Integer values only"
+msgstr "Ακέραιες τιμές μόνο"
+
+#: currencies.inc:36
+msgid "Cents in same field, delimited by '.'"
+msgstr "Τα λεπτά στο ίδιο τομέα, οριοθετείται από τον χαρακτήρα '.'"
+
+#: currencies.inc:37
+msgid "Cents in separate field"
+msgstr "Τα λεπτά τοποθετούνται σε διαφορετικό τομέα"
+
+#: currencies.inc:38
+msgid "Allowed subdivisions, below"
+msgstr "Επιτρέπονται υποδιαιρέσεις, πιο κάτω"
+
+#: currencies.inc:44
+msgid "Allowed subdivisions"
+msgstr "Επιτρέπονται υποδιαιρέσεις"
+
+#: currencies.inc:45
+msgid ""
+"On each line put \"hundredths| visible text\". The visible text replaces the"
+" @subdivision in the display format, above."
+msgstr "Σε κάθε γραμμή βάλτε \"hundredths| visible text\". Το ορατό κείμενο αντικαθιστά το @subdivision στην παραπάνω μορφή απεικόνισης"
+
+#: currencies.inc:65
+msgid "Use currency"
+msgstr "Χρησιμοποιήστε το νόμισμα"
+
+#: currencies.inc:66
+msgid "Determine which users are permitted to use this currency"
+msgstr "Καθορίζει πιος χρήστης επιτρέπεται να χρησιμοποιήσει αυτό το νόμισμα"
+
+#: currencies.inc:74
+msgid "View aggregated user transaction data"
+msgstr "Δείτε συγκεντρωτικά στοιχεία των συναλλαγών των χρηστών"
+
+#: currencies.inc:75
+msgid "Such as balance, gross income, number of transactions"
+msgstr "Όπως το υπόλοιπο, το ακαθάριστο εισόδημα, τον αριθμό των συναλλαγών"
+
+#: currencies.inc:82
+msgid "View aggregated system data"
+msgstr "Δείτε συγκεντρωτικά στοιχεία του συστήματος"
+
+#: currencies.inc:89
+msgid "Undo any transaction in this currency"
+msgstr "Αναίρεση κάθε συναλλαγή σε αυτό το νόμισμα"
+
+#: currencies.inc:98
+msgid "Module developers: use @hook to add more options"
+msgstr "Προγραμματιστές: χρησιμοποιήστε το @hook για να προσθέσετε περισσότερες επιλογές"
+
+#: currencies.inc:104
+msgid "Transaction access"
+msgstr "πρόσβαση συναλλαγών"
+
+#: currencies.inc:105
+msgid "Determine who can view transactions in each state."
+msgstr "Προσδιόρισε ποιος μπορεί να δει τις συναλλαγές σε κάθε στάδιο."
+
+#: currencies.inc:105
+msgid "Any the checked conditions must return TRUE"
+msgstr "Κάθε μία από τις ελεγχόμενες συνθήκες πρέπει να επιστρέψει TRUE,"
+
+#: currencies.inc:121
+msgid "Declared by"
+msgstr "Δηλώθηκε ως"
+
+#: currencies.inc:131
+msgid "Update"
+msgstr "Ενημέρωση"
+
+#: currencies.inc:138
+msgid "Currency format must contain token '@integer'"
+msgstr "Η μορφη της συναλλακτικης μοναδας πρεπει να περιλαμβανει συμβολο 'ακεραιου αριθμου'"
+
+#: currencies.inc:142
+msgid "Currency format must contain token '@subdivision'"
+msgstr "Η μορφη της συναλλακτικης μοναδας πρεπει να περιλαμβανει συμβολο 'υποδιαιρεσης'"
+
+#: currencies.inc:151
+msgid "There should be at least two lines in field '@fieldname'"
+msgstr "πρεπει να υπαρχουν τουλαχιστον δυο γραμμες στο πεδιο 'τιτλος πεδίου' "
+
+#: currencies.inc:155
+msgid "line \"@val\" should contain a pipe character, |"
+msgstr "Η γραμμή \"@val\" θα έπρεπε να περιέχει το χαρακτήρα |"
+
+#: currencies.inc:160
+msgid ""
+"'@val' should be an integer from  0 to 99, followed directly by a pipe, |, "
+"followed directly by a word or phrase with no unusual characters"
+msgstr "Το '@val' θα έπρεπε να είναι ένας ακέραιος από το 0 ως το 99, ακολουθούμενο από το χαρακτήρα |, ακολουθούμενο κατευθείαν από μια λέξη ή φράση χωρίς ασυνήθιστους χαρακτήρες"
+
+#: currencies.inc:175
+msgid "Invalid currency specified: @num"
+msgstr "Λάθος νόμισμα: @num"
+
+#: currencies.inc:208
+msgid ""
+"Resave currency @currname, paying attention to transaction access for state "
+"@state: !edit_link"
+msgstr "Επαναποθήκευση του νομίσματος  @currname, δίνοντας προσοχή στην πρόσβαση της συναλλαγής για την κατάσταση @state: !edit_link"
+
+#: currencies.inc:211
+msgid "edit"
+msgstr "επεξεργασια"
+
+#: mcapi.inc9;23 mcapi.tokens.inc:124
+#: extras/signatures/views/mcapi_signatures.views.inc:34
+#: views/mcapi.views.inc10;164
+msgid "Transaction"
+msgstr "Συναλλαγή"
+
+#: mcapi.inc:36 mcapi.tokens.inc:102
+msgid "An HTML laid out view of the transaction cluster"
+msgstr "Μία όψη της συστοιχίας συναλλαγών διαμορφωμένη ως HTML"
+
+#: mcapi.inc:40 mcapi.tokens.inc:98
+msgid "A one-per-line description of the transaction cluster"
+msgstr "Μία-ανά-γραμμή περιγραφή της συστοιχίας συναλλαγών"
+
+#: mcapi.inc:57
+msgid "Search index"
+msgstr "Ευρετήριο αναζήτησης"
+
+#: mcapi.inc:61
+msgid "Search result"
+msgstr "Αποτελέσματα αναζήτησης"
+
+#: mcapi.inc:165
+msgid "Transaction certificate #@serial"
+msgstr "Πιστοποιητικό συναλλαγής #@serial"
+
+#: mcapi.inc:186
+msgid "Account to be debited"
+msgstr "Ο λογαριασμός που θα χρεωθεί "
+
+#: mcapi.inc:194
+msgid "Account to be credited"
+msgstr "Ο λογαριασμός που θα πιστωθεί "
+
+#: mcapi.inc202;601 mcapi.info.inc:20
+msgid "Transaction type"
+msgstr "Είδος συναλλαγής"
+
+#: mcapi.inc:211 mcapi.info.inc:55
+#: extras/accountant_ui/accountant_ui.views_default.inc:311
+#: views/mcapi.views.inc:66
+#: views/views_handler_filter_mcapi_states.inc13;36;74
+msgid "State"
+msgstr "Κατάσταση"
+
+#: mcapi.inc:220
+msgid "Recorded by"
+msgstr "Κατεγραμμένος από "
+
+#: mcapi.inc:232 extras/accountant_ui/accountant_ui.inc:71
+msgid "Record"
+msgstr "Επιβεβαίωση"
+
+#: mcapi.inc:278
+msgid "Transaction was already submitted"
+msgstr "Η συναλλαγη ειχε ηδη υποβληθεί"
+
+#: mcapi.inc:314
+msgid "Choose which module, with a .controller file, to use."
+msgstr "Επιλέξτε ποιο άρθρωμα, με ένα αρχείο .controller, να χρησιμοποιηθεί"
+
+#: mcapi.inc:330
+msgid "Databases"
+msgstr "Βάσεις Δεδομένων"
+
+#: mcapi.inc331;340
+msgid "See @file for how to enable more databases."
+msgstr "Δείτε το  @file για το πώς να ενεργοποιήσετε περισσότερες βάσεις δεδομένων"
+
+#: mcapi.inc:332
+msgid ""
+"Write accounting information to more than one database, and read from one "
+"database, making a sort of master/slave arrangement."
+msgstr "Εγγραφή λογιστικών πληροφοριών σε πάνω από μία βάση δεδομένων και ανάγνωση από μία βάση δεδομένων, φτιάχνοντας έτσι ένα είδος υποδομής master/slave."
+
+#: mcapi.inc:333
+msgid ""
+"Don't forget each database connection itself can have master/slave "
+"arrangement, but we are concerned only with accounting here."
+msgstr "Μην ξεχνάτε ότι κάθε σύνδεση σε βάση δεδομένων μπορεί να υποστηρίζει υποδομή master/slave, αλλά μας απασχολεί μόνο η λογιστική εδώ"
+
+#: mcapi.inc334;342
+msgid "the database should be appropriate for the controller."
+msgstr "η βάση δεδομένων θα πρέπει να είναι κατάλληλη για τον controller."
+
+#: mcapi.inc:339
+msgid "Write accounting information to"
+msgstr "Εγγραφή λογιστικής πληροφορίας σε"
+
+#: mcapi.inc:341
+msgid ""
+"Use with caution as fields added to transactions and currencies will still "
+"be saved locally"
+msgstr "Χρησιμοποιήστε με προσοχή, καθώς πεδία που προστίθενται σε συναλλαγές και νομίσματα θα αποθηκευτούν τοπικά"
+
+#: mcapi.inc:352
+msgid "Read accounting information from"
+msgstr "Διαβαστε τη λογιστικη πληροφορηση απο"
+
+#: mcapi.inc:360
+msgid "Undo mode"
+msgstr "Τροπος αναιρεσης"
+
+#: mcapi.inc:361
+msgid "What should happen when a user or admin deletes a transaction.?"
+msgstr "Τι θα συμβεί στην περίπτωση που ένας χρήστης ακυρώσει μια συναλλαγή;"
+
+#: mcapi.inc:362
+msgid "Some system operations may 'scratch' transactions"
+msgstr "Μερικές λειτουργίες συστήματος μπορεί να διαγράψουν συναλλαγές"
+
+#: mcapi.inc:363
+msgid "Cannot be changed after a transaction has been undone"
+msgstr "Δεν μπορεί να αλλαχθεί μετά την αναίρεση μιας συναλλαγής"
+
+#: mcapi.inc:366
+msgid "Wipe slate - remove transactions from database"
+msgstr "Καθαρισμός - αφαίρεση συναλλαγών από τη βάση δεδομένων"
+
+#: mcapi.inc:367
+msgid "Scratch - use deleted transaction state"
+msgstr "Scratch - χρήση διαγραμμένης κατάστασης συναλλαγής"
+
+#: mcapi.inc:368
+msgid "Reverse - create an equal and opposite transaction"
+msgstr "Αντιστροφή - δημιουργία αντίστροφης συναλλαγής"
+
+#: mcapi.inc:379
+msgid "Currencies per transaction"
+msgstr "Νομίσματα ανά συναλλαγή"
+
+#: mcapi.inc:382
+msgid "One currency per transaction"
+msgstr "Ένα νόμισμα ανά συναλλαγή"
+
+#: mcapi.inc:383
+msgid "Many currencies per transaction"
+msgstr "Πολλά νομίσματα ανά συναλλαγή"
+
+#: mcapi.inc:401
+msgid "A transaction must involve two different users"
+msgstr "Μια συναλλαγή γίνεται ανάμεσα σε δύο χρήστες-μέλη"
+
+#: mcapi.inc:413
+msgid "@fieldname required for completed transaction"
+msgstr "Το @fieldname απαιτείται για ολοκληρωμένες συναλλαγές"
+
+#: mcapi.inc:432
+msgid "Are you sure you want to undo transaction #@serial?"
+msgstr "Είστε σίγουρος ότι θέλετε να ακυρώσετε τη συναλλαγή #@serial;"
+
+#: mcapi.inc:436
+msgid "This includes dependent transactions"
+msgstr "Αυτό συμπεριλαμβάνει τις εξαρτόμενες συναλλαγές"
+
+#: mcapi.inc:438 extras/signatures/mcapi_signatures.mcapiforms_default.inc:37
+msgid "Delete"
+msgstr "Διαγραφή"
+
+#: mcapi.inc:439 extras/signatures/mcapi_signatures.module470;510;549;43
+msgid "Cancel"
+msgstr "Άκυρο"
+
+#: mcapi.inc:467
+msgid "Invalid transaction state: @value."
+msgstr "Εσφαλμένη κατάσταση συναλλαγής: @value"
+
+#: mcapi.inc:478
+msgid "Invalid transaction type: @value"
+msgstr "Μη έγκυρος τύπος συναλλαγής: @value"
+
+#: mcapi.inc:580
+msgid "Transaction saved by [transaction:creator]"
+msgstr "Η συναλλαγή αποθηκεύτηκε από τον/την [transaction:creator]"
+
+#: mcapi.inc:582
+msgid "A transaction for [transaction:worth] has been finalised"
+msgstr "Μία συναλλαγή αξίας [transaction:worth] ολοκληρώθηκε"
+
+#: mcapi.inc:583
+msgid "More details can be found at:"
+msgstr "Περισσότερες πληροφορίες μπορείτε να βρείτε στο:"
+
+#: mcapi.inc:584
+msgid "To change your notification settings, visit your profile at:"
+msgstr "Για να αλλάξετε τις ρυθμίσεις ειδοποίησης, επισκεφτείτε το προφίλ σας στο:"
+
+#: mcapi.inc:585
+msgid "The team at [site:name]"
+msgstr "Ομάδα [όνομα]"
+
+#: mcapi.inc:590
+msgid "Only send for these transaction types."
+msgstr "Αποστολή μόνο για αυτούς τους τύπους συναλλαγών."
+
+#: mcapi.inc:601 mcapi.rules.inc:106
+msgid "Transaction types"
+msgstr "Είδος συναλλαγής"
+
+#: mcapi.inc:627
+msgid "Mail template"
+msgstr "Ταχυδρομίστε το υπόμνημα"
+
+#: mcapi.inc:631 extras/signatures/mcapi_signatures.module194;217
+msgid "Subject"
+msgstr "Θέμα"
+
+#: mcapi.inc:637 extras/signatures/mcapi_signatures.module200;223
+msgid "Body"
+msgstr "Κυρίως κείμενο"
+
+#: mcapi.inc:652
+msgid "Carbon copy"
+msgstr "Αντίγραφο"
+
+#: mcapi.inc:653
+msgid "Send an extra copy to this address"
+msgstr "Στείλτε ένα επιπλέον αντίγραφο σε αυτή τη διεύθυνση:"
+
+#: mcapi.inc:671
+msgid "That e-mail address is not valid."
+msgstr "Αυτό το email δεν χρησιμοποιείται"
+
+#: mcapi.inc:730
+msgid "Badly configured action failed to create dependent transaction"
+msgstr "Λάθος παραμετροποιημένη ενέργεια απέτυχε να δημιουργήσει εξαρτώμενη συναλλαγή"
+
+#: mcapi.inc:746
+msgid "Mapping"
+msgstr "Χαρτογράφηση"
+
+#: mcapi.inc:749
+msgid "Payer pays other"
+msgstr "Ο πληρωτής πληρώνει τρίτους"
+
+#: mcapi.inc:750
+msgid "Payee pays other"
+msgstr "Ο δικαιούχος πληρώνει τρίτους"
+
+#: mcapi.inc:751
+msgid "Other pays payer"
+msgstr "Ο τρίτος πληρώνει τον πληρωτή"
+
+#: mcapi.inc:752
+msgid "Other pays payee"
+msgstr "Ο τρίτος πληρώνει το δικαιούχο"
+
+#: mcapi.inc:759
+msgid "Other account"
+msgstr "Άλλος λογαριασμός"
+
+#: mcapi.inc788;958 mcapi.info.inc:68 mcapi.module1127;1145;1173;1332
+#: mcapi.install:244 views/mcapi.views_default.inc:380
+msgid "Worth"
+msgstr "Αξία"
+
+#: mcapi.inc:796
+msgid "What is the fixed value of this transaction?"
+msgstr "Ποια είναι η σταθερή αξία της συναλλαγής;"
+
+#: mcapi.inc:799
+msgid ""
+"The value of the transction may depend on the value of the main transaction."
+msgstr "Η αξία της συναλλαγής μπορεί να εξαρτάται από την αξία της κυρίως συναλλαγής."
+
+#: mcapi.inc:800
+msgid ""
+"Enter a number, a percentage, or a formula using [q] for the transaction "
+"quantity."
+msgstr "Εισάγετε ένα αριθμό, ένα ποσοστό, ή ένα τύπο χρησιμοποιώντας [q] για την ποσότητα της συναλλαγής"
+
+#: mcapi.inc:801
+msgid "Zero = empty"
+msgstr "Μηδέν = άδειο"
+
+#: mcapi.inc:814
+msgid "Rounding"
+msgstr "Στρογγυλοποίηση"
+
+#: mcapi.inc:816
+msgid "Up"
+msgstr "Επάνω"
+
+#: mcapi.inc:816
+msgid "Down"
+msgstr "Κάτω"
+
+#: mcapi.inc:831
+msgid "A value is required"
+msgstr "Τιμή απαραίτητη η συμπλήρωση"
+
+#: mcapi.inc:842
+msgid "Invalid formula"
+msgstr "μη έγκυρος τύπος"
+
+#: mcapi.inc:916
+msgid ""
+"Which of the text fields below is used for the transaction description?."
+msgstr "Ποιο από τα παρακάτω πεδία κειμένου χρησιμοποιείται για την περιγραφή της συναλλαγής;"
+
+#: mcapi.inc:982
+msgid "@fieldname must be numeric"
+msgstr "Το @fieldname πρέπει να είναι αριθμός"
+
+#: mcapi.inc:986
+msgid "Negative values not allowed"
+msgstr "Αρνητικές τιμές δεν επιτρέπονται"
+
+#: mcapi.inc:991
+msgid "This currency does not exist: @currcode"
+msgstr "Αυτό το νόμισμα δεν υπάρχει: @currcode"
+
+#: mcapi.inc:998
+msgid "Only certain centiles are permitted for @name"
+msgstr "Μόνο συγκεκριμένες υποδιαιρέσεις επιτρέπονται για το @name"
+
+#: mcapi.inc:1062 mcapi.info.inc:89
+#: extras/accountant_ui/accountant_ui.views_default.inc:313
+msgid "Quantity"
+msgstr "Ποσότητα"
+
+#: mcapi.inc:1076
+msgid "Fraction"
+msgstr "Ποσοστό"
+
+#: mcapi.inc:1085
+msgid "Cents"
+msgstr "Cents"
+
+#: mcapi.inc:1173
+msgid "Income: !quant"
+msgstr "Έσοδα: !quant"
+
+#: mcapi.inc:1174
+msgid "Transactions: @count"
+msgstr "Συναλλαγές: @count"
+
+#: mcapi.info.inc:13 views/mcapi_index_views.views.inc:20
+msgid "Transaction ID"
+msgstr "Κωδικός συναλλαγών"
+
+#: mcapi.info.inc:15
+msgid "The unique serial number of the transaction."
+msgstr "Ο μοναδικός σειριακός αριθμός για τη συναλλαγή"
+
+#: mcapi.info.inc:27 mcapi.rules.inc148;152
+#: extras/accountant_ui/accountant_ui.views_default.inc:310
+#: views/mcapi.views.inc34;46 views/mcapi.views_default.inc:377
+msgid "Payer"
+msgstr "Πληρωτής"
+
+#: mcapi.info.inc:28
+msgid "The user ID of the payer"
+msgstr "Το user ID του πληρωτή"
+
+#: mcapi.info.inc:35 extras/accountant_ui/accountant_ui.views_default.inc:309
+#: views/mcapi.views.inc50;62 views/mcapi.views_default.inc:376
+msgid "Payee"
+msgstr "Δικαιούχος"
+
+#: mcapi.info.inc:36
+msgid "The user ID of the payee"
+msgstr "Το user ID του δικαιούχου"
+
+#: mcapi.info.inc:43
+msgid "Unixtime of transaction creation"
+msgstr "Χρονικό στιγμιότυπο της δημιουργίας συναλλαγής"
+
+#: mcapi.info.inc:49
+msgid "User who created the transaction"
+msgstr "Χρήστης που δημιούργησε τη συναλλαγή"
+
+#: mcapi.info.inc:57
+msgid "Workflow state. By convention, greater than zero means it is counted."
+msgstr "Κατάσταση ροής εργασίας. Κατά σύμβαση, μεγαλύτερος αριθμός από μηδέν σημαίνει αρίθμηση"
+
+#: mcapi.info.inc:83 plugins/export_ui/mcapi_ui.class.php:85
+msgid "Currency code"
+msgstr "Κωδικός νομίσματος"
+
+#: mcapi.mcapicurrencies_default.inc:18
+msgid "Community Coins"
+msgstr "Νομίσματα της κοινότητας"
+
+#: mcapi.rules.inc:25
+msgid "Value of transaction"
+msgstr "Η αξία της συναλλαγής"
+
+#: mcapi.rules.inc27;32;36 mcapi.info:0
+#: extras/accountant_ui/accountant_ui.info:0 extras/forms/mcapi_forms.info:0
+#: extras/import/mcapi_import.info:0 extras/intertrading/intertrading.info:0
+#: extras/limits/mcapi_limits.info:0 extras/signatures/mcapi_signatures.info:0
+#: extras/sms/mcapi_sms.info:0 views/mcapi_index_views.info:0
+msgid "Community Accounting"
+msgstr "Αποθεματικό σύνολο"
+
+#: mcapi.rules.inc:31
+msgid "A cluster of transactions, with the same serial"
+msgstr "Μία συστοιχία από συναλλαγές, με τον ίδιο σειριακό αριθμό"
+
+#: mcapi.rules.inc35;57
+msgid "An array of serial numbers"
+msgstr "Μια σειρά των σειριακών αριθμών"
+
+#: mcapi.rules.inc:52
+msgid "The volitional transaction, as one of an array"
+msgstr "Η ηθελημένη συναλλαγή, ως μία από πίνακα"
+
+#: mcapi.rules.inc:62 mcapi.module:1040
+msgid "Modify a transaction cluster before saving"
+msgstr "Μεταβολή μιας συστοιχίας συναλλαγών πριν την αποθήκευση"
+
+#: mcapi.rules.inc63;70;77;100;114;141
+msgid "Community accounting"
+msgstr "Αποθεματικό σύνολο"
+
+#: mcapi.rules.inc:69 mcapi.module:1043
+msgid "A transaction cluster was undone"
+msgstr "Μία συστοιχία συναλλαγών έχει αναιρεθεί"
+
+#: mcapi.rules.inc:76
+msgid "A transaction cluster changed state"
+msgstr "Μία συστοιχία συναλλαγών άλλαξε κατάσταση"
+
+#: mcapi.rules.inc:81
+msgid "Old state"
+msgstr "Προηγούμενη κατάσταση"
+
+#: mcapi.rules.inc:85
+msgid "New state"
+msgstr "Νέα κατάσταση"
+
+#: mcapi.rules.inc:101
+msgid "Transaction is of type"
+msgstr "Τύπος συναλλαγής"
+
+#: mcapi.rules.inc:102
+msgid ""
+"Evaluates to TRUE if the given transaction is of one of the selected types."
+msgstr "Δίνει αποτέλεσμα TRUE αν η δοθείσα συναλλαγή ανήκει σε ένα από τους επιλεγμένους τύπους."
+
+#: mcapi.rules.inc:108
+msgid "The transaction types to check for."
+msgstr "Τύποι συναλλαγών για έλεγχο."
+
+#: mcapi.rules.inc:115
+msgid "Transaction is of state"
+msgstr "Η συναλλαγή έχει κατάσταση"
+
+#: mcapi.rules.inc:116
+msgid ""
+"Evaluates to TRUE if the given transaction is in of one of the selected "
+"states."
+msgstr "Δίνει αποτέλεσμα TRUE αν η δοθείσα συναλλαγή βρίσκεται σε μία από τις επιλεγμένες καταστάσεις"
+
+#: mcapi.rules.inc:120
+msgid "Transaction states"
+msgstr "Καταστάσεις συναλλαγής"
+
+#: mcapi.rules.inc:122
+msgid ""
+"The transaction states to check for. Note that transaction states may be "
+"altered after insertion."
+msgstr "Καταστάσεις συναλλαγής για έλεγχο. Σημειώστε ότι οι καταστάσεις των συναλλαγών μπορεί να αλλαχθούν μετά την εισαγωγή."
+
+#: mcapi.rules.inc:140
+msgid "Add dependent transaction to cluster being saved"
+msgstr "Προσθήκη εξαρτόμενης συναλλαγής στη συστοιχία που θα αποθηκευτεί"
+
+#: mcapi.rules.inc:144 views/mcapi.views_default.inc:381
+#: views/mcapi_index_views.views_default.inc273;762
+msgid "Value"
+msgstr "Αξία"
+
+#: mcapi.rules.inc:282
+msgid "Failed"
+msgstr "Αποτυχημένη προσπάθεια"
+
+#: mcapi.rules.inc:283
+msgid "Failed validation but forced through by automated process"
+msgstr "Αποτυχημένη επαλήθευση, αλλά ολοκληρώθηκε βίαια από αυτοματοποιημένη διαδικασία"
+
+#: mcapi.rules.inc309;312
+msgid "Auto payment was prevented with following messages: !messages"
+msgstr "Η αυτόματη πληρωμή αποτράπηκε με τα ακόλουθα μηνύματα:  !messages"
+
+#: mcapi.rules.inc:312
+msgid "mcapi auto"
+msgstr "mcapi auto"
+
+#: mcapi.tokens.inc:77 views/mcapi_index_views.views.inc:30
+msgid "Unique serial number"
+msgstr "Μοναδικός αύξοντας αριθμός"
+
+#: mcapi.tokens.inc:78
+msgid "The unique serial number of the transaction cluster."
+msgstr "Ο μοναδικός σειριακός αριθμός για τη συστοιχία συναλλαγών"
+
+#: mcapi.tokens.inc:81 extras/forms/mcapi_forms.tokens.inc:44
+msgid "Payer name"
+msgstr "Όνομα πληρωτή"
+
+#: mcapi.tokens.inc:82
+msgid "The user whose account is credited"
+msgstr "Ο χρήστης του οποίου ο λογαριασμός πιστώνεται"
+
+#: mcapi.tokens.inc:85 extras/forms/mcapi_forms.tokens.inc:48
+msgid "Payee name"
+msgstr "Όνομα δικαιούχου "
+
+#: mcapi.tokens.inc:86 extras/forms/mcapi_forms.tokens.inc:49
+msgid "The user whose account is debited"
+msgstr "Ο χρήστης του οποίου ο λογαριασμός χρεώνεται"
+
+#: mcapi.tokens.inc:89
+msgid "Difference to payer in the main transaction"
+msgstr "Διαφορά στον πληρωτή στην κύρια συναλλαγή"
+
+#: mcapi.tokens.inc:90
+msgid "Total change to payers balance from transaction cluster"
+msgstr "Συνολική μεταβολή στο υπόλοιπο του πληρωτή από τη συστοιχία συναλλαγών"
+
+#: mcapi.tokens.inc:93
+msgid "Difference to payee in the main transaction"
+msgstr "Διαφορά στο δικαιούχο στην κύρια συναλλαγή"
+
+#: mcapi.tokens.inc:94
+msgid "Total change to payees balance from transaction cluster"
+msgstr "Συνολική μεταβολή στο υπόλοιπο του δικαιούχου από τη συστοιχία συναλλαγών"
+
+#: mcapi.tokens.inc:97
+msgid "Summary"
+msgstr "περίληψη"
+
+#: mcapi.tokens.inc:101
+msgid "Certificate"
+msgstr "Πιστοποιητικό"
+
+#: mcapi.tokens.inc:105 extras/forms/mcapi_forms.tokens.inc:56
+#: views/mcapi.views.inc:98
+#: views/mcapi_index_views.views_default.inc271;280;650;760
+msgid "Created"
+msgstr "Δημιουργήθηκε"
+
+#: mcapi.tokens.inc:106 extras/forms/mcapi_forms.tokens.inc:57
+msgid "When the transaction was created"
+msgstr "Όταν η συναλλαγή δημιουργήθηκε"
+
+#: mcapi.tokens.inc:109 extras/forms/mcapi_forms.tokens.inc:60
+#: views/mcapi.views.inc89;94
+msgid "Creator"
+msgstr "Δημιουργός"
+
+#: mcapi.tokens.inc:110 extras/forms/mcapi_forms.tokens.inc:61
+msgid "The user who first recorded the transaction"
+msgstr "Ο χρήστης που πρώτος κατέγραψε τη συναλλαγή"
+
+#: mcapi.tokens.inc:125
+msgid "Tokens related to a transaction cluster."
+msgstr "Λεξήματα που σχετίζονται με τη συστοιχία συναλλαγών."
+
+#: mcapi.module:156
+msgid "Unable to load transaction @serial"
+msgstr "Αδυναμία φόρτωσης της συναλλαγής @serial"
+
+#: mcapi.module:272
+msgid ""
+"The intention of this package is to put the money creation power in the "
+"hands of the producers and users of money and to reduce dependence on "
+"abusive global financial capital. Despite its huge utility and value to "
+"local communities, the development of this software over four years has been"
+" supported only by informal donations, in money and in kind."
+msgstr "Η πρόθεση αυτού του πακέτου είναι να τοποθετήσει τη δύναμη της δημιουργίας χρημάτων στα χέρια των παραγωγών και των χρηστών του χρήματος και να μειώσει την εξάρτηση από την εκμετάλευση του παγκόσμιου οικονομικού κεφαλαίου. Παρά τη σημαντική χρησιμότητα και αξία του για τις τοπικές κοινότητες, η ανάπτυξη αυτού του λογισμικού για πάνω από τέσσερα χρόνια έχει υποστηριχθεί μόνο από ανεπίσημες δωρεές, σε χρήμα και σε είδος"
+
+#: mcapi.module:293
+msgid "Is the textfield on your transaction used for the description? !link"
+msgstr "Χρησιμοποιείται το πεδίο κειμένου στη συναλλαγή σας για την περιγραφή; !link "
+
+#: mcapi.module:464
+msgid "Balances"
+msgstr "Ισολογισμοί"
+
+#: mcapi.module:482
+msgid "My account"
+msgstr "Ο λογαριασμός μου"
+
+#: mcapi.module:483
+msgid "@user's account"
+msgstr "Λογαριασμός χρήστη"
+
+#: mcapi.module:497
+msgid "User"
+msgstr "Χρήστης"
+
+#: mcapi.module:500
+msgid "Show as part of profile being viewed"
+msgstr "Εμφάνιση ως μέρος του τρέχοντος προφίλ"
+
+#: mcapi.module:501
+msgid "Show for logged in user"
+msgstr "Εμφάνιση για χρήστη που έχει συνδεθεί"
+
+#: mcapi.module:574
+msgid "Transaction entity controller"
+msgstr "Ελεγκτής οντότητας συναλλαγής"
+
+#: mcapi.module:576
+msgid ""
+"The module that controls how the transactions are read and written to the "
+"database."
+msgstr "Το άρθρωμα που καθορίζει πώς οι συναλλαγές διαβάζονται και γράφονται στη βάση δεδομένων"
+
+#: mcapi.module:677
+msgid "Cleared"
+msgstr "Ολοκληρωμένη"
+
+#: mcapi.module:678
+msgid "the last state of the workflow"
+msgstr "Η τελευταία κατάσταση της ροής των εργασιών"
+
+#: mcapi.module:682
+msgid "Erased"
+msgstr "Διαγραμμένο"
+
+#: mcapi.module:683
+msgid "marked deleted - not to be confused with 'reversal' transactions"
+msgstr "Σημασμένο ως διαγραμμένο - να μη συγχέεται με συναλλαγές 'αντιστροφής' "
+
+#: mcapi.module:687
+msgid "Reversed"
+msgstr "Aυτο που εχει αντιστραφεί ή ανατραπεί"
+
+#: mcapi.module:688
+msgid "cancelled by another reversed transaction in the same cluster"
+msgstr "που εχει ακυρωθεί απο μια αλλη 'αντεστραμμενη' συναλλαγή μεσα στην  ιδια 'συσταδα' -ομαδα"
+
+#: mcapi.module:733
+msgid "State explanations: @explanations"
+msgstr "Διευκρινίσεις κατάστασης: @ διευκρινίσεις"
+
+#: mcapi.module:759
+msgid "Transact"
+msgstr "Συναλλαγή"
+
+#: mcapi.module:760
+msgid ""
+"Register exchanges with other members, subject each currency's permissions"
+msgstr "Εγγραφή των ανταλλαγών με άλλα μέλη, υπό τον έλεγχο των αδειών κάθε νομίσματος"
+
+#: mcapi.module763;803
+msgid "Manage all transactions"
+msgstr "Διαχείριση όλων των συναλλαγών"
+
+#: mcapi.module:764
+msgid "Retrospectively manage transactions"
+msgstr "Εκ των υστέρων διαχείριση των συναλλαγών"
+
+#: mcapi.module:767
+msgid "Configure all currencies"
+msgstr "Διαμόρφωση όλων των νομισμάτων"
+
+#: mcapi.module:768
+msgid "Edit the properties of any currency"
+msgstr "Επεξεργαστείτε τις ιδιότητες του κάθε νομίσματος"
+
+#: mcapi.module771;877
+msgid "Declare currency"
+msgstr "Δηλώστε νόμισμα"
+
+#: mcapi.module:772
+msgid "Create a new currency"
+msgstr "Δημιουργήστε ένα νέο νόμισμα"
+
+#: mcapi.module:787
+msgid "Authenticated users"
+msgstr "Πιστοποιημένοι -επιβεβαιωμένοι χρήστες"
+
+#: mcapi.module:788
+msgid "Accountants"
+msgstr "Λογιστες"
+
+#: mcapi.module789;801
+msgid "Anyone, including anonymous users"
+msgstr "Ο καθενας, συμπεριλαμβανομενων & των ανωνυμων χρηστων"
+
+#: mcapi.module:790
+msgid "The payee in the transaction"
+msgstr "Ο 'δικαιουχος πληρωμής' στη συναλλαγή  "
+
+#: mcapi.module:791
+msgid "The payer in the transaction"
+msgstr "Ο 'πληρωτης' στη συναλλαγή"
+
+#: mcapi.module802;803
+msgid "According to permission '@perm'"
+msgstr "Σύμφωνα με την άδεια '@perm'"
+
+#: mcapi.module:802 extras/accountant_ui/accountant_ui.module:73
+msgid "transact"
+msgstr "Συναλλαγή"
+
+#: mcapi.module:853
+msgid "Transaction #@serial"
+msgstr "Συναλλαγή #@serial"
+
+#: mcapi.module:877
+msgid "Edit currency '!name'"
+msgstr "Επεξεργασία νομίσματος 'lname'"
+
+#: mcapi.module:1018
+msgid "Charge one of the participants"
+msgstr "Χρέωση ενός από τους συμμετέχοντες"
+
+#: mcapi.module:1024
+msgid "Completed transaction notification"
+msgstr "Ειδοποίηση ολοκληρωμένης συναλλαγής"
+
+#: mcapi.module:1025
+msgid "Mail sent to the participants when the transaction completes"
+msgstr "Μήνυμα που αποστέλλεται στους συμμετέχοντες όταν η συναλλαγή ολοκληρωθεί"
+
+#: mcapi.module:1046
+msgid "A transaction cluster was inserted or changed state"
+msgstr "Μία συστοιχία συναλλαγών εισήχθηκε ή άλλαξε κατάσταση"
+
+#: mcapi.module:1057
+msgid ""
+"Actions which create new transactions will not fire the trigger recursively"
+msgstr "Οι ενέργειες που δημιουργούν νέες συναλλαγές δεν θα ενεργοποιήσουν το trigger αναδρομικά"
+
+#: mcapi.module:1128
+msgid "One or more values, each denominated in a currency"
+msgstr "Μία ή περισσότερες τιμές, κάθε εκφράζονται σε ένα νόμισμα"
+
+#: mcapi.module:1205
+msgid "User @name cannot use @currency"
+msgstr "Ο χρήστης @name δεν μπορεί να χρησιμοποιήσει το @currency"
+
+#: mcapi.module:1218
+msgid "!name field is required."
+msgstr "Το πεδίο !name είναι απαραίτητο."
+
+#: mcapi.module:1381 views/mcapi_index_views.views.inc:185
+#: views/mcapi_index_views.views_default.inc152;277;765
+#: views/views_handler_filter_mcapi_currency.inc:41
+msgid "Currency"
+msgstr "Νόμισμα"
+
+#: mcapi.module:969
+msgid "mcapi"
+msgstr "mcapi"
+
+#: mcapi.module:969
+msgid "Nonexistent currency @currcode requested from list: @list"
+msgstr "Ανύπαρκτο νόμισμα @currcode ζητήθηκε από τη λίστα: @list"
+
+#: mcapi.install:15
+msgid ""
+"For ease of setup, authenticated user has been granted 'transact' "
+"permission."
+msgstr "Για ευκολία στην παραμετροποίηση, η άδεια για συναλλαγές έχει δοθεί σε κάθε συνδεδεμένο χρήστη"
+
+#: mcapi.install:187
+msgid "Universal currency code (8 chars, immutable)"
+msgstr "Καθολικός κωδικός νομίσματος (8 χαρακτήρες, αναλοίωτο)"
+
+#: mcapi.install:243
+msgid "Use up to two decimal places, with a point '.' if necessary"
+msgstr "Χρήση ως δυο δεκαδικών ψηφίων, με τελεία '.' αν χρειάζεται"
+
+#: mcapi.install:447
+msgid "@num currencies have been upgraded"
+msgstr "@num νομίσματα αναβαθμίστηκαν"
+
+#: mcapi.install:527
+msgid "Description"
+msgstr "Περιγραφή"
+
+#: mcapi.install:744
+msgid "Notify transactees"
+msgstr "Ειδοποίηση συναλλασσόμενων "
+
+#: mcapi.info:0
+msgid "Community Accounting API"
+msgstr "Διεπαφή Λογιστικής της κοινότητας"
+
+#: mcapi.info:0
+msgid ""
+"Defines transaction entity with a swoppable controller, a default currency, "
+"'worth' field, and the forms, views theme callbacks for basic manipulation"
+msgstr "Καθορίζει μια οντότητα συναλλαγής, με αντικαταστάσιμο ελεγκτή, προεπιλεγμένο νόμισμα, πεδίο 'αξία' και τις απαραίτητες φόρμες, όψεις και theme callbacks για βασικό χειρισμό"
+
+#: extras/accountant_ui/accountant_ui.inc:17
+msgid "A username, email, or user ID"
+msgstr "Ένα όνομα, e-mail, ή το user ID"
+
+#: extras/accountant_ui/accountant_ui.inc:24
+msgid "A group of users"
+msgstr "Μέλη ή ομάδα χρηστών"
+
+#: extras/accountant_ui/accountant_ui.inc:59
+msgid "Mail all payees (optional)"
+msgstr "Μήνυμα mail σε όλους όσους έχουν πληρώσει (προαιρετικό)"
+
+#: extras/accountant_ui/accountant_ui.inc:59
+msgid "Mail all payers (optional)"
+msgstr "Ταχυδρομήστε όλους τους πληρωτές (προαιρετικό)"
+
+#: extras/accountant_ui/accountant_ui.inc:61
+msgid "Some tokens may not apply."
+msgstr "Μερικές μάρκες ενδέχεται να μην ισχύουν."
+
+#: extras/accountant_ui/accountant_ui.inc:91
+#: extras/forms/mcapi_forms.mcapiforms_default.inc66;119
+#: extras/intertrading/intertrading.module:555
+#: extras/signatures/mcapi_signatures.module467;507;546
+msgid "Are you sure?"
+msgstr "Είστε σίγουρος;"
+
+#: extras/accountant_ui/accountant_ui.views_default.inc:308
+msgid "A transaction view with all the filters exposed."
+msgstr "Μία όψη συναλλαγής με όλα τα φίλτρα εκτεθειμένα"
+
+#: extras/accountant_ui/accountant_ui.views_default.inc:312
+#: views/mcapi.views.inc:78 views/mcapi_index_views.views.inc:79
+msgid "Type"
+msgstr "Τύπος"
+
+#: extras/accountant_ui/accountant_ui.module:73
+msgid "All active users with permission to @perm"
+msgstr "Όλοι οι ενεργοί χρήστες με άδεια για @perm"
+
+#: extras/accountant_ui/accountant_ui.module:78
+msgid "All users of the given currency"
+msgstr "Όλοι οι χρήστες του δοσμένου νομίσματος"
+
+#: extras/accountant_ui/accountant_ui.module:9
+msgid "Mass payments"
+msgstr "Μεγάλες πληρωμές"
+
+#: extras/accountant_ui/accountant_ui.module:10
+msgid "One-off payments between one account and several other accounts"
+msgstr "Εφάπαξ πληρωμές μεταξύ ενός λογαριασμού και διάφορων άλλων λογαριασμών"
+
+#: extras/accountant_ui/accountant_ui.module:19
+msgid "Many to one"
+msgstr "Πολλές σε έναν"
+
+#: extras/accountant_ui/accountant_ui.module:28
+msgid "One to many"
+msgstr "Ένας σε πολλούς"
+
+#: extras/accountant_ui/accountant_ui.module:37
+msgid "One to few"
+msgstr "Ένας σε λίγους"
+
+#: extras/accountant_ui/accountant_ui.module:46
+msgid "Few to one"
+msgstr "Λίγοι σε έναν"
+
+#: extras/accountant_ui/accountant_ui.module:55
+msgid "Record transaction (full)"
+msgstr "Καταγραφή συναλλαγής (πλήρης)"
+
+#: extras/accountant_ui/accountant_ui.module:56
+msgid ""
+"This form allows for one-off transaction creation, with all the values "
+"exposed. For accountant's use only! N.B It is reccommended to install the "
+"submit_once module, for all transaction forms"
+msgstr "Αυτή η φόρμα επιτρέπει δημιουργία συναλλαγής μιας χρήσης, με όλες τις τιμές εκτεθειμένες. Μόνο για χρήση από λογιστές! Σημείωση: συνίσταται να εγκαταστήσετε το άρθρωμα submit_once, για όλες τις φόρμες συναλλαγής "
+
+#: extras/accountant_ui/accountant_ui.info:0
+msgid "Interface for accountants"
+msgstr "Διεπαφή για λογιστές"
+
+#: extras/accountant_ui/accountant_ui.info:0
+msgid "Navigate transactions and create new ones"
+msgstr "Πλοήγηση στις συναλλαγές και δημιουργία νέων"
+
+#: extras/forms/mcapi_forms.admin.inc:10
+msgid "Edit transaction form."
+msgstr "Επεξεργασία φόρμας συναλλαγής"
+
+#: extras/forms/mcapi_forms.admin.inc:12
+msgid ""
+"To work in many languages this form should be exported to a custom module, "
+"then not overwritten, and the strings wrapped in t()."
+msgstr "Για να δουλέψετε σε πολλαπλές γλώσσες, αυτή η φόρμα θα πρέπει να εξαχθεί σε ένα προσαρμοσμένο άρθρωμα και οι συμβολοσειρές να εμφωλευθούν σε t()."
+
+#: extras/forms/mcapi_forms.admin.inc:17
+msgid ""
+"Create transaction forms for specific use-cases. Use with caution as not all"
+" permutations are meaningful."
+msgstr "Δημιουργία φορμών συναλλαγής για ειδικές περιπτώσεις χρήσης. Χρησιμοποιήστε αυτή τη δυνατότητα με προσοχή μια και δεν έχουν όλες οι πιθανές παραμετροποιήσεις νόημα"
+
+#: extras/forms/mcapi_forms.admin.inc:36
+msgid "3rd Party"
+msgstr "3ο πρόσωπο"
+
+#: extras/forms/mcapi_forms.admin.inc:37
+msgid "1st Party"
+msgstr "1ο πρόσωπο"
+
+#: extras/forms/mcapi_forms.admin.inc:47
+msgid "Architecture"
+msgstr "Αρχιτεκτονική"
+
+#: extras/forms/mcapi_forms.admin.inc:48
+msgid ""
+"Every form is a menu callback with its own access control. Don't forget "
+"currencies have their own access control as well."
+msgstr "Κάθε φόρμα είναι ένα menu callback με το δικό του έλεγχο πρόσβασης. Μην ξεχνάτε ότι κάθε νόμισμα έχει επίσης το δικό του έλεγχο πρόσβασης."
+
+#: extras/forms/mcapi_forms.admin.inc:54
+#: extras/forms/plugins/export_ui/mcapi_forms_ui.class.php:91
+msgid "Path"
+msgstr "Διαδρομή"
+
+#: extras/forms/mcapi_forms.admin.inc:55
+msgid ""
+"Unique path to this form. Don't forget you can use a path alias over this"
+msgstr "Μοναδικό μονοπάτι σε αυτή τη φόρμα. Μην ξεχνάτε ότι μπορείτε να χρησιμοποιήσετε κάποια συντόμευση μονοπατιού πάνω από αυτό."
+
+#: extras/forms/mcapi_forms.admin.inc:62
+msgid "Menu link location"
+msgstr "Τοποθεσία συνδέσμου στο μενού"
+
+#: extras/forms/mcapi_forms.admin.inc:63
+msgid "Choose the menu, or menu item-type."
+msgstr "Επιλέξτε το μενού ή τον τύπο αντικειμένου του μενού"
+
+#: extras/forms/mcapi_forms.admin.inc:63
+msgid "Some choices may not produce a menu item"
+msgstr "Μερικές επιλογές μπορεί να μην παράξουν αντικείμενο για το μενού"
+
+#: extras/forms/mcapi_forms.admin.inc:64
+msgid "For more info, see 'type' info at !link"
+msgstr "Για περισσότερες πληροφορίες, δείτε τις πληροφορίες για 'type' στο !link"
+
+#: extras/forms/mcapi_forms.admin.inc:68
+msgid "No menu item"
+msgstr "Κανένα αντικείμενο μενού"
+
+#: extras/forms/mcapi_forms.admin.inc:77
+msgid "Access control"
+msgstr "Έλεγχος πρόσβασης"
+
+#: extras/forms/mcapi_forms.admin.inc:78
+msgid ""
+"In addition to currency access control, and block access control, access to "
+"this form can be restricted."
+msgstr "Επιπλέον από τον έλεγχο πρόσβασης του νομίσματος και των block, η πρόσβαση σε αυτή τη φόρμα μπορεί να περιοριστεί"
+
+#: extras/forms/mcapi_forms.admin.inc:86
+msgid "Make block available"
+msgstr "Κάνε το block διαθέσιμο"
+
+#: extras/forms/mcapi_forms.admin.inc:87
+msgid "The block is named according the path."
+msgstr "Το block ονομάζεται ανάλογα με το μονοπάτι"
+
+#: extras/forms/mcapi_forms.admin.inc:88
+msgid "Remember that blocks have their own caching and access control."
+msgstr "Θυμηθείτε ότι τα blocks έχουν το δικό τους έλεγχο ως προς το caching και την πρόσβαση"
+
+#: extras/forms/mcapi_forms.admin.inc:97
+msgid "perspective"
+msgstr "άποψη"
+
+#: extras/forms/mcapi_forms.admin.inc:98
+msgid "Whether this is completed by a 3rd party or a participant."
+msgstr "Αν συμπληρώνεται από ένα 3ο πρόσωπο ή ένα συμμετέχοντα"
+
+#: extras/forms/mcapi_forms.admin.inc:134
+msgid "Other user"
+msgstr "Άλλος χρήστης"
+
+#: extras/forms/mcapi_forms.admin.inc:139 extras/forms/mcapi_forms.inc:55
+msgid "Direction"
+msgstr "Κατεύθυνση"
+
+#: extras/forms/mcapi_forms.admin.inc:140
+msgid "Either 'incoming' or 'outgoing' relative to the logged in user"
+msgstr "Είτε 'εισερχόμενη' είτε 'εξερχόμενη' ανάλογα με το συνδεδεμένο χρήστη"
+
+#: extras/forms/mcapi_forms.admin.inc:143
+msgid "Neither"
+msgstr "Κανένα"
+
+#: extras/forms/mcapi_forms.admin.inc:168
+msgid ""
+"Leave blank to exclude the currency from the form. Otherwise preset to zero "
+"or some other value"
+msgstr "Αφήστε το κενό για να αποκλείσετε το νόμισμα από τη φόρμα. Αλλιώς προκαθορίστε το σε μηδέν ή κάποια άλλη τιμή"
+
+#: extras/forms/mcapi_forms.admin.inc:179
+msgid "User experience"
+msgstr "Εμπειρία χρήστη"
+
+#: extras/forms/mcapi_forms.admin.inc:180
+msgid "Deteriming how the form and the confirmation work for the user"
+msgstr "Καθορίζοντας πώς η φόρμα και η επιβεβαίωση δουλεύουν για το χρήστη"
+
+#: extras/forms/mcapi_forms.admin.inc:186
+#: plugins/export_ui/mcapi_ui.class.php:82
+msgid "Title"
+msgstr "Τίτλος"
+
+#: extras/forms/mcapi_forms.admin.inc:187
+msgid "For use in block title and menu links."
+msgstr "Για χρήση στον τίτλο του block και τους συνδέσμους του μενού"
+
+#: extras/forms/mcapi_forms.admin.inc:193
+msgid "Main form"
+msgstr "Κύρια φόρμα"
+
+#: extras/forms/mcapi_forms.admin.inc:195
+msgid "Write HTML here to layout the form, using the tokens below."
+msgstr "Γράψτε HTML εδώ ώστε να διαμορφώσετε τη δομή της φόρμας, χρησιμοποιώντας τα παρακάτω λεξήματα."
+
+#: extras/forms/mcapi_forms.admin.inc:209
+msgid "Confirmation page title"
+msgstr "Τίτλος σελίδας επιβεβαίωσης"
+
+#: extras/forms/mcapi_forms.admin.inc:216
+msgid "Confirmation preview mode"
+msgstr "Κατάσταση προεπισκόπησης σελίδας επιβεβαίωσης"
+
+#: extras/forms/mcapi_forms.admin.inc:223
+msgid "Confirmation page"
+msgstr "Σελίδα επιβεβαίωσης"
+
+#: extras/forms/mcapi_forms.admin.inc:224
+msgid ""
+"If using tokens mode, write HTML here to layout the confirmation, using the "
+"tokens above."
+msgstr "αν χρησιμοποιείται η κατάσταση λεξημάτων, γράψτε HTML εδώ ώστε να δομήσετε την επιβεβαίωση, χρησιμοποιώντας τα παραπάνω λεξήματα."
+
+#: extras/forms/mcapi_forms.admin.inc:232
+msgid "Form submission"
+msgstr "Υποβολή φόρμας"
+
+#: extras/forms/mcapi_forms.admin.inc:233
+msgid "Settings for @field"
+msgstr "Ρυθμίσεις για @field"
+
+#: extras/forms/mcapi_forms.admin.inc233;241
+#: extras/forms/mcapi_forms.mcapiforms_default.inc:57
+msgid "Submit"
+msgstr "Υποβολή"
+
+#: extras/forms/mcapi_forms.admin.inc:238
+msgid "Save button"
+msgstr "Κουμπί αποθήκευσης"
+
+#: extras/forms/mcapi_forms.admin.inc:239
+msgid ""
+"The text to appear on the 'save' button, or the absolute url of an image."
+msgstr "Το κείμενο που θα εμφανιστεί στο κουμπί 'αποθήκευσης', ή το πλήρες url μιας εικόνας"
+
+#: extras/forms/mcapi_forms.admin.inc:245
+msgid "Destination"
+msgstr "Προορισμός"
+
+#: extras/forms/mcapi_forms.admin.inc:246
+msgid "Goes to the new transaction certificate by default."
+msgstr "Πηγαίνει στο νέο πιστοποιητικό συναλλαγής από προεπιλογή"
+
+#: extras/forms/mcapi_forms.admin.inc:253
+msgid "Message"
+msgstr "Μήνυμα"
+
+#: extras/forms/mcapi_forms.admin.inc:254
+msgid "Contents of the message box."
+msgstr "Περιεχόμενα του πλαισίου μηνυμάτων"
+
+#: extras/forms/mcapi_forms.admin.inc:281
+msgid "Default value"
+msgstr "Προεπιλεγμένη τιμή"
+
+#: extras/forms/mcapi_forms.admin.inc:307
+msgid "This field is required"
+msgstr "Αυτό το πεδίο απαιτείται"
+
+#: extras/forms/mcapi_forms.admin.inc:311
+msgid "Strip theme container"
+msgstr "Strip theme container"
+
+#: extras/forms/mcapi_forms.admin.inc:312
+msgid ""
+"Disable the outer container, so it doesn't render the field #title and "
+"#description but gives you fuller control in the template below."
+msgstr "Απενεργοποίηση του εξωτερικού υποδοχέα, ώστε να μην απεικονίζει το πεδίο #title και #description αλλά να δίνει σε εσάς πλήρη έλεγχο πάνω στο παρακάτω πρότυπο"
+
+#: extras/forms/mcapi_forms.admin.inc:335
+msgid "Either preset @tokenname, or include that token in the template."
+msgstr "Είτε προκαθορίστε το @tokenname, είτε συμπεριλάβετε αυτό το λέξημα στο πρότυπο"
+
+#: extras/forms/mcapi_forms.admin.inc:375
+msgid "Required field '@name' must be used in the form template"
+msgstr "Το απαιτούμενο πεδίο '@name' πρέπει να χρησιμοποιηθεί στο πρότυπο της φόρμας"
+
+#: extras/forms/mcapi_forms.admin.inc:401
+msgid "Users to choose from"
+msgstr "Χρήστες για να επιλέξετε"
+
+#: extras/forms/mcapi_forms.admin.inc:402
+msgid "Configure this widget more at !link"
+msgstr "Παραμετροποιήστε αυτό το widget περισσότερο στο !link"
+
+#: extras/forms/mcapi_forms.admin.inc:424
+msgid "Roles"
+msgstr "Ρόλοι"
+
+#: extras/forms/mcapi_forms.admin.inc:428
+msgid "Permissions"
+msgstr "Άδειες"
+
+#: extras/forms/mcapi_forms.admin.inc:440
+msgid "Request"
+msgstr "Αίτηση"
+
+#: extras/forms/mcapi_forms.admin.inc:441
+msgid "Payment"
+msgstr "Πληρωμή"
+
+#: extras/forms/mcapi_forms.admin.inc:447
+msgid "Widget"
+msgstr "Γραφικό συστατικό"
+
+#: extras/forms/mcapi_forms.admin.inc:450
+msgid "Dropdown select box"
+msgstr "Αναπτυσσόμενο κουτί επιλογής"
+
+#: extras/forms/mcapi_forms.admin.inc:451
+msgid "Radio buttons"
+msgstr "Κουμπιά επιλογής"
+
+#: extras/forms/mcapi_forms.admin.inc:457
+msgid "'incoming' option label"
+msgstr "επιγραφή επιλογής 'εισερχόμενων'"
+
+#: extras/forms/mcapi_forms.admin.inc:463
+msgid "'outgoing' option label"
+msgstr "επιγραφή επιλογής 'εξερχόμενων'"
+
+#: extras/forms/mcapi_forms.inc:44
+msgid "Other person"
+msgstr "Άλλο άτομο"
+
+#: extras/forms/mcapi_forms.inc:53 extras/intertrading/intertrading.module:525
+msgid "Please choose..."
+msgstr "Πρακαλώ επιλέξτε"
+
+#: extras/forms/mcapi_forms.inc:93
+msgid "Back"
+msgstr "Πίσω"
+
+#: extras/forms/mcapi_forms.inc:196
+msgid "Who was it with?"
+msgstr "Ποιος ήταν με;"
+
+#: extras/forms/mcapi_forms.mcapiforms_default.inc:62
+msgid "Make a payment"
+msgstr "Πραγματοποίηση πληρωμής"
+
+#: extras/forms/mcapi_forms.mcapiforms_default.inc:63
+msgid ""
+"Partner: [mcapiform:secondperson]<br />\n"
+"Direction: [mcapiform:direction]<br />\n"
+"[mcapiform:worth]<br />"
+msgstr "Συνεργάτης [mcapiform:secondperson]<br />⏎\nΚατεύθυνση: [mcapiform:direction]<br />⏎\n[mcapiform:worth]<br />"
+
+#: extras/forms/mcapi_forms.mcapiforms_default.inc67;120
+msgid "certificate"
+msgstr "πιστοποιητικό"
+
+#: extras/forms/mcapi_forms.mcapiforms_default.inc:115
+msgid "Record a transaction"
+msgstr "Καταγραφή μίας συναλλαγής"
+
+#: extras/forms/mcapi_forms.mcapiforms_default.inc:116
+msgid ""
+"Payer: [mcapiform:payer]<br />\n"
+"Payee: [mcapiform:payee]<br />\n"
+"[mcapiform:worth]<br />"
+msgstr "Πληρωτής: [mcapiform:payer]<br />⏎\nΔικαιούχος: [mcapiform:payee]<br />⏎\n[mcapiform:worth]<br />"
+
+#: extras/forms/mcapi_forms.tokens.inc:37
+msgid "Mcapi forms"
+msgstr "Φόρμες Mcapi"
+
+#: extras/forms/mcapi_forms.tokens.inc:38
+msgid "Tokens to put in stage 1 or stage 2 of the transaction forms"
+msgstr "Λεξήματα για να τοποθετηθούν στο στάδιο 1 ή το στάδιο 2 των φορμών συναλλαγής"
+
+#: extras/forms/mcapi_forms.tokens.inc:45
+msgid "The user whose account is credit"
+msgstr "Ο χρήστης του οποίου ο λογαριασμός πιστώνεται"
+
+#: extras/forms/mcapi_forms.tokens.inc:52
+msgid "Second person"
+msgstr "Δεύτερο πρόσωπο"
+
+#: extras/forms/mcapi_forms.tokens.inc:53
+msgid "The user who isn't referred to here."
+msgstr "Ο χρήστης που δεν αναφέρεται εδώ"
+
+#: extras/forms/mcapi_forms.tokens.inc:64
+msgid "Modified"
+msgstr "Τροποποιημένο"
+
+#: extras/forms/mcapi_forms.tokens.inc:65
+msgid "When the transaction was last modified"
+msgstr "Τελευταία τροποποίηση της συναλλαγής"
+
+#: extras/forms/mcapi_forms.module:46
+msgid "There is no default tab under path 'transact/'"
+msgstr "Δεν υπάρχει προκαθορισμένη καρτέλα στο μονοπάτι 'transact/'"
+
+#: extras/forms/mcapi_forms.module:47
+msgid "There is more than one default tab under path 'transact/'"
+msgstr "Υπάρχει πάνω από μία προκαθορισμένη καρτέλα στο μονοπάτι 'transact/'"
+
+#: extras/forms/mcapi_forms.module:103
+msgid "Test your form before enabling for users!"
+msgstr "Δοκιμάστε τη φόρμα πριν την ενεργοποιήσετε για τους χρήστες!"
+
+#: extras/forms/mcapi_forms.module:163
+msgid "Transaction form:"
+msgstr "Φόρμα συναλλαγής:"
+
+#: extras/forms/mcapi_forms.module:243
+msgid "Design transaction forms"
+msgstr "Σχεδιασμός μορφών συναλλαγών"
+
+#: extras/forms/mcapi_forms.module:244
+msgid "Create and edit the forms used to record and edit transactions"
+msgstr "Δημιουργία και επεξεργασία των εντύπων που χρησιμοποιούνται για την καταγραφή και επεξεργασία των συναλλαγών"
+
+#: extras/forms/mcapi_forms.module:319
+msgid "Css menu tab identifier"
+msgstr "Αναγνωριστικό CSS καρτέλας μενού"
+
+#: extras/forms/mcapi_forms.module:320
+msgid ""
+"The second stage of the the transaction form works best when the menu tabs "
+"are hidden."
+msgstr "Το δεύτερο στάδιο της φόρμας συναλλαγής δουλεύει βέλτιστα όταν οι καρτέλες του μενού είναι κρυμμένες"
+
+#: extras/forms/mcapi_forms.module:321
+msgid ""
+"Write the css identifier for the div on this page containing the menu items "
+"which 'List', 'Update' & 'Settings'."
+msgstr "Γράψτε το αναγνωριστικό CSS για το div σε αυτή τη σελίδα που περιέχει τα αντικείμενα του μενού: 'Λίστα', 'Ανανέωση' και 'Ρυθμίσεις'"
+
+#: extras/forms/mcapi_forms.module:322
+msgid "Don't forget the leading . or #"
+msgstr "Μην ξεχνάτε το πρόθεμα . ή #"
+
+#: extras/forms/mcapi_forms.info:0
+msgid "Forms and form builder UI"
+msgstr "Φόρμες και διεπαφή δημιουργίας φόρμας"
+
+#: extras/forms/mcapi_forms.info:0
+msgid "Exportable transaction form builder"
+msgstr "Περιβάλλον δημιουργίας εξαγώγιμων φορμών συναλλαγής"
+
+#: extras/forms/plugins/export_ui/mcapi_forms_ui.class.php:89
+#: views/mcapi.views_default.inc:379
+#: views/mcapi_index_views.views_default.inc275;541
+msgid "Name"
+msgstr "Όνομα"
+
+#: extras/forms/plugins/export_ui/mcapi_forms_ui.class.php:92
+#: plugins/export_ui/mcapi_ui.class.php:90
+msgid "Storage"
+msgstr "Χώρος αποθήκευσης"
+
+#: extras/forms/plugins/export_ui/mcapi_forms_ui.class.php:93
+#: plugins/export_ui/mcapi_ui.class.php:91
+msgid "Operations"
+msgstr "Λειτουργίες"
+
+#: extras/forms/plugins/export_ui/mcapi_forms_ui.inc:29
+msgid "transaction form"
+msgstr "φόρμα συναλλαγής"
+
+#: extras/forms/plugins/export_ui/mcapi_forms_ui.inc:30
+msgid "Transaction form"
+msgstr "Φόρμα συναλλαγής"
+
+#: extras/forms/plugins/export_ui/mcapi_forms_ui.inc:31
+msgid "transaction forms"
+msgstr "φόρμες συναλλαγής"
+
+#: extras/forms/plugins/export_ui/mcapi_forms_ui.inc:32
+msgid "Transaction forms"
+msgstr "Φόρμες συναλλαγής"
+
+#: extras/forms/plugins/export_ui/mcapi_forms_ui.inc:51
+msgid ""
+"This action will permanently remove any customizations made to this form."
+msgstr "Αυτή η ενέργεια θα αφαιρέσει μόνιμα κάθε προσαρμογή που πραγματοποιήθηκε σε αυτή τη φόρμα"
+
+#: extras/forms/plugins/export_ui/mcapi_forms_ui.inc:52
+msgid "The form has been reverted."
+msgstr "Αυτή η φόρμα ανακλήθηκε"
+
+#: extras/forms/plugins/export_ui/mcapi_forms_ui.inc:55
+msgid "This action will permanently remove the form from your database."
+msgstr "Αυτή η ενέργεια θα αφαιρέσει μόνιμα τη φόρμα από τη βάση δεδομένων σας"
+
+#: extras/forms/plugins/export_ui/mcapi_forms_ui.inc:56
+msgid "The form has been deleted."
+msgstr "Η φόρμα διαγράφηκε"
+
+#: extras/import/mcapi_import.module:9
+msgid "Prepare a csv file and create transactions"
+msgstr "Προετοιμασία csv αρχείου και δημιουργία συναλλαγών"
+
+#: extras/import/mcapi_import.module:10
+msgid "Assumes user 1 is the balancing account."
+msgstr "Υποθέτει ότι ο χρήστης 1 είναι ο λογαριασμός του αποθεματικού"
+
+#: extras/import/mcapi_import.module:11
+msgid ""
+"The 'migrate' module is too complex for this, so this bespoke solution is "
+"provided."
+msgstr "Το άρθρωμα 'migrate' είναι υπερβολικά πολύπλοκο γι αυτή τη χρήση οπότε παρέχεται αυτή η προσαρμοσμένη λύση"
+
+#: extras/import/mcapi_import.module:14
+msgid "Import a whole transaction history after all users are imported."
+msgstr "Εισαγωγή ενός ολόκληρου ιστορικού συναλλαγών, μετά την εισαγωγή όλων των χρηστών"
+
+#: extras/import/mcapi_import.module:15
+msgid "Assumes there is only one currency in the system."
+msgstr "Υποθέτει ότι υπάρχει μόνο ένα νόμισμα στο σύστημα"
+
+#: extras/import/mcapi_import.module:18
+msgid ""
+"This page allows you to import users' balances and gross incomes for users "
+"already on the system."
+msgstr "Αυτή η σελίδα σας επιτρέπει να εισάγετε τα υπόλοιπα των χρηστών όπως και τους όγκους συναλλαγών για τους χρήστες που είναι ήδη στο σύστημα"
+
+#: extras/import/mcapi_import.module:19
+msgid ""
+"Be aware that the trigger 'transactions_state' will be fired for each user."
+msgstr "Έχετε υπόψιν σας ότι το trigger 'transactions_state' θα ενεργοποιηθεί για κάθε χρήστη."
+
+#: extras/import/mcapi_import.module:20
+msgid "To import users, see the !import_user module."
+msgstr "Για να εισάγετε χρήστες, δείτε το άρθρωμα !import_user"
+
+#: extras/import/mcapi_import.module:66
+msgid "Transaction type for imported transactions"
+msgstr "Τύπος συναλλαγής για εισαχθείσες συναλλαγές"
+
+#: extras/import/mcapi_import.module:87
+msgid "Prepare a csv file, without quotes"
+msgstr "Προετοιμασία αρχείου csv, χωρίς εισαγωγικά"
+
+#: extras/import/mcapi_import.module:88
+msgid ""
+"'created' is optional, but should be convertable to unixtime using strtotime"
+msgstr "Το 'created' είναι προαιρετικό, αλλά θα πρέπει να είναι μετατρέψιμο σε unixtime με χρήση της strtotime"
+
+#: extras/import/mcapi_import.module:89
+msgid "Use the following column headings, in any order: !columns"
+msgstr "Χρήση των ακόλουθων κεφαλίδων στήλης, σε οποιαδήποτε σειρά: !columns"
+
+#: extras/import/mcapi_import.module:91
+msgid ""
+"It is advised to disable the currency's balance limits before importing."
+msgstr "Προτείνεται να απενεργοποιήσετε τα όρια των υπολοίπων των λογαριασμών πριν την εισαγωγή"
+
+#: extras/import/mcapi_import.module:178
+msgid ""
+"Paste 2 or 3 comma separated columns into the field below, the first column "
+"should be the uid or username, the second column the current balance, and "
+"optionally the third column should be the user's gross income until now "
+"(turnover)."
+msgstr "Επικολήστε 2 ή 3 στήλες χωρισμένες με κόμμα στο παρακάτω πεδίο, η πρώτη στήλη θα πρέπει να είναι το uid ή όνομα χρήστη, η δεύτερη το τρέχον υπόλοιπο και προαιρετικά η τρίτη θα πρέπει να είναι το συνολικό εισόδημα του χρήστη ως τώρα (turnover)."
+
+#: extras/import/mcapi_import.module:179
+msgid ""
+"This tool assumes there is only one currency in the system. The second "
+"column SHOULD add up to 0 for LETS and other zero balance systems, but this "
+"will not be checked."
+msgstr "Αυτό το εργαλείο υποθέτει ότι υπάρχει μόνο ένα νόμισμα στο σύστημα. Η δεύτερη στήλη θα ΠΡΕΠΕΙ να αθροίζεται σε 0 για τα LETS και άλλα συστήματα με μηδενικό υπόλοιπο, αλλά αυτό δεν ελέγχεται αυτόματα"
+
+#: extras/import/mcapi_import.module:180
+msgid ""
+"The first line of the field should read (third column is optional): !code"
+msgstr "Η πρώτη γραμμή του πεδίου θα έπρεπε να γράφει (η τρίτη στήλη είναι προαιρετική): !code"
+
+#: extras/import/mcapi_import.module:208
+msgid "Balance (second item) on row @num is not numeric: @val"
+msgstr "Το υπόλοιπο (δεύτερο πεδίο) στη γραμμή @num δεν είναι αριθμός: @val"
+
+#: extras/import/mcapi_import.module:214
+msgid "Gross income (third item) on row @rownum is not a number: @val"
+msgstr "Το συνολικό εισόδημα (τρίτο πεδίο) στη γραμμή @rownum δεν είναι αριθμός: @val"
+
+#: extras/import/mcapi_import.module:216
+msgid "gross income (third item) on row @rownum cannot be less than 0: @val"
+msgstr "Το συνολικό εισόδημα (τρίτο πεδίο) στη γραμμή @rownum δεν μπορεί να είναι μικρότερο του μηδενός: @val"
+
+#: extras/import/mcapi_import.module:243
+#: views/mcapi_index_views.views_default.inc:150
+#: views/views_handler_field_mcapi_users_totals.inc:37
+msgid "Gross income"
+msgstr "Συνολικό εισόδημα"
+
+#: extras/import/mcapi_import.module:244
+#: views/mcapi_index_views.views_default.inc:149
+#: views/views_handler_field_mcapi_users_totals.inc:38
+msgid "Gross expenditure"
+msgstr "Συνολική δαπάνη"
+
+#: extras/import/mcapi_import.module:268
+msgid "Carried Forward"
+msgstr "Μεταφερθέν"
+
+#: extras/import/mcapi_import.module:285
+msgid "Payer and Payee must be numeric user IDs: @value)"
+msgstr "Ο Πληρωτής και ο Δικαιούχος πρέπει να είναι αριθμητικά user IDs: @value)"
+
+#: extras/import/mcapi_import.module:289
+msgid "Cannot import transaction data for users 1 or 0"
+msgstr "Δεν μπορούν να εισαχθούν δεδομένα συναλλαγών για τους χρήστες 1 ή 0"
+
+#: extras/import/mcapi_import.module:292
+msgid "User @num does not exist"
+msgstr "Ο χρήστης @num δεν υπάρχει"
+
+#: extras/import/mcapi_import.module:331
+msgid "Currency code: !code"
+msgstr "Κωδικός νομίσματος: !code"
+
+#: extras/import/mcapi_import.module:332
+msgid "Transaction type: !type"
+msgstr "Τύπος συναλλαγής: !type"
+
+#: extras/import/mcapi_import.module:333
+msgid "Description field: !field"
+msgstr "Πεδίο περιγραφής: !field"
+
+#: extras/import/mcapi_import.module:344
+msgid "The starting balance of the imported user"
+msgstr "Το αρχικό υπόλοιπο του εισαχθέντος χρήστη"
+
+#: extras/import/mcapi_import.module:345
+msgid "The total income ever of this user."
+msgstr "Το συνολικό εισόδημα από την αρχή της συμμετοχής αυτού του χρήστη"
+
+#: extras/import/mcapi_import.module:347
+msgid ""
+"Importing balance (and gross income) per user is incompatible with importing"
+" the transaction history."
+msgstr "Η εισαγωγή του υπολοίπου (και του συνολικού εισοδήματος) ανά χρήστη είναι μη συμβατή με την εισαγωγή του ιστορικού συναλλαγών"
+
+#: extras/import/mcapi_import.module:30
+msgid "Import Tools"
+msgstr "Εργαλεία εισαγωγής"
+
+#: extras/import/mcapi_import.module:37
+msgid "Settings"
+msgstr "Ρυθμίσεις"
+
+#: extras/import/mcapi_import.module:42
+msgid "Import balances"
+msgstr "Εισαχθέντα υπόλοιπα"
+
+#: extras/import/mcapi_import.module:50 extras/import/mcapi_import.info:0
+msgid "Import transactions"
+msgstr "Εισαχθείσες συναλλαγές"
+
+#: extras/import/mcapi_import.module:51
+msgid "Import transactions for users already on the system."
+msgstr "Εισαγωγή συναλλαγών για χρήστες που υπάρχουν ήδη στο σύστημα"
+
+#: extras/import/mcapi_import.info:0
+msgid "Paste a csv to import transactions. Assumes one currency."
+msgstr "Επικολήστε ένα αρχείο csv για να εισάγετε συναλλαγές. Υποθέτει ότι υπάρχει μόνο ένα νόμισμα"
+
+#: extras/intertrading/intertrading.inc:37
+msgid "Server reports: "
+msgstr "Αναφορές του server:"
+
+#: extras/intertrading/intertrading.inc:158
+msgid "Problem saving transaction on server: @message"
+msgstr "Πρόβλημα αποθήκευσης συναλλαγής στον εξυπηρετητή: @message"
+
+#: extras/intertrading/intertrading.inc:159
+msgid ""
+"Unknown account & failed to create a new account on intertrading server"
+msgstr "Άγνωστος λογαριασμός & αποτυχία δημιουργίας νέου λογαριασμού στον εξυπηρετητή intertrading"
+
+#: extras/intertrading/intertrading.inc:160
+msgid "Diagnostics from server: @message"
+msgstr "Διαγνωστικά μηνύματα από τον εξυπηρετητή: @message"
+
+#: extras/intertrading/intertrading.inc:161
+msgid "Transaction field @fieldname is invalid: : @value"
+msgstr "Το πεδίο @fieldname της συναλλαγής είναι άκυρο: : @value"
+
+#: extras/intertrading/intertrading.inc:163
+msgid "Missing config field: @fieldname"
+msgstr "Το πεδίο παραμετροποίησης: @fieldname απουσιάζει"
+
+#: extras/intertrading/intertrading.inc:164
+msgid "Field @fieldname should be @operator 0: @val"
+msgstr "Το πεδίο @fieldname θα έπρεπε να είναι @operator 0: @val"
+
+#: extras/intertrading/intertrading.inc:165
+msgid "Field @fieldname contains invalid characters"
+msgstr "Το πεδίο @fieldname περιέχει μη έγκυρους χαρακτήρες"
+
+#: extras/intertrading/intertrading.inc:166
+msgid ""
+"Your Intertrading ratio (balance/volume) exceeds @num%: @balance / @volume"
+msgstr "Το ποσοστό Intertrading σας (υπόλοιπο/όγκος) υπερβαίνει το @num%: @balance / @volume"
+
+#: extras/intertrading/intertrading.inc:167
+msgid "Type error in field '@fieldname'. Should be a @type."
+msgstr "Σφάλμα τύπου στο πεδίο '@fieldname'. Θα έπρεπε να είναι τύπου @type."
+
+#: extras/intertrading/intertrading.inc:168
+msgid "Your exchange is exists, but is blocked on the intertrading network."
+msgstr "Η ανταλλαγή σας καταχωρήθηκε αλλά είναι μπλοκαρισμένη στο δίκτυο intertrading"
+
+#: extras/intertrading/intertrading.inc:169
+msgid "Wrong key: @key"
+msgstr "Εσφαλμένο κλειδί: @key"
+
+#: extras/intertrading/intertrading.inc:170
+msgid "Not enough data to authenticate"
+msgstr "Δεν υπάρχουν αρκετά δεδομένα για την πιστοποίηση"
+
+#: extras/intertrading/intertrading.inc:172
+msgid "Failed to connect with @server; returned: @message"
+msgstr "Αποτυχία σύνδεσης με @server; Ο εξυπηρετητής επέστρεψε: @message"
+
+#: extras/intertrading/intertrading.inc:173
+msgid ""
+"Transaction would exceed remote client's intertrading limits by @quantity"
+msgstr "Η συναλλαγή θα υπερέβαινε τα όρια intertrading του απομακρυσμένου πελάτη κατά @quantity"
+
+#: extras/intertrading/intertrading.inc:174
+msgid "Transaction would exceed remote client's account limits by @quantity"
+msgstr "Η συναλλαγή θα υπερέβαινε τα όρια υπολοίπων του απομακρυσμένου πελάτη κατά @quantity"
+
+#: extras/intertrading/intertrading.inc:175
+msgid "Misc validation error on remote client: @message"
+msgstr "Λάθος επαλήθευσης στον απομακρυσμένο πελάτη: @message"
+
+#: extras/intertrading/intertrading.inc:176
+msgid "client not found: @server"
+msgstr "Ο πελάτης δε βρέθηκε: @server"
+
+#: extras/intertrading/intertrading.inc:177
+msgid "Failed to connect: @params"
+msgstr "Αποτυχία σύνδεσης: @params"
+
+#: extras/intertrading/intertrading.inc:178
+msgid "Unknown mail on @client: @mail"
+msgstr "Άγνωστο email στο @client: @mail"
+
+#: extras/intertrading/intertrading.inc:179
+msgid "Unknown error code @code: @args"
+msgstr "Άγνωστος κωδικός σφάλματος @code: @args"
+
+#: extras/intertrading/intertrading.inc32;36;57
+#: extras/intertrading/intertrading.module126;289;703;832
+msgid "intertrading"
+msgstr "intertrading"
+
+#: extras/intertrading/intertrading.inc:32
+msgid "Site @site returned error @message"
+msgstr "Ο ιστότοπος @site επέστρεψε σφάλμα @message"
+
+#: extras/intertrading/intertrading.inc:36
+msgid "Unexpected result from @url: @result"
+msgstr "Απρόσμενο αποτέλεσμα από @url: @result"
+
+#: extras/intertrading/intertrading.inc:57
+msgid "@message"
+msgstr "@message"
+
+#: extras/intertrading/intertrading.inc:148
+msgid "intertrading error"
+msgstr "σφάλμα intertrading"
+
+#: extras/intertrading/intertrading.inc:148
+msgid "!message"
+msgstr "!message"
+
+#: extras/intertrading/intertrading.module:91
+msgid "access statement"
+msgstr "Κατάσταση  πρόσβασης"
+
+#: extras/intertrading/intertrading.module:92
+msgid ""
+"View the aggregating trading stats which show the activity of this exchange "
+"to the trading network."
+msgstr "Δείτε τα στατιστικά άθροιση των συναλλαγών που δείχνουν τη δραστηριότητα της εν λόγω ανταλλαγής με το δίκτυο συναλλαγών."
+
+#: extras/intertrading/intertrading.module:95
+msgid "Intertrade"
+msgstr "διεπαγγελματικές"
+
+#: extras/intertrading/intertrading.module:96
+msgid "Initiate transactions with other exchanges"
+msgstr "Πραγματοποιήστε συναλλαγές με άλλες ανταλλαγές"
+
+#: extras/intertrading/intertrading.module:146
+msgid "Intertrading server"
+msgstr "Εξυπηρετητής intertrading"
+
+#: extras/intertrading/intertrading.module:147
+msgid "The url of the server."
+msgstr "Το url του εξυπηρετητή"
+
+#: extras/intertrading/intertrading.module148;158;174
+msgid ""
+"WARNING. This cannot and should not be easily changed once your account on "
+"the intertrading server is created"
+msgstr "ΠΡΟΕΙΔΟΠΟΙΗΣΗ. Αυτό δεν μπορεί και δε θα πρέπει να αλλάζει εύκολα, μετά την ολοκλήρωση δημιουργίας λογαριασμού στον εξυπηρετητή intertrading"
+
+#: extras/intertrading/intertrading.module:157
+msgid "Account for external transactions"
+msgstr "Λογαριασμός για εξωτερικές συναλλαγές"
+
+#: extras/intertrading/intertrading.module172;728
+msgid "The value of the currency, relative to a common denominator."
+msgstr "Η αξία του νομίσματος, σε σχέση με ένα κοινό παρονομαστή"
+
+#: extras/intertrading/intertrading.module173;729
+msgid "If 1 tick is 1 minute and your currency is hours, then enter 60"
+msgstr "Αν 1 tick είναι 1 λεπτό και το νόμισμά σας είναι ώρες, τότε εισάγετε 60"
+
+#: extras/intertrading/intertrading.module:192
+msgid ""
+"Which field API field on the transaction entity should be used for "
+"'description'"
+msgstr "Ποιο πεδίο του field API στην οντότητα της συναλλαγής θα πρέπει να χρησιμοποιηθεί για 'description'"
+
+#: extras/intertrading/intertrading.module:200
+msgid ""
+"Intertrading works better when the transaction entity has a description "
+"field"
+msgstr "Το intertrading δουλεύει καλύτερα όταν η οντότητα της συναλλαγής έχει πεδίο περιγραφής"
+
+#: extras/intertrading/intertrading.module:208
+msgid "Handshake with server"
+msgstr "Χειραψία με τον εξυπηρετητή"
+
+#: extras/intertrading/intertrading.module:219
+msgid "Ticks must be greater than zero"
+msgstr "Τα ticks πρέπει να είναι περισσότερα από μηδέν"
+
+#: extras/intertrading/intertrading.module:233
+msgid "Ticks must be numeric"
+msgstr "Τα ticks πρέπει να είναι αριθμητικά"
+
+#: extras/intertrading/intertrading.module:244
+msgid "Geolocation"
+msgstr "Γεωεντοπισμός"
+
+#: extras/intertrading/intertrading.module:245
+msgid "The intertrading server would like to know where you are."
+msgstr "Ο εξυπηρετητής intertrading θα ήθελε να γνωρίζει την τοποθεσία σας"
+
+#: extras/intertrading/intertrading.module:245
+msgid "To determine your coordinates, please visit !link"
+msgstr "Για να καθορίσετε συντεταγμένες, παρακαλώ επισκεφθείτε το !σύνδεσμο "
+
+#: extras/intertrading/intertrading.module249;386
+msgid "Latitude"
+msgstr "γεωγραφικό πλάτος"
+
+#: extras/intertrading/intertrading.module256;387
+msgid "Longitude"
+msgstr "γεωγραφικό μήκος"
+
+#: extras/intertrading/intertrading.module:290
+msgid "You have an account on the intertrading server."
+msgstr "Έχετε δημιουργήσει λογαριασμό στον εξυπηρετητή intertrading"
+
+#: extras/intertrading/intertrading.module:383
+msgid "Name of intertrading currency"
+msgstr "Όνομα του νομίσματος για intertrading"
+
+#: extras/intertrading/intertrading.module:388
+msgid "Relative value"
+msgstr "Σχετική αξία"
+
+#: extras/intertrading/intertrading.module:391
+msgid "Balances add up to zero"
+msgstr "Τα υπόλοιπα αθροίζονται σε μηδέν"
+
+#: extras/intertrading/intertrading.module:392
+#: extras/signatures/mcapi_signatures.mcapiforms_default.inc:25
+msgid "Yes"
+msgstr "Ναι"
+
+#: extras/intertrading/intertrading.module:392
+msgid "No"
+msgstr "Όχι"
+
+#: extras/intertrading/intertrading.module:394
+msgid "Number of traders"
+msgstr "Αριθμός συναλλασσόμενων"
+
+#: extras/intertrading/intertrading.module:395
+msgid "Last 30 days transactions"
+msgstr "Συναλλαγές των τελευταίων 30 ημερών"
+
+#: extras/intertrading/intertrading.module:397
+msgid "Last 365 days volume"
+msgstr "Όγκος συναλλαγών των τελευταίων 365 ημερών"
+
+#: extras/intertrading/intertrading.module:401
+msgid "Largest negative balance"
+msgstr "Μέγιστο αρνητικό υπόλοιπο"
+
+#: extras/intertrading/intertrading.module:405
+msgid "Balance of Trade"
+msgstr "Εμπορικός ισολογισμός"
+
+#: extras/intertrading/intertrading.module:409
+msgid "Visibility"
+msgstr "Ορατότητα"
+
+#: extras/intertrading/intertrading.module:410
+msgid "Public"
+msgstr "Δημόσιο"
+
+#: extras/intertrading/intertrading.module:410
+msgid "Not public"
+msgstr "Μη δημόσιο"
+
+#: extras/intertrading/intertrading.module:422
+msgid "Coordinates must be numeric"
+msgstr "Οι συντεταγμένες πρέπει να είναι αριθμητικές"
+
+#: extras/intertrading/intertrading.module:425
+msgid "Coordinates out of range: @val"
+msgstr "Οι συντεταγμένες είναι εκτός ορίων: @val"
+
+#: extras/intertrading/intertrading.module:445
+msgid "@varname not set. Configure intertrading at !link"
+msgstr "@varname δεν έχει καθοριστεί. Διαμορφώστε το intertrading στο !link"
+
+#: extras/intertrading/intertrading.module:480
+msgid "No receipts are possible at this time"
+msgstr "Δεν μπορούν να δωθούν αποδείξεις αυτή τη στιγμή"
+
+#: extras/intertrading/intertrading.module:485
+msgid "The most @name can receive is !amount"
+msgstr "Το μέγιστο που μπορεί να λάβει ο/η @name είναι !amount "
+
+#: extras/intertrading/intertrading.module:495
+msgid "No payments are possible at this time"
+msgstr "Καμία πληρωμή δεν είναι εφικτή αυτή τη στιγμή"
+
+#: extras/intertrading/intertrading.module:500
+msgid "The most @name can pay is !amount"
+msgstr "Το μέγιστο που μπορεί να πληρώσει ο/η @name είναι !amount"
+
+#: extras/intertrading/intertrading.module:522
+msgid "Remote exchange"
+msgstr "Απομακρυσμένη ανταλλαγή"
+
+#: extras/intertrading/intertrading.module:523
+msgid "Not listed?"
+msgstr "Δεν είναι στη λίστα;"
+
+#: extras/intertrading/intertrading.module:532
+msgid "Remote payer email address"
+msgstr "Διεύθυνση email του απομακρυσμένου πληρωτή"
+
+#: extras/intertrading/intertrading.module:532
+msgid "Remote payee email address"
+msgstr "Διεύθυνση email του απομακρυσμένου δικαιούχου"
+
+#: extras/intertrading/intertrading.module:566
+msgid "Confirm"
+msgstr "Επιβεβαίωση"
+
+#: extras/intertrading/intertrading.module:620
+msgid "There was a problem saving the transaction on the remote site."
+msgstr "Υπήρξε ένα πρόβλημα στην αποθήκευση της συναλλαγής στον απομακρυσμένο ιστοτόπο."
+
+#: extras/intertrading/intertrading.module:719
+msgid "Intertrading server url"
+msgstr "url του εξυπηρετητή intertrading"
+
+#: extras/intertrading/intertrading.module:721
+msgid "The url of the server. Contact the server administrator to change this"
+msgstr "Το url του εξυπηρετητή. Επικοινωνήστε με το διαχειριστή του server για να το αλλάξετε."
+
+#: extras/intertrading/intertrading.module:726
+msgid "Ticks"
+msgstr "Ticks"
+
+#: extras/intertrading/intertrading.module:734
+msgid "Currency used for intertrading"
+msgstr "Νόμισμα που χρησιμοποιείται για το intertrading"
+
+#: extras/intertrading/intertrading.module:740
+msgid "The account on this exchange used for intertrading"
+msgstr "Ο λογαριασμός σε αυτή τη συναλλαγή που χρησιμοποιείται για intertrading"
+
+#: extras/intertrading/intertrading.module:742
+msgid "Enter the account number"
+msgstr "Εισάγετε τον αριθμό λογαριασμού"
+
+#: extras/intertrading/intertrading.module:747
+msgid "Description field"
+msgstr "Πεδίο περιγραφής"
+
+#: extras/intertrading/intertrading.module:749
+msgid ""
+"Choose from these fields which have been added to the transaction entity"
+msgstr "Επιλέξτε από αυτά τα πεδία που έχουν προστεθεί στην οντότητα της συναλλαγής"
+
+#: extras/intertrading/intertrading.module:767
+msgid "No account"
+msgstr "Κανένας λογαριασμός"
+
+#: extras/intertrading/intertrading.module:768
+msgid "Account blocked"
+msgstr "Ο λογαριασμός αποκλείστηκε"
+
+#: extras/intertrading/intertrading.module:769
+msgid "Account active"
+msgstr "Ενεργός λογαριασμός"
+
+#: extras/intertrading/intertrading.module:772
+msgid "@name account status is: @status"
+msgstr "Η κατάσταση του λογαριασμού @name είναι: @status"
+
+#: extras/intertrading/intertrading.module:778
+msgid "@name account balance is !balance"
+msgstr "Το υπόλοιπο του λογαριασμού @name είναι: !balance"
+
+#: extras/intertrading/intertrading.module:780
+msgid "@name can trade between: @min & @max"
+msgstr "Ο/η @name μπορεί να συναλλαγεί μεταξύ: @min & @max"
+
+#: extras/intertrading/intertrading.module:784
+msgid "@name must trade above: @min"
+msgstr "Ο/η @name πρέπει να συναλλαγεί για περισσότερο από: @min"
+
+#: extras/intertrading/intertrading.module:787
+msgid "@name must trade below: @max"
+msgstr "Ο/η @name πρέπει να συναλλαγεί για λιγότερο από: @min"
+
+#: extras/intertrading/intertrading.module:790
+msgid "Transactions so far: @count"
+msgstr "Συναλλαγές ως τώρα: @count"
+
+#: extras/intertrading/intertrading.module:855
+msgid "Transactions with the intertrading account cannot be modified"
+msgstr "Οι συναλλαγές με το λογαριασμό intertrading δεν μπορούν να τροποποιηθούν"
+
+#: extras/intertrading/intertrading.module:870
+msgid "Intertrading is not possible with this form."
+msgstr "Το Intertrading δεν είναι δυνατόν με αυτή τη φόρμα."
+
+#: extras/intertrading/intertrading.module:126
+msgid "server passed wrong key, @key to this client. Actual key is @key1"
+msgstr "Ο εξυπηρετητής μεταβίβασε το λάθος κλειδί, @key σε αυτό τον πελάτη. Το πραγματικό κλειδί είναι το @key1"
+
+#: extras/intertrading/intertrading.module:289
+msgid "server accepted new key: @key"
+msgstr "Ο εξυπηρετητής αποδέχθηκε νέο κλειδί: @key"
+
+#: extras/intertrading/intertrading.module:703
+msgid "@message: @transaction"
+msgstr "@message: @transaction"
+
+#: extras/intertrading/intertrading.module:832
+msgid "Uploaded @num transactions to intertrading server"
+msgstr "@num συναλλαγές φορτώθηκαν στον εξυπηρετητή intertrading"
+
+#: extras/intertrading/intertrading.module14;74
+msgid "Trading network"
+msgstr "Δίκτυο συναλλαγών"
+
+#: extras/intertrading/intertrading.module:15
+msgid "Display statistics about this exchange in the Community Forge network"
+msgstr "Εμφάνιση στατιστικών για αυτή τη συναλλαγή στο δίκτυο του Community Forge"
+
+#: extras/intertrading/intertrading.module:31
+msgid "Remote transaction"
+msgstr "Απομακρυσμένη συναλλαγή"
+
+#: extras/intertrading/intertrading.module:32
+msgid "Trade with another exchange in the network"
+msgstr "Κάντε συναλλαγές με κάποιο άλλο δίκτυο στην ίδια πλατφόρμα"
+
+#: extras/intertrading/intertrading.module:43
+msgid "Remote claim"
+msgstr "Απομακρυσμένη απαίτηση"
+
+#: extras/intertrading/intertrading.module:44
+msgid "Request credit from another exchange"
+msgstr "Αίτηση πίστωσης από άλλο δίκτυο"
+
+#: extras/intertrading/intertrading.module:50
+msgid "Remote payment"
+msgstr "Απομακρυσμένη πληρωμή"
+
+#: extras/intertrading/intertrading.module:51
+msgid "Credit someone in another exchange"
+msgstr "Πίστωση κάποιου σε άλλο δίκτυο"
+
+#: extras/intertrading/intertrading.module:61
+msgid "Replicate transaction history to server"
+msgstr "Αντιγραφή ιστορικού συναλλαγών στον εξυπηρετητή"
+
+#: extras/intertrading/intertrading.module:75
+msgid ""
+"Credit clearing systems are by nature closed systems. But it is possible to "
+"make meta credit-clearing systems, composed of local systems, each trusting "
+"the the credit of the others. This is called 'intertrading', It widens the "
+"scope of your market, and it brings with it a new level of governance and "
+"accountability. "
+msgstr "Τα credit-clearing systems είναι από τη φύση τους κλειστά. Είναι δυνατόν δημιουργηθούν μετα-credit-clearing systems, που αποτελούνται από τοπικά συστήματα, που το καθένα εμπιστεύεται την πίστωση του με τους άλλους. Αυτό ονομάζεται «Intertrading», διευρύνει το πεδίο της αγοράς σας, και φέρνει νέες δυνατότητες."
+
+#: extras/intertrading/intertrading.install:10
+msgid ""
+"Anonymous users have been granted permission to see the stats. However this "
+"is not required to be part of the intertrading network"
+msgstr "Δόθηκε άδεια στους ανώνυμους χρήστες να μπορούν να δουν τα στατιστικά. Πάντως, αυτό δεν είναι απαραίτητο για τη συμμετοχή στο δίκτυο intertrading"
+
+#: extras/intertrading/intertrading.info:0
+msgid "Intertrading client"
+msgstr "Πελάτης Intertrading "
+
+#: extras/intertrading/intertrading.info:0
+msgid ""
+"Exchange with other mutual credit systems using a ClearingCentral 2 server. "
+"Contact Community Forge for details"
+msgstr "Ανταλλάξτε με άλλα δίκτυα χρησιμοποιώντας ένα εξυπηρετητή ClearingCentral 2. Επικοινωνήστε με το Community Forge για λεπτομέρειες"
+
+#: extras/limits/balance_limits.tpl.php:11
+msgid "Balance:"
+msgstr "Υπόλοιπο: "
+
+#: extras/limits/balance_limits.tpl.php:13
+msgid "Min:"
+msgstr "Ελάχιστο: "
+
+#: extras/limits/balance_limits.tpl.php:15
+msgid "Max:"
+msgstr "Μέγιστο:"
+
+#: extras/limits/trading_limits.tpl.php:11
+msgid "Spending limit:"
+msgstr "Όριο δαπάνης "
+
+#: extras/limits/trading_limits.tpl.php:13
+msgid "Receiving limit:"
+msgstr "Όριο είσπραξης"
+
+#: extras/limits/mcapi_limits.inc:90
+msgid ""
+"Users with permission to manage all transactions can edit the users' "
+"personal limits."
+msgstr "Χρήστες με άδεια να διαχειρίζονται όλες τις συναλλαγές, μπορούν να μεταβάλλουν τα προσωπικά όρια των χρηστών."
+
+#: extras/limits/mcapi_limits.inc:91
+msgid "Default minimum balance."
+msgstr "Προκαθορισμένο ελάχιστο υπόλοιπο."
+
+#: extras/limits/mcapi_limits.inc:92
+msgid "Default maximum balance."
+msgstr "Προκαθορισμένο μέγιστο υπόλοιπο."
+
+#: extras/limits/mcapi_limits.inc:124
+msgid "Formula to calculate minimum limit"
+msgstr "Τύπος υπολογισμού του κατώτατου ορίου"
+
+#: extras/limits/mcapi_limits.inc125;132 extras/sms/mcapi_sms.module64;98
+msgid "Use the following tokens:"
+msgstr "Χρήση των ακόλουθων λεξημάτων:"
+
+#: extras/limits/mcapi_limits.inc125;132
+msgid "@gross_in, @gross_out, @trades"
+msgstr "@gross_in, @gross_out, @trades"
+
+#: extras/limits/mcapi_limits.inc:131
+msgid "Formula to calculate maximum limit"
+msgstr "Τύπος υπολογισμού ανώτατου ορίου"
+
+#: extras/limits/mcapi_limits.inc:148
+msgid "Formula does not evaluate to a number: @result"
+msgstr "Το αποτέλεσμα της πράξης δεν είναι αριθμός: @result"
+
+#: extras/limits/mcapi_limits.inc:163
+msgid "Optional minimum balance"
+msgstr "Προαιρετικό ελάχιστο υπόλοιπο λογαριασμού"
+
+#: extras/limits/mcapi_limits.inc:164
+msgid "Must be less than or equal to zero"
+msgstr "Πρέπει να είναι μικρότερο ή ίσο με μηδεν"
+
+#: extras/limits/mcapi_limits.inc:173
+msgid "Optional maximum balance"
+msgstr "Προαιρετικό μέγιστο υπόλοιπο λογαριασμού"
+
+#: extras/limits/mcapi_limits.inc:174
+msgid "Must be greater than 0."
+msgstr "Πρέπει να είναι μεγαλύτερο από μηδεν"
+
+#: extras/limits/mcapi_limits.inc:191
+msgid "Limits must be numeric: @value"
+msgstr "Τα όρια πρέπει να είναι αριθμητικά: @value"
+
+#: extras/limits/mcapi_limits.inc:199
+msgid "Minimum balance must not be larger than 0"
+msgstr "Το κατώτατο υπόλοιπο δεν πρέπει να είναι άνω του 0"
+
+#: extras/limits/mcapi_limits.inc:207
+msgid "Maximum balance must be larger than 0"
+msgstr "Το ανώτατο υπόλοιπο πρέπει να είναι πάνω από 0"
+
+#: extras/limits/mcapi_limits.module:14
+msgid ""
+"@currency has an illegal callback set to determine transaction limits: "
+"@callback"
+msgstr "Το @currency έχει ένα μη επιτρεπτό callback ρυθμισμένο να καθορίζει τα όρια συναλλαγών: @callback"
+
+#: extras/limits/mcapi_limits.module:101
+msgid "Transaction would take @name !quant above the maximum balance of !max"
+msgstr "Η συναλλαγή θα έφερνε το υπόλοιπο του/της @name, !quant πάνω από το μέγιστο επιτρεπτό υπόλοιπο !max"
+
+#: extras/limits/mcapi_limits.module:110
+msgid "Transaction would take @name !quant below the minimum balance of !min"
+msgstr "Η συναλλαγή θα έκανε το υπόλοιπο του μέλους @name, !quant κάτω από το επιτρεπτό όριο των !min"
+
+#: extras/limits/mcapi_limits.module133;275
+#: extras/limits/views/mcapi_limits.views.inc:9
+msgid "Balance limits"
+msgstr "Όρια υπολοίπου"
+
+#: extras/limits/mcapi_limits.module:134
+msgid ""
+"With great power comes great responsibility! The first rule of accounting "
+"is: no account should issue more credit than it can redeem. Even fiat "
+"currencies can be run sustainably if they are used to pay tax. Trust in the "
+"system can be increased by limiting the right to issue credit to trusted, "
+"known, productive actors in the economy, which may or not include the "
+"goverment!"
+msgstr "Η μεγάλη δύναμη φέρνει και μεγάλες ευθύνες! Ο πρώτος κανόνας της λογιστικής είναι: κανένας λογαριασμός δε θα πρέπει να δίνει περισσότερη πίστωση από όση μπορεί να ανακτήσει. Ακόμα και τα συνηθισμένα νομίσματα θα μπορούσαν να δουλέψουν βιώσιμα αν χρησιμοποιούνταν για την πληρωμή των φόρων. Η εμπιστοσύνη στο σύστημα μπορεί να αυξηθεί με τον περιορισμένη παραχώρηση του δικαιώματος πίστωσης μόνο σε αξιόπιστους, παραγωγικούς παράγοντες της οικονομίας, στους οποίους μπορεί να συμπεριλαμβάνεται η κυβέρνηση (ή μπορεί όχι).  "
+
+#: extras/limits/mcapi_limits.module:135
+msgid "Transactions will be rejected which take accounts beyond these limits."
+msgstr "Συναλλαγές που θα έφερναν κάποιο λογαριασμό έξω από τα πιστωτικά όρια απορρίπτονται"
+
+#: extras/limits/mcapi_limits.module:135
+msgid "Choose which method to use, and configure it."
+msgstr "Επιλέξτε ποια μέθοδος θα χρησιμοποιηθεί, και παραμετροποιήστε την."
+
+#: extras/limits/mcapi_limits.module:143
+msgid "Method"
+msgstr "Μέθοδος"
+
+#: extras/limits/mcapi_limits.module:144
+msgid "How will the limits be determined?"
+msgstr "Πώς θα καθορίζονται τα όρια;"
+
+#: extras/limits/mcapi_limits.module:171
+msgid "No limits"
+msgstr "Χωρίς όρια"
+
+#: extras/limits/mcapi_limits.module:172
+msgid "Everyone has the same limits, stated below"
+msgstr "Κάθε μέλος έχει τα ίδια όρια, που καθορίζονται παρακάτω"
+
+#: extras/limits/mcapi_limits.module:173
+msgid "Fields on the user profile can override limits stated below."
+msgstr "Πεδία του προφίλ χρήστη μπορούν να υπερκαλύψουν τα παρακάτω όρια"
+
+#: extras/limits/mcapi_limits.module:174
+msgid "Calculate the limits using an equation and tokens."
+msgstr "Υπολογισμός των ορίων χρησιμοποιώντας μία εξίσωση και λεξήματα"
+
+#: extras/limits/mcapi_limits.module:205
+msgid "Personal balance limits, set manually"
+msgstr "Προσωπικά όρια υπολοίπου, μη-αυτόματη ρύθμιση"
+
+#: extras/limits/mcapi_limits.module:206
+msgid "These override any limits defined in the currency."
+msgstr "Τα παρακάτω υπερισχύουν των ορίων που έχουν καθοριστεί στις ρυθμίσεις νομίσματος."
+
+#: extras/limits/mcapi_limits.module:278
+msgid "Trading limits (adjusted for the balance)"
+msgstr "Όρια συναλλαγών (προσαρμοσμένα για το υπόλοιπο)"
+
+#: extras/limits/mcapi_limits.module:298
+msgid "My limits"
+msgstr "τα ορια μου"
+
+#: extras/limits/mcapi_limits.module:298
+msgid "@user's limits"
+msgstr "Τα όρια του @user"
+
+#: extras/limits/mcapi_limits.module:328
+msgid "Block settings"
+msgstr "Ρυθμίσεις μπλοκ"
+
+#: extras/limits/mcapi_limits.info:0
+msgid "Limit balances"
+msgstr "Περιορισμός υπολοίπων"
+
+#: extras/limits/mcapi_limits.info:0
+msgid "Min and max balance limits per user and per currency"
+msgstr "Κατώτατο και ανώτατο όριο υπολοίπου ανά χρήστη και ανά νόμισμα"
+
+#: extras/limits/views/mcapi_limits.views.inc:11
+msgid "The trading limits for a user in a currency or currencies"
+msgstr "Τα όρια συναλλαγών ενός χρήστη σε ένα ή περισσότερα νομίσματα"
+
+#: extras/signatures/pending_signatures.tpl.php:13
+msgid "Signed by"
+msgstr "Υπογεγραμμένο από"
+
+#: extras/signatures/pending_signatures.tpl.php:13
+msgid "Awaiting Signatures"
+msgstr "Σε εκκρεμότητα"
+
+#: extras/signatures/mcapi_signatures.mcapiforms_default.inc:27
+msgid "You have signed the transaction"
+msgstr "Έχετε υπογράψει τη συναλλαγή"
+
+#: extras/signatures/mcapi_signatures.mcapiforms_default.inc:32
+#: extras/signatures/mcapi_signatures.module:721
+msgid "Sign transaction"
+msgstr "Υπογραφή συναλλαγής"
+
+#: extras/signatures/mcapi_signatures.mcapiforms_default.inc:36
+msgid "Save"
+msgstr "Αποθήκευση"
+
+#: extras/signatures/mcapi_signatures.module:9
+msgid ""
+"Require signatures for certain transaction types before they are cleared."
+msgstr "Απαίτηση υπογραφών για ορισμένους τύπους συναλλαγών πριν εγκριθούν"
+
+#: extras/signatures/mcapi_signatures.module:131
+msgid "Pending"
+msgstr "Εκκρεμής"
+
+#: extras/signatures/mcapi_signatures.module:132
+msgid "awaiting signatures before becoming 'finished'."
+msgstr "Αναμένει την τελική επιβεβαιώσεις "
+
+#: extras/signatures/mcapi_signatures.module:155
+msgid "Both participants must sign"
+msgstr "Και οι δύο πλευρές πρέπει να υπογράψουν"
+
+#: extras/signatures/mcapi_signatures.module:156
+msgid "Logged in user signs automatically"
+msgstr "Ένας συνδεδεμένος χρήστης υπογράφει αυτόματα"
+
+#: extras/signatures/mcapi_signatures.module:161
+msgid "Counter-signers"
+msgstr "Αντί-υπογεγραμμένοι"
+
+#: extras/signatures/mcapi_signatures.module:162
+msgid "Choose one or more users"
+msgstr "Επιλέξτε έναν ή παραπάνω χρήστες"
+
+#: extras/signatures/mcapi_signatures.module:170
+msgid "Send notification"
+msgstr "Αποστολή ειδοποίησης"
+
+#: extras/signatures/mcapi_signatures.module:171
+msgid "Use the email template on this page to notify all signatories"
+msgstr "Χρήση του προτύπου email σε αυτή τη σελίδα για την ειδοποίηση όλων των υπογεγραμμένων"
+
+#: extras/signatures/mcapi_signatures.module:187
+msgid "Signature notification"
+msgstr "Ειδοποίηση υπογραφής"
+
+#: extras/signatures/mcapi_signatures.module:189
+msgid ""
+"Compose the email notifying signatories that a transaction needs their "
+"attention"
+msgstr "Σύνταξη του email ειδοποίησης των υπογεγραμμένων ότι μία συναλλαγή χρειάζεται την προσοχή τους"
+
+#: extras/signatures/mcapi_signatures.module190;213
+msgid "Use the tokens provided"
+msgstr "Χρήση των παρεχόμενων λεξημάτων"
+
+#: extras/signatures/mcapi_signatures.module:196
+msgid "Your signature required"
+msgstr "Απαιτείται η υπογραφή σας"
+
+#: extras/signatures/mcapi_signatures.module:210
+msgid "Completed notification"
+msgstr "Ολοκληρωμένη ειδοποίηση"
+
+#: extras/signatures/mcapi_signatures.module:212
+msgid ""
+"Compose the email sent to all signatories when a pending transaction "
+"completes."
+msgstr "Σύνταξη του email που αποστέλλεται σε όλους τους υπογεγραμμένους όταν μία συναλλαγή σε αναμονή ολοκληρώνεται."
+
+#: extras/signatures/mcapi_signatures.module:219
+msgid "Transaction signed off"
+msgstr "Υπογεγραμμένη συναλλαγή"
+
+#: extras/signatures/mcapi_signatures.module:283
+msgid "Transaction #@serial is already signed by @name"
+msgstr "Η συναλλαγή #@serial είναι ήδη υπογεγραμμένη από τον/την @name"
+
+#: extras/signatures/mcapi_signatures.module:289
+msgid "@num signatures remaining on transaction #@serial"
+msgstr "Απομένουν @num υπογραφές για τη συναλλαγή #@serial"
+
+#: extras/signatures/mcapi_signatures.module:294
+msgid "Transaction @serial is signed off"
+msgstr "Η συναλλαγή @serial επικυρώθηκε"
+
+#: extras/signatures/mcapi_signatures.module:403
+msgid "Set up signatories (new window)"
+msgstr "Καθορισμός υπογεγραμμένων (νέο παράθυρο)"
+
+#: extras/signatures/mcapi_signatures.module:429
+msgid "Cancel pending transactions"
+msgstr "Ακύρωση συναλλαγών σε αναμονή"
+
+#: extras/signatures/mcapi_signatures.module:462
+msgid "Are you sure you want to sign this transaction on behalf of @users?"
+msgstr "Είστε σίγουρος/η ότι επιθυμείτε να υπογράψετε αυτή τη συναλλαγή εκ μέρους των @users?"
+
+#: extras/signatures/mcapi_signatures.module470;549
+#: extras/signatures/views/mcapi_signatures.views.inc93;97
+#: extras/signatures/views/mcapi_signatures.views_default.inc:172
+#: extras/signatures/views/views_handler_field_mcapi_sign.inc:7
+msgid "Sign"
+msgstr "Αποδοχή"
+
+#: extras/signatures/mcapi_signatures.module:502
+msgid "Are you sure you want to cancel this pending transaction"
+msgstr "Είστε σίγουρος/η ότι θέλετε να ακυρώσετε αυτή τη συναλλαγή σε αναμονή;"
+
+#: extras/signatures/mcapi_signatures.module:510
+msgid "Not so sure"
+msgstr "Όχι τόσο σίγουρος/η"
+
+#: extras/signatures/mcapi_signatures.module:526
+msgid "Transaction is not in pending state"
+msgstr "Η συναλλαγή δεν είναι σε κατάσταση αναμονής"
+
+#: extras/signatures/mcapi_signatures.module:529
+msgid "Pending transaction has no signatures waiting"
+msgstr "Η συναλλαγή σε αναμονή δεν περιμένει για υπογραφές"
+
+#: extras/signatures/mcapi_signatures.module:543
+msgid "Are you sure you want to sign all your transactions?"
+msgstr "Είστε σίγουρος/η ότι θέλετε να υπογράφετε όλες τις συναλλαγές σας;"
+
+#: extras/signatures/mcapi_signatures.module:604
+msgid "A signature is added to a transaction"
+msgstr "Προστέθηκε μία υπογραφή στη συναλλαγή"
+
+#: extras/signatures/mcapi_signatures.module677;34
+#: extras/signatures/views/mcapi_signatures.views.inc101;105
+#: extras/signatures/views/views_handler_field_mcapi_sign.inc:37
+msgid "Sign off"
+msgstr "Υπογραφή"
+
+#: extras/signatures/mcapi_signatures.module680;35
+msgid "Sign the transaction on behalf of everyone"
+msgstr "Υπογραφή της συναλλαγής εκ μέρους όλων"
+
+#: extras/signatures/mcapi_signatures.module:726
+msgid "Awaiting signature"
+msgstr "Αναμονή υπογραφής"
+
+#: extras/signatures/mcapi_signatures.module:726
+msgid "Signed"
+msgstr "Υπογράφηκε"
+
+#: extras/signatures/mcapi_signatures.module:584
+msgid "mcapi_signatures"
+msgstr "mcapi_signatures"
+
+#: extras/signatures/mcapi_signatures.module:584
+msgid ""
+"Some completed transactions still have signatures pending, please report to "
+"matslats: @serials"
+msgstr "Κάποιες ολοκληρωμένες συναλλαγές έχουν ακόμα υπογραφές σε αναμονή, παρακαλώ αναφέρετε το θέμα στο matslats: @serials"
+
+#: extras/signatures/mcapi_signatures.module:27
+#: extras/signatures/views/mcapi_signatures.views.inc8;12
+msgid "Signatures"
+msgstr "Υπογραφές"
+
+#: extras/signatures/mcapi_signatures.module:28
+msgid "Require signatures before transactions enter pending state"
+msgstr "Απαίτηση για υπογραφές πριν οι συναλλαγές μπουν σε κατάσταση αναμονής"
+
+#: extras/signatures/mcapi_signatures.module:44
+msgid "Cancel the transaction"
+msgstr "Ακύρωση της συναλλαγής"
+
+#: extras/signatures/mcapi_signatures.module:52
+msgid "Sign all my transactions"
+msgstr "Υπογραφή όλων των συναλλαγών μου"
+
+#: extras/signatures/mcapi_signatures.install:53
+msgid "the transaction to which this entry is attached"
+msgstr "η συναλλαγή στην οποία έχει προσαρτηθεί αυτή η καταχώρηση"
+
+#: extras/signatures/mcapi_signatures.install:58
+msgid "the uid of the signatory"
+msgstr "το uid του υπογράφοντος"
+
+#: extras/signatures/mcapi_signatures.install:63
+msgid "whether it is awaiting a signature"
+msgstr "αν αναμένεται υπογραφή ή όχι"
+
+#: extras/signatures/mcapi_signatures.info:0
+msgid "Transaction signing"
+msgstr "Υπογραφή συναλλαγών"
+
+#: extras/signatures/mcapi_signatures.info:0
+msgid ""
+"Use actions and triggers to require signatures before transactions move into"
+" pending state. Default assumes all active members will expire at the end of"
+" the year"
+msgstr "Χρήση ενεργειών και triggers για την απαίτηση υπογραφών πριν οι συναλλαγές μετακινηθούν σε κατάσταση αναμονής. Η προκαθορισμένη ρύθμιση υποθέτει ότι όλοι οι ενεργοί λογαριασμοί θα εκπνεύσουν στο τέλος του χρόνου. "
+
+#: extras/signatures/views/mcapi_signatures.views.inc:13
+msgid "Signatures needed on pending transactions"
+msgstr "Υπογραφές απαιτούνται σε συναλλαγές σε αναμονή"
+
+#: extras/signatures/views/mcapi_signatures.views.inc:28
+msgid "Transactions with signatures"
+msgstr "Συναλλαγές με υπογραφές"
+
+#: extras/signatures/views/mcapi_signatures.views.inc:29
+msgid "The serial number of the transaction"
+msgstr "Ο σειριακός αριθμός της συναλλαγής"
+
+#: extras/signatures/views/mcapi_signatures.views.inc:39
+#: extras/signatures/views/mcapi_signatures.views_default.inc:170
+msgid "Signatory"
+msgstr "Υπογράφων"
+
+#: extras/signatures/views/mcapi_signatures.views.inc:41
+msgid "Signatory to a transaction"
+msgstr "Υπογράφων σε μία συναλλαγή"
+
+#: extras/signatures/views/mcapi_signatures.views.inc45;50
+msgid "...is a signatory"
+msgstr ".. είναι ένας υπογράφων"
+
+#: extras/signatures/views/mcapi_signatures.views.inc46;51
+msgid "Show only transactions on which the current user is a signatory"
+msgstr "Εμφάνιση μόνο των συναλλαγών στις οποίες έχει υπογράψει ο τρέχων χρήστης"
+
+#: extras/signatures/views/mcapi_signatures.views.inc:56
+msgid "Signatory user"
+msgstr "Υπογράφων χρήστης"
+
+#: extras/signatures/views/mcapi_signatures.views.inc:63
+msgid "Is pending"
+msgstr "είναι σε αναμονή"
+
+#: extras/signatures/views/mcapi_signatures.views.inc65;69
+msgid "The signature is still pending"
+msgstr "Αναμένεται ακόμα η υπογραφή"
+
+#: extras/signatures/views/mcapi_signatures.views.inc:75
+msgid "Sign here"
+msgstr "Υπογράψτε εδώ"
+
+#: extras/signatures/views/mcapi_signatures.views.inc:77
+msgid "Link to sign the transactions"
+msgstr "Σύνδεσμος για υπογραφή των συναλλαγών"
+
+#: extras/signatures/views/mcapi_signatures.views.inc:95
+msgid "Sign, if permitted"
+msgstr "Υπογραφή, αν επιτρέπεται"
+
+#: extras/signatures/views/mcapi_signatures.views.inc:103
+msgid "Sign on behalf of everyone, if permitted"
+msgstr "Υπογραφή εκ μέρους όλων, αν επιτρέπεται"
+
+#: extras/signatures/views/mcapi_signatures.views_default.inc171;277
+msgid "Transaction #[serial]"
+msgstr "Συναλλαγή #[serial]"
+
+#: extras/signatures/views/mcapi_signatures.views_default.inc:173
+msgid "Awaiting my signature..."
+msgstr "Σε αναμονή της υπογραφής μου..."
+
+#: extras/signatures/views/mcapi_signatures.views_default.inc:174
+msgid "logged in user must sign here"
+msgstr "ο συνδεδεμένος χρήστης πρέπει να υπογράψει εδώ"
+
+#: extras/signatures/views/mcapi_signatures.views_default.inc:175
+msgid "My pending transactions"
+msgstr "Οι συναλλαγές μου που είναι σε αναμονή"
+
+#: extras/signatures/views/mcapi_signatures.views_default.inc:176
+msgid "signatures waiting for given user, or all signatures if no uid passed"
+msgstr "υπογραφές που αναμένονται για το δοσμένο χρήστη, ή όλες οι υπογραφές αν δε δοθεί ένα uid"
+
+#: extras/signatures/views/mcapi_signatures.views_default.inc:177
+msgid "Other pending transactions"
+msgstr "Άλλες συναλλαγές σε αναμονή"
+
+#: extras/signatures/views/mcapi_signatures.views_default.inc:178
+msgid "I'm waiting for signatures"
+msgstr "Αναμένω υπογραφές"
+
+#: extras/signatures/views/mcapi_signatures.views_default.inc:179
+msgid "Waiting for..."
+msgstr "Αναμονή για..."
+
+#: extras/signatures/views/mcapi_signatures.views_default.inc:180
+msgid "Pending transactions which I have already signed"
+msgstr "Συναλλαγές σε αναμονή τις οποίες έχω ήδη υπογράψει"
+
+#: extras/signatures/views/mcapi_signatures.views_default.inc:278
+msgid "Pending transactions"
+msgstr "Εκκρεμείς συναλλαγές"
+
+#: extras/signatures/views/views_handler_field_mcapi_sign.inc:14
+msgid "Text to display"
+msgstr "Κείμενο προς εμφάνιση"
+
+#: extras/sms/mcapi_sms.module15;27
+msgid "Define the SMS syntax for recording exchanges"
+msgstr "Καθορίστε τη σύνταξη του SMS για την καταγραφή των συναλλαγών"
+
+#: extras/sms/mcapi_sms.module:41
+msgid "Transact via sms"
+msgstr "Συναλλαγές μέσω SMS"
+
+#: extras/sms/mcapi_sms.module:42
+msgid "Register new transactions over SMS"
+msgstr "Καταχώρηση νέων συναλλαγών μέσω SMS"
+
+#: extras/sms/mcapi_sms.module:61
+msgid "Incoming messages from phones"
+msgstr "Εισερχόμενα μηνύματα από τηλέφωνα"
+
+#: extras/sms/mcapi_sms.module:62
+msgid "Define the form of the text messages."
+msgstr "Καθορίστε τη μορφή των μηνυμάτων κειμένου"
+
+#: extras/sms/mcapi_sms.module63;97
+msgid ""
+"Try to include variations and get feedback from your users as to what works."
+msgstr "Προσπαθήστε να συμπεριλάβετε παραλλαγές και να συλλέξετε σχόλια από τους χρήστες σας ως προς το τι δουλεύει καλύτερα."
+
+#: extras/sms/mcapi_sms.module66;100
+msgid "Put the longer ones first"
+msgstr ""
+
+#: extras/sms/mcapi_sms.module:72
+msgid "Expressions for recording an incoming transfer"
+msgstr "Εκφράσεις για την καταχώρηση μιας εισερχόμενης μεταφοράς"
+
+#: extras/sms/mcapi_sms.module:79
+msgid "Expressions for recording an outgoing transfer"
+msgstr "Εκφράσεις για την καταχώρηση μιας εξερχόμενης μεταφοράς"
+
+#: extras/sms/mcapi_sms.module:80
+msgid "One per line."
+msgstr "Μία ανά γραμμή."
+
+#: extras/sms/mcapi_sms.module:88
+msgid "Exchanges triggered by SMS require confirmation?"
+msgstr "Θα χρειάζονται επιβεβαίωση οι συναλλαγές που ξεκινούν μέσω SMS?"
+
+#: extras/sms/mcapi_sms.module:89
+msgid "Check this for new exchanges to be created as pending."
+msgstr "Ελέγξτε για νέες συναλλαγές που θα δημιουργηθούν σε κατάσταση αναμονής."
+
+#: extras/sms/mcapi_sms.module:95
+msgid "Responses"
+msgstr "Αποκρίσεις"
+
+#: extras/sms/mcapi_sms.module:96
+msgid "Messages send to phones"
+msgstr "Μηνύματα που έχουν σταλεί σε τηλέφωνα"
+
+#: extras/sms/mcapi_sms.module105;112
+msgid "Response for a successful exchange"
+msgstr "Απόκριση για μία επιτυχημένη συναλλαγή"
+
+#: extras/sms/mcapi_sms.module106;113
+msgid "Leave blank for no response, or put [inherit] "
+msgstr "Αφήστε την απόκριση κενή , ή βάλτε [inherit]"
+
+#: extras/sms/mcapi_sms.module:119
+msgid "Error response"
+msgstr "Απόκριση λάθους"
+
+#: extras/sms/mcapi_sms.module:120
+msgid "Response in case the message doesn't fit any of the above templates"
+msgstr "Απάντηση σε περίπτωση που το μήνυμα δεν καλύπτεται από κάποιο από τα παραπάνω πρότυπα"
+
+#: extras/sms/mcapi_sms.module:134
+msgid "'@template' should include '@token'"
+msgstr "Το πρότυπο '@template' θα έπρεπε να περιέχει το '@token'"
+
+#: extras/sms/mcapi_sms.module:182
+msgid "SMS response: Syntax error"
+msgstr "Απάντηση SMS: Σφάλμα σύνταξης"
+
+#: extras/sms/mcapi_sms.module:189
+msgid "Your number is not registered at @sitename"
+msgstr "Ο αριθμός σας δεν έχει καταχωρηθεί στο @sitename"
+
+#: extras/sms/mcapi_sms.module:191
+msgid "Unknown user: @user"
+msgstr "Άγνωστος χρήστης: @user"
+
+#: extras/sms/mcapi_sms.module:194
+msgid "You do not have permission to trade via SMS"
+msgstr "Δεν έχετε άδεια να συνδιαλλαγείτε μέσω SMS"
+
+#: extras/sms/mcapi_sms.module:198
+msgid "@name does not have permission to trade."
+msgstr "Το μέλος @name δεν έχει άδεια για συναλλαγές."
+
+#: extras/sms/mcapi_sms.module:229
+msgid "Your balance is @num"
+msgstr "Το υπόλοιπό σας είναι @num"
+
+#: extras/sms/mcapi_sms.module:26 extras/sms/mcapi_sms.info:0
+msgid "SMS transactions"
+msgstr "Συναλλαγές μέσω SMS"
+
+#: extras/sms/mcapi_sms.info:0
+msgid "Untested with SMS module!! Trigger exchanges from your phone using SMS"
+msgstr "Δεν έχει δοκιμαστεί με το άρθρωμα για SMS! Εκκινήστε συναλλαγές από το τηλέφωνό σας μέσω SMS"
+
+#: plugins/export_ui/mcapi_ui.class.php:88 views/mcapi.views.inc:14
+#: views/mcapi.views_default.inc17;385;389;390
+msgid "Transactions"
+msgstr "Συναλλαγές"
+
+#: plugins/export_ui/mcapi_ui.inc:24
+msgid "currency"
+msgstr "νόμισμα"
+
+#: plugins/export_ui/mcapi_ui.inc25;27
+msgid "Currencies"
+msgstr "Νομίσματα"
+
+#: plugins/export_ui/mcapi_ui.inc:26
+msgid "currencies"
+msgstr "νομίσματα"
+
+#: plugins/export_ui/mcapi_ui.inc:43
+msgid ""
+"This action will permanently remove any customizations made to this "
+"currency."
+msgstr "Αυτή η  ενέργεια θα διαγράψει μόνιμα τις τροποποιήσεις που έγιναν στο νόμισμα."
+
+#: plugins/export_ui/mcapi_ui.inc:44
+msgid "The currency has been reverted."
+msgstr "Το νόμισμα επανήλθε"
+
+#: plugins/export_ui/mcapi_ui.inc:47
+msgid "This action will permanently remove the currency from your database."
+msgstr "Αυτή η ενέργεια θα διαγράψει μόνιμα το νόμισμα από τη βάση δεδομένων."
+
+#: plugins/export_ui/mcapi_ui.inc:48
+msgid "The currency has been deleted."
+msgstr "Το νόμισμα διαγράφηκε"
+
+#: views/balance_history.tpl.php:113
+msgid "Now"
+msgstr "Τώρα"
+
+#: views/mcapi.views.inc:15
+msgid "Records of transactions between users"
+msgstr "Καταγραφές συναλλαγών μεταξύ χρηστών"
+
+#: views/mcapi.views.inc:24 views/mcapi.views_default.inc:378
+msgid "Serial number"
+msgstr "Σειριακός αριθμός"
+
+#: views/mcapi.views.inc:26 views/mcapi_index_views.views.inc:32
+msgid "The serial number of the transaction and dependents"
+msgstr "Ο σειριακός αριθμός των συναλλαγών και εξαρτόμενων"
+
+#: views/mcapi.views.inc35;51
+msgid "The user who gave currency in the transaction."
+msgstr "Ο χρήστης που πλήρωσε στη συναλλαγή."
+
+#: views/mcapi.views.inc:67
+msgid "Transactions move between states, until they are 'finished'."
+msgstr "Οι συναλλαγές μεταβαίνουν μεταξύ των διάφορων καταστάσεων, μέχρι να 'ολοκληρωθούν'."
+
+#: views/mcapi.views.inc:79 views/mcapi_index_views.views.inc:80
+msgid "Which form or module which created the transaction"
+msgstr "Ποια φόρμα ή άρθρωμα δημιούργησε τη συναλλαγή"
+
+#: views/mcapi.views.inc:90
+msgid "The user who first created the transaction."
+msgstr "Ο χρήστης που δημιούργησε πρώτος τη συναλλαγή."
+
+#: views/mcapi.views.inc:99
+msgid "The second the transaction was created."
+msgstr "Το δευτερόλεπτο που δημιουργήθηκε η συναλλαγή."
+
+#: views/mcapi.views.inc:111 views/mcapi_index_views.views.inc:168
+msgid "Better to use the handler from date_views module"
+msgstr "Καλύτερα να χρησιμοποιήσετε το handler από το άρθρωμα date_views."
+
+#: views/mcapi.views.inc:117 views/mcapi.views_default.inc:102
+#: views/mcapi_index_views.views.inc:175
+msgid "View"
+msgstr "Όψη"
+
+#: views/mcapi.views.inc:118 views/mcapi_index_views.views.inc:176
+msgid "Link to transaction"
+msgstr "Σύνδεσμος στη συναλλαγή"
+
+#: views/mcapi.views.inc:124
+msgid "Undo"
+msgstr "Αναίρεση"
+
+#: views/mcapi.views.inc:125
+msgid "Link to undo transaction"
+msgstr "Σύνδεσμος στην αναίρεση της συναλλαγής"
+
+#: views/mcapi.views.inc:140
+msgid "Transaction statistic"
+msgstr "Στατιστικά συναλλαγών"
+
+#: views/mcapi.views.inc:142
+msgid "The balance, trading volume, or transaction count for each user"
+msgstr "Το υπόλοιπο, όγκος συναλλαγών, ή αριθμός συναλλαγών για κάθε χρήστη"
+
+#: views/mcapi.views.inc:165
+msgid "The spacious, decorated, transaction certificate"
+msgstr "Πιστοποιητικό συναλλαγής"
+
+#: views/mcapi.views.inc:181
+msgid "Comma separated usernames"
+msgstr "Ονόματα χρήστη διαχωρισμένα με κόμμα"
+
+#: views/mcapi.views_default.inc:236 views/mcapi_index_views.views.inc:90
+#: views/mcapi_index_views.views_default.inc:548
+msgid "Income"
+msgstr "Έσοδα"
+
+#: views/mcapi.views_default.inc:305 views/mcapi_index_views.views.inc:105
+#: views/mcapi_index_views.views_default.inc:549
+msgid "Expenditure"
+msgstr "Δαπάνη"
+
+#: views/mcapi.views_default.inc:375
+#: views/mcapi_index_views.views_default.inc139;531;640;751
+msgid "more"
+msgstr "περισσότερα"
+
+#: views/mcapi.views_default.inc:382
+msgid "Who paid whom"
+msgstr "Ποιος πλήρωσε ποιον"
+
+#: views/mcapi.views_default.inc:383
+msgid "[name] paid [name_1]"
+msgstr "Το μέλος [name] πλήρωσε το μέλος [name_1]"
+
+#: views/mcapi.views_default.inc:384
+msgid "Income & Expenditure"
+msgstr "Έσοδα & Έξοδα"
+
+#: views/mcapi.views_default.inc:386
+msgid "No transactions"
+msgstr "Καμία συναλλαγή"
+
+#: views/mcapi.views_default.inc:387
+msgid "Trade"
+msgstr "Συναλλαγή"
+
+#: views/mcapi.views_default.inc:388
+msgid "This year's transactions"
+msgstr "Οι συναλλαγές αυτής της χρονιάς"
+
+#: views/mcapi_index_views.views.inc:9
+msgid "Transaction index"
+msgstr "Δείκτης συναλλαγών"
+
+#: views/mcapi_index_views.views.inc13;14
+msgid "Transaction totals"
+msgstr "Σύνολα συναλλαγών"
+
+#: views/mcapi_index_views.views.inc:21
+msgid "The Unique database key of the transaction"
+msgstr "Το μοναδικό κλειδί της βάσης δεδομένων για τη συναλλαγή"
+
+#: views/mcapi_index_views.views.inc41;57
+#: views/mcapi_index_views.views_default.inc:269
+msgid "1st user"
+msgstr "1ο μέλος"
+
+#: views/mcapi_index_views.views.inc:42
+msgid "The transactor, whose perspective we are looking from"
+msgstr "Ο συναλλασσόμενος, από την οπτική του οποίου βλέπουμε"
+
+#: views/mcapi_index_views.views.inc61;75
+#: views/mcapi_index_views.views_default.inc:270
+msgid "2nd user"
+msgstr "2ο μέλος"
+
+#: views/mcapi_index_views.views.inc:62
+msgid "The transactee"
+msgstr ""
+
+#: views/mcapi_index_views.views.inc:91
+msgid "Number of units of currency incoming"
+msgstr "Αριθμός εισερχόμενων μονάδων"
+
+#: views/mcapi_index_views.views.inc97;112
+msgid "transactions above or below a certain value"
+msgstr "συναλλαγές πάνω ή κάτω από μία συγκεκριμένη αξία"
+
+#: views/mcapi_index_views.views.inc:106
+msgid "Number of units of currency outgoing"
+msgstr "Αριθμός εξερχόμενων μονάδων νομίσματος"
+
+#: views/mcapi_index_views.views.inc:120
+msgid "Change in balance"
+msgstr "Αλλαγή στο υπόλοιπο"
+
+#: views/mcapi_index_views.views.inc:121
+msgid "Change in the users balance"
+msgstr "Αλλαγή στο υπόλοιπο των χρηστών"
+
+#: views/mcapi_index_views.views.inc:134
+#: views/mcapi_index_views.views_default.inc543;920
+msgid "Volume"
+msgstr "Όγκος"
+
+#: views/mcapi_index_views.views.inc:135
+msgid "Absolute value of the trade"
+msgstr "Απόλυτη τιμή της συναλλαγής"
+
+#: views/mcapi_index_views.views.inc:148
+#: views/mcapi_index_views.views_default.inc274;639;649;763
+#: views/views_handler_field_mcapi_users_totals.inc:36
+msgid "Balance"
+msgstr "Υπόλοιπο"
+
+#: views/mcapi_index_views.views.inc:149
+msgid ""
+"Indexed running balance after each transaction. (1 database query per row)"
+msgstr "Δεικτοδοτημένο τρέχον υπόλοιπο μετά από κάθε συναλλαγή (1 ερώτηση στη βάση ανά γραμμή)"
+
+#: views/mcapi_index_views.views.inc:155
+msgid "Created moment"
+msgstr "Λεπτό δημιουργίας"
+
+#: views/mcapi_index_views.views.inc:156
+msgid "The moment the transaction was registered"
+msgstr "Το λεπτό όπου καταχωρήθηκε η συναλλαγή"
+
+#: views/mcapi_index_views.views.inc:186
+msgid "The currency ID"
+msgstr "ID νομίσματος"
+
+#: views/mcapi_index_views.views.inc:201
+msgid "Transaction links"
+msgstr "Σύνδεσμοι συναλλαγών"
+
+#: views/mcapi_index_views.views.inc:202
+msgid "View and undo links"
+msgstr "Σύνδεσμοι για εμφάνιση και αναίρεση"
+
+#: views/mcapi_index_views.views.inc230;241
+msgid "Date"
+msgstr "Ημερομηνία"
+
+#: views/mcapi_index_views.views.inc231;242
+msgid "Date (!base_table)"
+msgstr "Ημερομηνία (!base_table)"
+
+#: views/mcapi_index_views.views.inc:232
+msgid ""
+"Filter any Views !base_table date field by a date argument, using any common"
+" ISO date/period format (i.e. YYYY, YYYY-MM, YYYY-MM-DD, YYYY-W99, YYYY-MM-"
+"DD--P3M, P90D, etc). "
+msgstr ""
+
+#: views/mcapi_index_views.views.inc235;246
+msgid "Undated"
+msgstr "Χωρίς ημερομηνία"
+
+#: views/mcapi_index_views.views.inc:243
+msgid "Filter any Views !base_table date field."
+msgstr "Φιλτράρισμα κάθε πεδίου ημερομηνίας της όψης !base_table"
+
+#: views/mcapi_index_views.views.inc:262
+#: views/views_plugin_access_user_arg1.inc:17
+msgid "Arg 1 user"
+msgstr "Arg 1 χρήστης"
+
+#: views/mcapi_index_views.views.inc:263
+msgid ""
+"Access will be granted only to users is on their own profile pages - user/%"
+msgstr "Η πρόσβαση θα παρέχεται μόνο σε χρήστες στο δικό τους προφίλ - user/%"
+
+#: views/mcapi_index_views.views_default.inc138;529;637;749
+msgid "Master"
+msgstr "Μάστερ"
+
+#: views/mcapi_index_views.views_default.inc140;532;641;752
+msgid "Apply"
+msgstr "Εφαρμογή"
+
+#: views/mcapi_index_views.views_default.inc141;533;642;753
+msgid "Reset"
+msgstr "Επαναφορά"
+
+#: views/mcapi_index_views.views_default.inc142;534;643;754
+msgid "Sort by"
+msgstr "Ταξινόμηση κατά"
+
+#: views/mcapi_index_views.views_default.inc143;535;644;755
+msgid "Asc"
+msgstr "Αύξουσα"
+
+#: views/mcapi_index_views.views_default.inc144;536;645;756
+msgid "Desc"
+msgstr "Φθίνουσα "
+
+#: views/mcapi_index_views.views_default.inc145;537;646;757
+msgid "Items per page"
+msgstr "Αντικείμενα ανά σελίδα"
+
+#: views/mcapi_index_views.views_default.inc146;538;647;758
+msgid "- All -"
+msgstr "- Όλα -"
+
+#: views/mcapi_index_views.views_default.inc147;539;648;759
+msgid "Offset"
+msgstr "Συμψηφίζω"
+
+#: views/mcapi_index_views.views_default.inc148;542;921
+msgid "Promiscuity"
+msgstr ""
+
+#: views/mcapi_index_views.views_default.inc151;544;803;918
+msgid "Trades"
+msgstr "Συναλλαγές"
+
+#: views/mcapi_index_views.views_default.inc153;276;540;651;764
+msgid "All"
+msgstr "Όλα"
+
+#: views/mcapi_index_views.views_default.inc268;750
+msgid "User transactions"
+msgstr "Συναλλαγές χρηστών"
+
+#: views/mcapi_index_views.views_default.inc272;761
+msgid "2nd Person"
+msgstr "2ο πρόσωπο"
+
+#: views/mcapi_index_views.views_default.inc278;766
+msgid "Page"
+msgstr "Σελίδα"
+
+#: views/mcapi_index_views.views_default.inc:279
+msgid "Statement"
+msgstr "Κατάσταση"
+
+#: views/mcapi_index_views.views_default.inc:530
+msgid "Most trades"
+msgstr "Πλειοψηφία συναλλαγών"
+
+#: views/mcapi_index_views.views_default.inc:545
+msgid "Number of trades"
+msgstr "Αριθμός συναλλαγών"
+
+#: views/mcapi_index_views.views_default.inc:546
+msgid "Incomes"
+msgstr "Έσοδα"
+
+#: views/mcapi_index_views.views_default.inc:547
+msgid "incomes"
+msgstr "έσοδα"
+
+#: views/mcapi_index_views.views_default.inc:550
+msgid "expenditures"
+msgstr "έξοδα"
+
+#: views/mcapi_index_views.views_default.inc:559
+msgid "Unixtimes and running balances"
+msgstr "στιγμιότυπα και τρέχοντα υπόλοιπα"
+
+#: views/mcapi_index_views.views_default.inc562;652
+msgid "Running balance"
+msgstr "Τρέχον υπόλοιπο"
+
+#: views/mcapi_index_views.views_default.inc:638
+msgid "Balance history"
+msgstr "Ιστορικό υπόλοιπο"
+
+#: views/mcapi_index_views.views_default.inc:916
+msgid "User's trading summary"
+msgstr "Περίληψη συναλλαγών χρήστη"
+
+#: views/mcapi_index_views.views_default.inc:917
+msgid "plus"
+msgstr "συν"
+
+#: views/mcapi_index_views.views_default.inc:919
+msgid "Active traders"
+msgstr "Ενεργά μέλη"
+
+#: views/mcapi_index_views.views_default.inc:922
+msgid "%1 summary"
+msgstr "%1 περίληψη"
+
+#: views/views_handler_field_mcapi_users_totals.inc:32
+msgid "Aggregate"
+msgstr "Συνολικό"
+
+#: views/views_handler_field_mcapi_users_totals.inc:33
+msgid "How do you want to summarise the the transaction totals?"
+msgstr "Πώς θα θέλατε να γίνει η περίληψη των συνολικών μεγεθών των συναλλαγών;"
+
+#: views/views_handler_field_mcapi_users_totals.inc:39
+msgid "Number of transactions"
+msgstr "Αριθμός συναλλαγών"
+
+#: views/views_handler_field_transaction.inc:39
+msgid "Link this field to the transaction"
+msgstr "Σύνδεση αυτού του πεδίου με τη συναλλαγή"
+
+#: views/views_handler_field_transaction.inc:47
+msgid "Text to show for link"
+msgstr "Κείμενο που θα εμφανιστεί για το σύνδεσμο"
+
+#: views/views_handler_filter_mcapi_currency.inc:28
+#: views/views_handler_filter_mcapi_states.inc:50
+msgid "- Any -"
+msgstr "- Οποιοδήποτε -"
+
+#: views/views_handler_filter_mcapi_index_diff.inc:15
+msgid "None"
+msgstr "Κανένα"
+
+#: views/views_handler_filter_mcapi_index_diff.inc:16
+msgid "none"
+msgstr "κανένα"
+
+#: views/views_handler_filter_mcapi_index_diff.inc:21
+msgid "Incoming"
+msgstr "Εισερχόμενα"
+
+#: views/views_handler_filter_mcapi_index_diff.inc:22
+msgid "incoming"
+msgstr "εισερχόμενα"
+
+#: views/views_handler_filter_mcapi_index_diff.inc:27
+msgid "Outgoing"
+msgstr "Εξερχόμενα"
+
+#: views/views_handler_filter_mcapi_index_diff.inc:28
+msgid "outgoing"
+msgstr "εξερχόμενα"
+
+#: views/views_handler_filter_mcapi_states.inc:61
+msgid "exposed"
+msgstr "εκτεθειμένα"
+
+#: views/views_plugin_row_transaction.inc:27
+msgid "View mode"
+msgstr "Κατάσταση όψης"
+
+#: views/mcapi_index_views.info:0
+msgid "Views for transactions"
+msgstr "Όψεις συναλλαγών"
+
+#: views/mcapi_index_views.info:0
+msgid ""
+"A transaction index using a mysql VIEW, with powerful views integration and "
+"some example views"
+msgstr ""

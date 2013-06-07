@@ -1,0 +1,159 @@
+# $Id$
+# 
+# LANGUAGE translation of Drupal (general)
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from files:
+#  cforge_gallery.view_default.inc: n/a
+#  cforge_gallery.module: n/a
+#  cforge_gallery.install: n/a
+#  cforge_gallery.info: n/a
+# 
+# Translators:
+# pktoss <pktoss@gmail.com>, 2013
+# sonickydon <fiotakis@otenet.gr>, 2013
+msgid ""
+msgstr ""
+"Project-Id-Version: cforge\n"
+"POT-Creation-Date: 2012-11-06 11:42+0100\n"
+"PO-Revision-Date: 2013-05-30 17:46+0000\n"
+"Last-Translator: pktoss <pktoss@gmail.com>\n"
+"Language-Team: Greek <dax-net-group@googlegroups.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: el\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: cforge_gallery.view_default.inc:104
+msgid "Defaults"
+msgstr "Προεπιλογές"
+
+#: cforge_gallery.view_default.inc:105
+msgid "plus"
+msgstr "συν"
+
+#: cforge_gallery.view_default.inc:106
+msgid "Appliquer"
+msgstr "Εφαρμογή"
+
+#: cforge_gallery.view_default.inc:107
+msgid "Réinitialiser"
+msgstr "Επαναφορά"
+
+#: cforge_gallery.view_default.inc:108
+msgid "Trier par"
+msgstr "Ανά"
+
+#: cforge_gallery.view_default.inc:109
+msgid "Asc"
+msgstr "Αύξουσα"
+
+#: cforge_gallery.view_default.inc:110
+msgid "Desc"
+msgstr "Φθίνουσα "
+
+#: cforge_gallery.view_default.inc:111
+msgid "Éléments par page"
+msgstr "Στοιχεία ανά σελίδα"
+
+#: cforge_gallery.view_default.inc:112
+msgid "- Tout -"
+msgstr "- Όλα -"
+
+#: cforge_gallery.view_default.inc:113
+msgid "Décalage"
+msgstr "Αλλαγή"
+
+#: cforge_gallery.view_default.inc:114
+msgid "« premier"
+msgstr "« πρώτο"
+
+#: cforge_gallery.view_default.inc:115
+msgid "‹ précédent"
+msgstr "‹ προηγούμενο"
+
+#: cforge_gallery.view_default.inc:116
+msgid "suivant ›"
+msgstr "επόμενο ›"
+
+#: cforge_gallery.view_default.inc:117
+msgid "dernier »"
+msgstr "τελευταίο »"
+
+#: cforge_gallery.view_default.inc:118
+msgid "Tous / Toutes"
+msgstr "Όλοι / Όλες"
+
+#: cforge_gallery.view_default.inc:119
+msgid "%1"
+msgstr "%1"
+
+#: cforge_gallery.view_default.inc:120
+msgid "Page"
+msgstr "Σελίδα"
+
+#: cforge_gallery.module:9
+msgid "Add another image"
+msgstr "Προσθήκη κι άλλης εικόνας"
+
+#: cforge_gallery.module:12
+msgid ""
+"Each 'term' is the name of an image gallery. Create and rename as many "
+"galleries as you want."
+msgstr "Κάθε 'term' είναι το όνομα μιας συλλογής εικόνων. Δημιουργείστε και μετονομάστε όσες συλλογές θέλετε."
+
+#: cforge_gallery.module:24
+msgid "Image categorised into galleries"
+msgstr "Εικόνες κατηγοριοποιημένες σε συλλογές"
+
+#: cforge_gallery.module:26
+msgid "Caption"
+msgstr "Επικεφαλίδα"
+
+#: cforge_gallery.module:66
+msgid "Random image"
+msgstr "Τυχαία εικόνα"
+
+#: cforge_gallery.module:118
+msgid "Gallery: @galleryname"
+msgstr "Συλλογή: @galleryname"
+
+#: cforge_gallery.module:119
+msgid "Home"
+msgstr "Αρχική"
+
+#: cforge_gallery.module:134
+msgid "There is currently no content classified with this term."
+msgstr "Αυτή τη στιγμή δεν υπάρχει περιεχόμενο που να έχει ταξινομηθεί με αυτόν τον όρο."
+
+#: cforge_gallery.module:37
+msgid "Galleries"
+msgstr "Φωτογραφίες"
+
+#: cforge_gallery.install:10
+msgid "The usual suspects"
+msgstr "Οι συνήθεις ύποπτοι"
+
+#: cforge_gallery.install:18
+msgid "Manage galleries"
+msgstr "Διαχείριση συλλογών"
+
+#: cforge_gallery.install54;109
+msgid "Gallery"
+msgstr "Συλλογή"
+
+#: cforge_gallery.install:110
+msgid "Which gallery to put this photo in?"
+msgstr "Σε ποια συλλογή να μπει η φωτογραφία;"
+
+#: cforge_gallery.info:0
+msgid "Cforge Gallery"
+msgstr "Συλλογή Cforge "
+
+#: cforge_gallery.info:0
+msgid "Upload photos into galleries"
+msgstr "Ανέβασμα φωτογραφιών σε συλλογές"
+
+#: cforge_gallery.info:0
+msgid "Community Forge"
+msgstr "Community Forge"

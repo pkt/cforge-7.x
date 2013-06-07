@@ -1,0 +1,480 @@
+# $Id$
+# 
+# LANGUAGE translation of Drupal (general)
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from files:
+#  offers_wants.module: n/a
+#  mc_offer_want.install,v 1.3 2010/05/01 15:52:49 matslats
+#  offers_wants.info: n/a
+#  views/offers_wants.views.inc: n/a
+#  views/offers_wants.views_default.inc: n/a
+#  views/views_handler_field_want.inc: n/a
+# 
+# Translators:
+# pktoss <pktoss@gmail.com>, 2013
+# sonickydon <fiotakis@otenet.gr>, 2013
+msgid ""
+msgstr ""
+"Project-Id-Version: cforge\n"
+"POT-Creation-Date: 2012-11-18 09:14+0100\n"
+"PO-Revision-Date: 2013-05-30 17:23+0000\n"
+"Last-Translator: pktoss <pktoss@gmail.com>\n"
+"Language-Team: Greek <dax-net-group@googlegroups.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: el\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: offers_wants.module:16
+msgid ""
+"This panel saves you digging around in Drupal by giving you easy options "
+"while managing other parts of the system."
+msgstr "Αυτό το ταμπλό σας γλυτώνει από τον κόπο να ψάχνεστε με το Drupal προσφέροντας σας μερικές απλές δυνατότητες ρύθμισης ενώ παράλληλα διαχειρίζεστε άλλα τμήματα του συστήματος."
+
+#: offers_wants.module:17
+msgid "Offers and wants are organised using two vocabularies."
+msgstr "Οι αγγελίες προσφοράς και ζήτησης ταξινομούνται με βάση δύο λεξιλόγια."
+
+#: offers_wants.module:18
+msgid "The first is like categories and subcategories in the yellow pages."
+msgstr "Η πρώτη λίστα είναι σαν τις κατηγορίες και τις υποκατηγορίες τους στο χρυσό οδηγό."
+
+#: offers_wants.module:19
+msgid "Create and organise your categories here:"
+msgstr "Εδώ μπορείτε να δημιουργήστε και να οργανώστε τις κατηγορίες σας:"
+
+#: offers_wants.module:20
+msgid "Edit categories"
+msgstr "Επεξεργασία κατηγοριών"
+
+#: offers_wants.module:21
+msgid ""
+"'Types' is an optional second way to find things which creates extra tabs on"
+" the listings pages."
+msgstr "Οι «τύποι» είναι ένας προαιρετικός δευτερεύων τρόπος για να βρίσκετε αυτά που θέλετε και δημιουργεί πρόσθετες καρτέλες στις σελίδες προβολής."
+
+#: offers_wants.module:22
+msgid "It only works if there is more than one term in the vocabulary."
+msgstr "Ισχύει μόνο αν υπάρχει πάνω από ένας όρος στη λίστα."
+
+#: offers_wants.module:23
+msgid "Edit types"
+msgstr "Επεξεργασία τύπων"
+
+#: offers_wants.module:24
+msgid "Here are some ideas which have been used by our community:"
+msgstr "Εδώ μπορείτε να βρείτε μερικές ιδέες που έχει ήδη χρησιμοποιήσει η κοινότητα μας:"
+
+#: offers_wants.module:25
+msgid ""
+"Loans - in order to foster sharing goods amongst your community members,  "
+"and encourage efficient resource use."
+msgstr "Δάνεια - για να ενισχυθεί η πρακτική αναδιανομής αγαθών εντός των μελών της κοινότητας και να προωθηθεί η πιο αποτελεσματική χρήση διαθέσιμων πόρων."
+
+#: offers_wants.module:26
+msgid ""
+"Tips - in order to allow your members to share ways on living better in your"
+" area."
+msgstr "Συμβουλές - για να μπορούν τα μέλη να ανταλλάσσουν  ιδέες, σκέψεις και τρόπους βελτίωσης της καθημερινής ζωής στην περιοχή σας."
+
+#: offers_wants.module:27
+msgid ""
+"Outings - in order to allow your members to self-organise and build ties."
+msgstr "Δηλώσεις -  για να μπορούν τα μέλη να αυτό-οργανωθούν και δημιουργήσουν δεσμούς μεταξύ τους."
+
+#: offers_wants.module:28
+msgid ""
+"Gifts - in order to foster generosity, while publicly recognising the act."
+msgstr "Δώρα - για να ενισχυθεί η τάση γενναιοδωρίας μέσω της δημόσιας αναγνώρισης. "
+
+#: offers_wants.module:29
+msgid ""
+"To dos - in order to list and share the tasks linked to making your "
+"association work."
+msgstr "Προσεχώς - για να δημοσιεύετε και να μοιράζεστε όλα αυτά που θα πρέπει να γίνουν στο μέλλον και έχουν σχέση με τη λειτουργία της ομάδας σας."
+
+#: offers_wants.module:73
+msgid "Offer/want"
+msgstr "Προσφέρω/ζητώ"
+
+#: offers_wants.module:76
+msgid "Something which could meet a need in the community"
+msgstr "Κάτι που θα μπορούσε να καλύψει μια ανάγκη της κοινότητας"
+
+#: offers_wants.module:78
+msgid "One line description"
+msgstr "Περιγραφή σε μια γραμμή"
+
+#: offers_wants.module:100
+msgid "View offers/wants"
+msgstr "Εμφάνιση αγγελιών προσφοράς/ζήτησης"
+
+#: offers_wants.module:101
+msgid "View all offers & wants"
+msgstr "Εμφάνιση όλων των αγγελιών προσφοράς & ζήτησης"
+
+#: offers_wants.module:104
+msgid "Post offers/wants"
+msgstr "Δημοσίευση αγγελίας προσφοράς / ζήτησης"
+
+#: offers_wants.module:105
+msgid "Create and manage own offers & wants"
+msgstr "Δημιουργία και διαχείριση των δικών σας αγγελιών προσφοράς / ζήτησης"
+
+#: offers_wants.module:108
+msgid "Moderate offers/wants"
+msgstr "Έλεγχος έγκρισης αγγελιών προσφοράς / ζήτησης"
+
+#: offers_wants.module:109
+msgid "Edit all offers & wants"
+msgstr "Επεξεργασία όλων των αγγελιών προσφοράς & ζήτησης"
+
+#: offers_wants.module:112
+msgid "Configure offers & wants"
+msgstr "Ρύθμιση των αγγελιών προσφοράς & ζήτησης"
+
+#: offers_wants.module:113
+msgid "suitable for a sub-admin"
+msgstr "κατάλληλο για κάποιο βοηθό διαχειριστή"
+
+#: offers_wants.module:163
+msgid "Want categories"
+msgstr "Κατηγορίες ζητήσεων"
+
+#: offers_wants.module:163
+msgid "Offer categories"
+msgstr "Κατηγορίες προσφορών"
+
+#: offers_wants.module:169
+msgid "Add a want"
+msgstr "Προσθήκη ζήτησης"
+
+#: offers_wants.module:169
+msgid "Add an offer"
+msgstr "Προσθήκη προσφοράς"
+
+#: offers_wants.module186;208;223
+msgid "I would like to request"
+msgstr "Θα ήθελα να ζητήσω"
+
+#: offers_wants.module186;207;223
+msgid "I would like to offer"
+msgstr "Θα ήθελα να προσφέρω"
+
+#: offers_wants.module:252
+msgid "Delete after"
+msgstr "Διαγραφή μετά από"
+
+#: offers_wants.module:253
+msgid "Time from now after which the item will expire"
+msgstr "Το χρονικό περιθώριο από τώρα μέχρι τη στιγμή που το στοιχείο θα λήξει."
+
+#: offers_wants.module:261
+msgid "It belongs in these categories"
+msgstr "Ανήκει σ' αυτές τις κατηγορίες"
+
+#: offers_wants.module:327
+msgid "Offered"
+msgstr "Προσφέρεται"
+
+#: offers_wants.module:327
+msgid "Wanted"
+msgstr "Ζητείται"
+
+#: offers_wants.module:351
+msgid "Send an email to !name"
+msgstr "Αποστολή email στην/στον !name"
+
+#: offers_wants.module:355
+msgid "!name's propositions"
+msgstr "Προτάσεις της/του !name"
+
+#: offers_wants.module:359
+msgid "See !name's profile"
+msgstr "Δείτε το προφίλ της/του !name"
+
+#: offers_wants.module:368
+msgid "See more in @category"
+msgstr "Δείτε περισσότερα στην κατηγορία @category"
+
+#: offers_wants.module:404
+msgid "<strong>Expiring:</strong> @date"
+msgstr "<strong>Ημερομηνία λήξης:</strong> @date"
+
+#: offers_wants.module:409
+msgid "Want: @title"
+msgstr "Ζήτηση: @title"
+
+#: offers_wants.module:409
+msgid "Offer: @title"
+msgstr "Προσφορά: @title"
+
+#: offers_wants.module:449
+msgid "Your want has expired."
+msgstr "Το χρονικό όριο της ζήτησης σας έχει λήξει."
+
+#: offers_wants.module:449
+msgid "Your offer has expired."
+msgstr "Το χρονικό όριο της προσφοράς σας έχει λήξει."
+
+#: offers_wants.module:451
+msgid ""
+"Your post to @sitename,\n"
+"\n"
+"'@title'\n"
+"\n"
+" has been deleted."
+msgstr "Η δημοσίευση σας στο @sitename, με τίτλο\n\n'@title'\n\n έχει διαγραφεί."
+
+#: offers_wants.module:459
+msgid "@user has commented on your @type:"
+msgstr "Ο/Η @user σχολίασε τον τύπο @type σας:"
+
+#: offers_wants.module:461
+msgid "want"
+msgstr "ζήτηση"
+
+#: offers_wants.module:461
+msgid "offer"
+msgstr "προσφορά"
+
+#: offers_wants.module:464
+msgid "Answer by clicking on this link (you must be logged in)"
+msgstr "Απαντήστε κάνοντας κλικ σ' αυτό το δεσμό (θα πρέπει να έχετε συνδεθεί πρώτα στο σύστημα)"
+
+#: offers_wants.module:472
+msgid "Enable wants in addition to offers"
+msgstr "Ενεργοποίηση και των αγγελιών ζήτησης επιπλέον αυτών της προσφοράς"
+
+#: offers_wants.module:478
+msgid "Default period before expiry"
+msgstr "Προκαθορισμένη περίοδος ημερομηνίας λήξης"
+
+#: offers_wants.module:479
+msgid "This default value of the expiry form widget"
+msgstr "Η προκαθορισμένη τιμή του εφαρμογίδιου της φόρμας ημερομηνίας λήξης"
+
+#: offers_wants.module:495
+msgid "Some views respond to settings on this page, but only 'default' views."
+msgstr "Μερικές προβολές εξαρτώνται από τις ρυθμίσεις αυτής της σελίδας, αυτό όμως ισχύει μόνο για προβολές που δεν έχουν προσαρμοστεί διαφορετικά."
+
+#: offers_wants.module:496
+msgid "'Overridden' views are not affected, but can be 'Reverted'."
+msgstr "Οι προβολές που έχουν προσαρμοστεί διαφορετικά δεν επηρεάζονται αλλά μπορείτε να τις επαναφέρετε στην βασική τους μορφή"
+
+#: offers_wants.module:520
+msgid "Never"
+msgstr "Ποτέ"
+
+#: offers_wants.module:521
+msgid "1 day"
+msgstr "1 ημέρα"
+
+#: offers_wants.module:522
+msgid "2 days"
+msgstr "2 ημέρες"
+
+#: offers_wants.module:523
+msgid "3 days"
+msgstr "3 ημέρες"
+
+#: offers_wants.module:524
+msgid "5 days"
+msgstr "5 ημέρες"
+
+#: offers_wants.module:525
+msgid "1 week"
+msgstr "1 εβδομάδα"
+
+#: offers_wants.module:526
+msgid "2 weeks"
+msgstr "2 εβδομάδες"
+
+#: offers_wants.module:527
+msgid "1 month"
+msgstr "1 μήνα"
+
+#: offers_wants.module:528
+msgid "2 months"
+msgstr "2 μήνες"
+
+#: offers_wants.module:529
+msgid "3 months"
+msgstr "3 μήνες"
+
+#: offers_wants.module:530
+msgid "6 months"
+msgstr "6 μήνες"
+
+#: offers_wants.module:531
+msgid "1 year"
+msgstr "1 χρόνο"
+
+#: offers_wants.module:617
+msgid "Continue"
+msgstr "Συνέχεια"
+
+#: offers_wants.module:658
+msgid "whether wants are enabled"
+msgstr "αν έχουν ενεργοποιηθεί οι αγγελίες ζήτησης"
+
+#: offers_wants.module:39
+msgid "Offers & wants"
+msgstr "Προσφορά & Ζήτηση"
+
+#: offers_wants.module:45
+msgid "Register offer"
+msgstr "Καταχώρηση προσφοράς"
+
+#: offers_wants.module:55
+msgid "Register want"
+msgstr "Καταχώρηση ζήτησης"
+
+#: offers_wants.install13;384
+msgid "Offer/want types"
+msgstr "Τύποι προσφορών/ζητήσεων"
+
+#: offers_wants.install:17
+msgid "This vocabulary provides another dimension for dicing offers/wants."
+msgstr "Αυτό το λεξιλόγιο παρέχει μια ακόμη διάσταση ταξινόμησης αγγελιών προσφοράς / ζήτησης"
+
+#: offers_wants.install:18
+msgid "Makes a view tab on the views pages"
+msgstr "Δημιουργεί μια καρτέλα προβολής στις σελίδες προβολών"
+
+#: offers_wants.install:23
+msgid "Goods"
+msgstr "Αγαθά"
+
+#: offers_wants.install:36
+msgid "Market sectors"
+msgstr "Τομείς αγοράς"
+
+#: offers_wants.install:39
+msgid "For categorising community activities. Use like the Yellow pages"
+msgstr "Για την κατηγοριοποίηση δραστηριοτήτων της κοινότητας. Χρησιμοποιείται όπως τον χρυσό οδηγό."
+
+#: offers_wants.install:44
+msgid "Administration"
+msgstr "Διαχείριση"
+
+#: offers_wants.install:97
+msgid "The main table to hold the scheduler data."
+msgstr "Ο βασικός πίνακας που κρατάει τα δεδομένα ημερολογίου "
+
+#: offers_wants.install:100
+msgid "The foreign key to node.nid"
+msgstr "Το εξωτερικό κλειδί του node.nid"
+
+#: offers_wants.install:106
+msgid "If the proposition gives notice before expiring"
+msgstr "Αν η πρόταση ειδοποιεί πριν λήξει το χρονικό της όριο"
+
+#: offers_wants.install:112
+msgid "If this item is requested. (Default, zero is an offer)"
+msgstr "Αν το στοιχείο είναι ζήτηση (προκαθορισμένη τιμή, βάλτε μηδέν για προσφορά)"
+
+#: offers_wants.install:328
+msgid "Tell your story..."
+msgstr "Περιγράψτε το προϊόν ή την υπηρεσία που προσφέρετε..."
+
+#: offers_wants.install:363
+msgid "Offer/want categories"
+msgstr "Κατηγορίες αγγελιών"
+
+#: offers_wants.install:364
+msgid "Main categorisation for offers and wants"
+msgstr "Βασική κατηγοριοποίηση αγγελιών προσφοράς και ζήτησης"
+
+#: offers_wants.install:404
+msgid "Image"
+msgstr "Εικόνα"
+
+#: offers_wants.install:460
+msgid "Category"
+msgstr "Κατηγορία"
+
+#: offers_wants.install:461
+msgid "Subcategory"
+msgstr "Υποκατηγορία"
+
+#: offers_wants.install:466
+msgid "All selections"
+msgstr "Όλες οι επιλογές"
+
+#: offers_wants.info:0
+msgid "Offers & Wants"
+msgstr "Προσφορά & Ζήτηση"
+
+#: offers_wants.info:0
+msgid ""
+"A simple marketplace with 2 dimenstions of categories. For moree options, "
+"install date, date popup, image, and hierarchical select taxonomy"
+msgstr "Μια απλή «Αγορά» με 2 διαστάσεις κατηγοριών. Αν θέλετε περισσότερες δυνατότητες, εγκαταστήστε την ταξινόμηση με βάση ημερομηνίες, ειδοποιήσεις ημερομηνιών, εικόνων και ιεραρχικής επιλογής"
+
+#: offers_wants.info:0
+msgid "Local communities"
+msgstr "Τοπικές κοινότητες"
+
+#: views/offers_wants.views.inc:13
+msgid "Propositions"
+msgstr "Προτάσεις"
+
+#: views/offers_wants.views.inc:22
+msgid "Is a want"
+msgstr "Είναι ζήτηση"
+
+#: views/offers_wants.views.inc:23
+msgid "Show a 1"
+msgstr "Προβολή ενός 1"
+
+#: views/offers_wants.views.inc28;32
+msgid "Filter by proposition direction"
+msgstr "Φιλτράρισμα με βάση το σκοπό της πρότασης"
+
+#: views/offers_wants.views.inc:37
+msgid "Is time limited"
+msgstr "Έχει ημερομηνία λήξης"
+
+#: views/offers_wants.views.inc:38
+msgid "Show only temporary or permanent propositions"
+msgstr "Προβολή μόνο προσωρινών ή μόνιμων προτάσεων"
+
+#: views/offers_wants.views_default.inc:35
+msgid "Directory of wants"
+msgstr "Κατάλογος ζήτησης"
+
+#: views/offers_wants.views_default.inc:35
+msgid "Directory of offers"
+msgstr "Κατάλογος προσφορών"
+
+#: views/offers_wants.views_default.inc:36
+msgid "Default view is autogenerated"
+msgstr "Η προκαθορισμένη προβολή δημιουργείται αυτόματα"
+
+#: views/offers_wants.views_default.inc46;192;198
+#: views/views_handler_field_want.inc:8
+msgid "Wants"
+msgstr "Ζήτηση"
+
+#: views/offers_wants.views_default.inc46;192;198
+#: views/views_handler_field_want.inc:8
+msgid "Offers"
+msgstr "Προσφορά"
+
+#: views/offers_wants.views_default.inc:98
+msgid "No offers/wants have been entered"
+msgstr "Δεν έχουν εισαχθεί αγγελίες προσφοράς ή ζήτησης"
+
+#: views/offers_wants.views_default.inc:205
+msgid "Latest wants"
+msgstr "Πρόσφατες αγγελίες ζήτησης"
+
+#: views/offers_wants.views_default.inc:205
+msgid "Latest offers"
+msgstr "Πρόσφατες προσφορές"
+
+#: views/offers_wants.views_default.inc:537
+msgid "My offers & wants"
+msgstr "Οι αγγελίες μου προσφοράς & ζήτησης"
