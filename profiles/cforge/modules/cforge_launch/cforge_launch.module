@@ -277,9 +277,6 @@ function cforge_launch_uif_pre_create($account, $user_data, $form_state) {
     $fields['manage_responsibility'][LANGUAGE_NONE][0]['value'] = @$user_data['responsibility'];
     $fields['manage_responsibility'][LANGUAGE_NONE][0]['format'] = 'plain_text';
   }
-  if (array_key_exists('status', $user_data)) {
-    $fields['status'] = @$user_data['status'];
-  }
   if (array_key_exists('created', $user_data) && !empty($user_data['created'])) {
     $fields['created'] = strtotime($user_data['created']);
   }
